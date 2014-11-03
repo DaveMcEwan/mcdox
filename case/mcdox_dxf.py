@@ -3,58 +3,6 @@
 from dxfwrite import DXFEngine as dxf
 from mcdox_coords import *
 
-def sw_outline_pts(sw_type=''): # {{{
-    '''Define a switch hole.
-    '''
-    sw_type = sw_type.lower()
-
-    if sw_type in ['alps', 'matias']:
-        width = 15.0
-        height = 10.0
-        ret = [
-            (-width/2, -height/2),
-            (+width/2, -height/2),
-            (+width/2, +height/2),
-            (-width/2, +height/2),
-        ]
-    elif sw_type in ['cherrymx']:
-        width = 13.25
-        notch_depth = 1.5
-        notch_height = 4.0
-    
-        inner_x = width/2
-        outer_x = inner_x + notch_depth
-        outer_y = inner_x
-        inner_y =  width/2 - notch_height
-    
-        # Points relative to centre listed in CW direction.
-        ret = [
-            (-inner_x, +inner_y),
-            (-outer_x, +inner_y),
-            (-outer_x, +outer_y),
-            (+outer_x, +outer_y),
-            (+outer_x, +inner_y),
-            (+inner_x, +inner_y),
-            (+inner_x, -inner_y),
-            (+outer_x, -inner_y),
-            (+outer_x, -outer_y),
-            (-outer_x, -outer_y),
-            (-outer_x, -inner_y),
-            (-inner_x, -inner_y),
-        ]
-    else:
-        ret = [
-            (-spc/2, -spc/2),
-            (+spc/2, -spc/2),
-            (+spc/2, +spc/2),
-            (-spc/2, +spc/2),
-        ]
-
-    ret.append(ret[0]) # Join back to start point.
-
-    return ret
-# }}} End of sw_outline_pts()
-
 filename = 'mcdox.dxf'
 d = dxf.drawing(filename)
 
@@ -496,4 +444,35 @@ d.add(arc_top)
 # }}} End of BASE2
 
 d.save()
-print("drawing '%s' created." % filename)
+
+if 0:
+    filename = 'dim_test.dxf'
+    t = dxf.drawing(filename)
+    
+    cherry = [dxf.block(name='cherry_%d' % i) for i in range(10)]
+    for i in range(10):
+        args = {'width': 13.2 + i*0.1}
+        cherry[i].add( dxf.polyline(sw_outline_pts('cherrymx', args)) )
+        t.blocks.add(cherry[i])
+        t.add(dxf.insert2(blockdef=cherry[i], insert=(0+10, 10+i*18)))
+    
+    alps = [dxf.block(name='alps_%d' % i) for i in range(10)]
+    for i in range(10):
+        args = {'width': 14.5 + i*0.1, 'height': 11.8 + i*0.1,}
+        alps[i].add( dxf.polyline(sw_outline_pts('alps', args)) )
+        t.blocks.add(alps[i])
+        t.add(dxf.insert2(blockdef=alps[i], insert=(0+30, 10+i*18)))
+    
+    m7 = [dxf.block(name='m7_%d' % i) for i in range(10)]
+    for i in range(10):
+        m7[i].add( dxf.circle((5.5 + i*0.3)/2) )
+        t.blocks.add(m7[i])
+        t.add(dxf.insert2(blockdef=m7[i], insert=(0+45, 10+i*18)))
+    
+    m3 = [dxf.block(name='m3_%d' % i) for i in range(10)]
+    for i in range(10):
+        m3[i].add( dxf.circle((2.7 + i*0.1)/2) )
+        t.blocks.add(m3[i])
+        t.add(dxf.insert2(blockdef=m3[i], insert=(0+55, 10+i*18)))
+    
+    t.save()

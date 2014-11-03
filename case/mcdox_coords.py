@@ -312,6 +312,58 @@ base1L_outline = pts_reflect(base1R_outline, [center[0], None])
 base1L_outline.reverse()
 base1_cutout = base1R_outline + base1L_outline
 
+def sw_outline_pts(sw_type='', args={}): # {{{
+    '''Define a switch hole.
+    '''
+    sw_type = sw_type.lower()
+
+    if sw_type in ['alps', 'matias']:
+        width = 15.4 if 'width' not in args else args['width']
+        height = 12.8 if 'height' not in args else args['height']
+        ret = [
+            (-width/2, -height/2),
+            (+width/2, -height/2),
+            (+width/2, +height/2),
+            (-width/2, +height/2),
+        ]
+    elif sw_type in ['cherrymx']:
+        width = 13.5 if 'width' not in args else args['width']
+        notch_depth = 1.5 if 'notch_depth' not in args else args['notch_depth']
+        notch_height = 4.0 if 'notch_height' not in args else args['notch_height']
+    
+        inner_x = width/2
+        outer_x = inner_x + notch_depth
+        outer_y = inner_x
+        inner_y =  width/2 - notch_height
+    
+        # Points relative to centre listed in CW direction.
+        ret = [
+            (-inner_x, +inner_y),
+            (-outer_x, +inner_y),
+            (-outer_x, +outer_y),
+            (+outer_x, +outer_y),
+            (+outer_x, +inner_y),
+            (+inner_x, +inner_y),
+            (+inner_x, -inner_y),
+            (+outer_x, -inner_y),
+            (+outer_x, -outer_y),
+            (-outer_x, -outer_y),
+            (-outer_x, -inner_y),
+            (-inner_x, -inner_y),
+        ]
+    else:
+        ret = [
+            (-spc/2, -spc/2),
+            (+spc/2, -spc/2),
+            (+spc/2, +spc/2),
+            (-spc/2, +spc/2),
+        ]
+
+    ret.append(ret[0]) # Join back to start point.
+
+    return ret
+# }}} End of sw_outline_pts()
+
 if __name__ == '__main__':
     out = []
     out += ['Operations:']
