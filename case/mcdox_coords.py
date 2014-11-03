@@ -366,14 +366,16 @@ def sw_outline_pts(sw_type='', args={}): # {{{
 
 if __name__ == '__main__':
     out = []
-    out += ['Operations:']
-    out += ['\tCherryMX holes:']
+    out += ['Switch holes:']
     for h in sw_holes:
-        out += ['\t\t(%0.2f, %0.2f) rotate=%d' % (h[0], h[1], degrees(h[2]))]
-    out += ['\tFixing holes:']
+        out += ['\t(%0.2f, %0.2f) rotate=%d' % (h[0], h[1], degrees(h[2]))]
+    out += ['Fixing holes:']
     for h in fix_holes:
-        out += ['\t\t(%0.2f, %0.2f)' % (h[0], h[1])]
-    out += ['\tOuter:']
-    out += ['\t\tradius=%0.2f' % radius]
-    out += ['\t\tdiameter=%0.2f' % diameter]
+        out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
+    out += ['PCB holes:']
+    for h in pcb_holes:
+        out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
+    out += ['Outer:']
+    out += ['\theight=%0.2f' % diameter]
+    out += ['\twidth=%0.2f' % (diameter*2 + hand_sep)]
     print('\n'.join(out))
