@@ -2,8 +2,7 @@
 
 from math import *
 import sys
-sys.path.insert(0, '../../cncutils')
-from math_base import *
+from ndim import *
 
 # Spacing between centers of cherrymx switches.
 spc = 19.0
