@@ -1,0 +1,10 @@
+*.pyc
+*.gbr
+*.drl
+*.zip
+*.net
+*.bak
+*-bak
+*.dcm
+*generated*
+*cache*
