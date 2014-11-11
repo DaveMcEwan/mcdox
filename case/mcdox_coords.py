@@ -118,6 +118,7 @@ bottom_right = thumb_sw_holes[2]
 
 
 Lsw_holes = thumb_sw_holes + finger_sw_holes
+pcb_sw = Lsw_holes
 c = pt_between_pts(top_left[:2], bottom_right[:2])
 radius = distance_between_pts(top_left[:2], c) + 1.0*spc
 diameter = 2 * radius
