@@ -312,6 +312,35 @@ base1L_outline = pts_reflect(base1R_outline, [center[0], None])
 base1L_outline.reverse()
 base1_cutout = base1R_outline + base1L_outline
 
+pcb_outline = [
+  pt_relative(pcb_sw[4][:2], [+0.5*spc, +0.5*spc], [pcb_sw[4][2]]),
+  pt_relative(pcb_sw[2][:2], [+0.5*spc, -0.5*spc], [pcb_sw[2][2]]),
+  pt_relative(pcb_sw[0][:2], [-1.0*spc, +0.5*spc], [pcb_sw[0][2]]),
+  #
+#  pt_relative(pcb_sw[17][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[17][2]]),
+#  pt_relative(pcb_sw[17][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[17][2]]),
+#  pt_relative(pcb_sw[22][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[22][2]]),
+#  pt_relative(pcb_sw[22][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[22][2]]),
+#  pt_relative(pcb_sw[27][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[27][2]]),
+#  pt_relative(pcb_sw[27][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[27][2]]),
+#  pt_relative(pcb_sw[32][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[32][2]]),
+  pt_relative(pcb_sw[37][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[37][2]]),
+#  pt_relative(pcb_sw[37][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[37][2]]),
+  pt_relative(pcb_sw[36][:2], [-0.5*spc, -0.5*spc], [pcb_sw[36][2]]),
+  pt_relative(pcb_sw[33][:2], [-0.5*spc, +0.5*spc], [pcb_sw[33][2]]),
+  #
+  pt_relative(pcb_sw[28][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[28][2]]),
+  pt_relative(pcb_sw[23][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[23][2]]),
+  pt_relative(pcb_sw[23][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[23][2]]),
+  pt_relative(pcb_sw[18][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[18][2]]),
+  pt_relative(pcb_sw[18][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[18][2]]),
+  pt_relative(pcb_sw[13][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
+  pt_relative(pcb_sw[13][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
+  pt_relative(pcb_sw[9][:2],  [-0.5*spc,  +0.5*spc], [pcb_sw[9][2]]),
+  pt_relative(pcb_sw[6][:2],  [+0.5*spc,  +0.5*spc], [pcb_sw[6][2]]),
+]
+pcb_outline.append(pcb_outline[0])
+
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.
     '''

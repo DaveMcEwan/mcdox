@@ -17,12 +17,11 @@ for i, l in enumerate(alpsmx):
         alpsmx[i] = l[:e] + ' 0.0' + l[e:]
 
 
-
-
 def floatf(n):
     ret = (' %0.3f' % n).rstrip('0').rstrip('.')
     if ret == ' 0': ret = ''
     return ret 
+
 
 pcb = ['''
 (kicad_pcb (version 4) (host pcbnew "(2014-09-07 BZR 5117)-product")
@@ -30,7 +29,7 @@ pcb = ['''
   (general
     (links 0)
     (no_connects 0)
-    (area 90.670999 -189.829001 269.523651 -50.541247)
+    (area 70.670999 20.170999 249.523651 159.458753)
     (thickness 1.6)
     (drawings 0)
     (tracks 0)
@@ -127,7 +126,8 @@ pcb = ['''
     (uvia_dia 0.508)
     (uvia_drill 0.127)
   )
-'''.strip()]
+
+'''.lstrip()]
 
 # Per switch stuff...
 pattern = '\(at (-?\d+(\.\d+)?) (-?\d+(\.\d+)?) (-?\d+(\.\d+)?)\)'
@@ -141,9 +141,22 @@ for (x, y, r) in pcb_sw:
             sw_mod[i] = re.sub(pattern, '(at \g<1> \g<3>%s)' % floatf(rotate), l)
     
     # Insert coordinates and rotation line after 1st line.
-    sw_mod.insert(1, '  (at %s %s%s)\n' % (x+100, -y-100, floatf(degrees(r))))
+    sw_mod.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
     sw_mod = ''.join(sw_mod)
     pcb.append(sw_mod)
+
+# Board outline
+for i in range(1, len(pcb_outline)):
+    prev = pcb_outline[i-1]
+    this = pcb_outline[i]
+    subs = {
+            'x_p': prev[0]+80,
+            'y_p': -prev[1]+110,
+            'x_n': this[0]+80,
+            'y_n': -this[1]+110,
+           }
+    pcb.append('  (gr_line (start %(x_p)s %(y_p)s) (end %(x_n)s %(y_n)s) (angle 90) (layer Edge.Cuts) (width 0.8))\n' % subs)
+
 pcb.append('\n)')
 
 with open('mcdox-generated.kicad_pcb', 'w') as fd:
