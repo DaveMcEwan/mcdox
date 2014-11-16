@@ -3,7 +3,13 @@
 from dxfwrite import DXFEngine as dxf
 from mcdox_coords import *
 
-filename = 'mcdox.dxf'
+import os
+try:
+    os.makedirs('dxf')
+except:
+    pass
+
+filename = 'dxf/mcdox_all.dxf'
 d = dxf.drawing(filename)
 
 # {{{ Block definition
@@ -446,7 +452,7 @@ d.add(arc_top)
 d.save()
 
 if 0:
-    filename = 'dim_test.dxf'
+    filename = 'dxf/dim_test.dxf'
     t = dxf.drawing(filename)
     
     cherry = [dxf.block(name='cherry_%d' % i) for i in range(10)]
