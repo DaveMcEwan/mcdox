@@ -312,8 +312,10 @@ base1L_outline = pts_reflect(base1R_outline, [center[0], None])
 base1L_outline.reverse()
 base1_cutout = base1R_outline + base1L_outline
 
+pcb_cut_bot = pt_relative(pcb_sw[4][:2], [+0.5*spc, +0.5*spc], [pcb_sw[4][2]])
+pcb_cut_top = pt_relative(pcb_sw[6][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[6][2]])
 pcb_outline = [
-  pt_relative(pcb_sw[4][:2], [+0.5*spc, +0.5*spc], [pcb_sw[4][2]]),
+  pcb_cut_bot,
   pt_relative(pcb_sw[2][:2], [+0.5*spc, -0.5*spc], [pcb_sw[2][2]]),
   pt_relative(pcb_sw[0][:2], [-1.0*spc, +0.5*spc], [pcb_sw[0][2]]),
   #
@@ -337,9 +339,63 @@ pcb_outline = [
   pt_relative(pcb_sw[13][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
   pt_relative(pcb_sw[13][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
   pt_relative(pcb_sw[9][:2],  [-0.5*spc,  +0.5*spc], [pcb_sw[9][2]]),
-  pt_relative(pcb_sw[6][:2],  [+0.5*spc,  +0.5*spc], [pcb_sw[6][2]]),
+  pcb_cut_top,
 ]
 pcb_outline.append(pcb_outline[0])
+
+sw_pos = [ # {{{ (column, row) map of switch positions in the matrix.
+(5, 3),
+(5, 2),
+(5, 1),
+(5, 4),
+(5, 6),
+(5, 5),
+#
+(0, 6),
+(1, 6),
+(3, 6),
+#
+(0, 5),
+(1, 5),
+(2, 5),
+(3, 5),
+#
+(0, 4),
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 4),
+#
+(0, 3),
+(1, 3),
+(2, 3),
+(3, 3),
+(4, 3),
+#
+(0, 2),
+(1, 2),
+(2, 2),
+(3, 2),
+(4, 2),
+#
+(0, 1),
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+#
+(0, 0),
+(1, 0),
+(2, 0),
+(3, 0),
+(4, 0),
+]
+assert len(sw_pos) == 38
+assert len(sw_pos) == len(pcb_sw)
+# }}} End of sw_pos
+pcb_header_pt = pt_between_pts(pcb_cut_bot, pcb_cut_top, 0.5)
+pcb_header_dir = dir_between_pts(pcb_cut_top, pcb_cut_bot)[0]
+pcb_header_pt = pt_relative(pcb_header_pt, [-(3*0.8+3.0), 0.0], [pcb_header_dir + pi/2])
 
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.

@@ -4,23 +4,28 @@ from mcdox_coords import *
 import re
 
 
-# Get switch footprint module and make it suitable for insertion.
-with open('../pcb/mcdox.pretty/alpsmx.kicad_mod') as fd:
-    alpsmx = fd.readlines()
-
-# Append a zero rotation to all non-rotated features.
-pattern = '\(at -?\d+(\.\d+)? -?\d+(\.\d+)?\)'
-for i, l in enumerate(alpsmx):
-    r = re.search(pattern, l)
-    if r is not None:
-        e = r.end(0) - 1
-        alpsmx[i] = l[:e] + ' 0.0' + l[e:]
-
-
 def floatf(n):
     ret = (' %0.3f' % n).rstrip('0').rstrip('.')
     if ret == ' 0': ret = ''
     return ret 
+
+def get_fp_lines(filename=''):
+    with open(filename) as fd:
+        lines = fd.readlines()
+
+    # Append a zero rotation to all non-rotated features.
+    pattern = '\(at -?\d+(\.\d+)? -?\d+(\.\d+)?\)'
+    for i, l in enumerate(lines):
+        r = re.search(pattern, l)
+        if r is not None:
+            e = r.end(0) - 1
+            lines[i] = l[:e] + ' 0.0' + l[e:]
+
+    return lines
+
+# Get switch footprint module and make it suitable for insertion.
+alpsmx = get_fp_lines('../pcb/mcdox.pretty/alpsmx.kicad_mod')
+header = get_fp_lines('../pcb/mcdox.pretty/Pin_Header_Straight_2x13.kicad_mod')
 
 
 pcb = ['''
@@ -129,21 +134,25 @@ pcb = ['''
 
 '''.lstrip()]
 
-# Per switch stuff...
+# Rotate and insert switches
 pattern = '\(at (-?\d+(\.\d+)?) (-?\d+(\.\d+)?) (-?\d+(\.\d+)?)\)'
+n = 0
 for (x, y, r) in pcb_sw:
-    sw_mod = list(alpsmx)
-    for i, l in enumerate(sw_mod):
+    sw_mod_lines = list(alpsmx)
+    for i, l in enumerate(sw_mod_lines):
         p = re.search(pattern, l)
         if p is not None:
             rotate = float(p.group(5))
             rotate = (rotate + degrees(r)) % 360
-            sw_mod[i] = re.sub(pattern, '(at \g<1> \g<3>%s)' % floatf(rotate), l)
+            sw_mod_lines[i] = re.sub(pattern, '(at \g<1> \g<3>%s)' % floatf(rotate), l)
     
     # Insert coordinates and rotation line after 1st line.
-    sw_mod.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
-    sw_mod = ''.join(sw_mod)
+    sw_mod_lines.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
+    sw_mod = ''.join(sw_mod_lines)
+    sw_mod = sw_mod.replace('VAL**', 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1]), 1)
+    sw_mod = sw_mod.replace('reference alpsmx', 'reference sw%d' % n, 1)
     pcb.append(sw_mod)
+    n += 1
 
 # Board outline
 for i in range(1, len(pcb_outline)):
@@ -157,6 +166,22 @@ for i in range(1, len(pcb_outline)):
            }
     pcb.append('  (gr_line (start %(x_p)s %(y_p)s) (end %(x_n)s %(y_n)s) (angle 90) (layer Edge.Cuts) (width 0.8))\n' % subs)
 
+# Pin header
+x = pcb_header_pt[0]
+y = pcb_header_pt[1]
+r = degrees(pcb_header_dir)
+for i, l in enumerate(header):
+    p = re.search(pattern, l)
+    if p is not None:
+        rotate = float(p.group(5))
+        rotate = (rotate + degrees(r)) % 360
+        header[i] = re.sub(pattern, '(at \g<1> \g<3>%s)' % floatf(rotate), l)
+# Insert coordinates and rotation line after 1st line.
+header.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
+header = ''.join(header)
+pcb.append(header)
+
+# Finish s-expr file.
 pcb.append('\n)')
 
 with open('mcdox-generated.kicad_pcb', 'w') as fd:
