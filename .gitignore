@@ -1,5 +1,11 @@
 *.pyc
 *.gbr
+*.gbl
+*.gtl
+*.gbs
+*.gts
+*.gbo
+*.gto
 *.drl
 *.zip
 *.net
