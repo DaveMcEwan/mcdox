@@ -68,13 +68,13 @@ pcb = ['''
   )
 
   (setup
-    (last_trace_width 0.254)
-    (trace_clearance 0.254)
+    (last_trace_width 0.5)
+    (trace_clearance 0.5)
     (zone_clearance 1)
     (zone_45_only no)
-    (trace_min 0.254)
+    (trace_min 0.5)
     (segment_width 0.2)
-    (edge_width 0.15)
+    (edge_width 0.8)
     (via_size 0.889)
     (via_drill 0.635)
     (via_min_size 0.889)
