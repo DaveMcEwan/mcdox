@@ -31,7 +31,7 @@ LIBS:contrib
 LIBS:valves
 LIBS:mcdox
 LIBS:mcdox-cache
-EELAYER 24 0
+EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -523,57 +523,57 @@ Wire Wire Line
 	5450 3700 5400 3700
 Connection ~ 5450 3700
 Text Label 10800 3850 0    60   ~ 0
-ledr6
+ledc5
 Text Label 10800 3750 0    60   ~ 0
-ledr5
+ledc4
 Text Label 10800 3650 0    60   ~ 0
-ledr4
+ledc3
 Text Label 10800 3550 0    60   ~ 0
-ledr3
+ledc2
 Text Label 10800 3450 0    60   ~ 0
-ledr2
+ledc1
 Text Label 10800 3350 0    60   ~ 0
-ledr1
+ledc0
 Text Label 10800 3250 0    60   ~ 0
 ledr0
 Text Label 10800 3150 0    60   ~ 0
-ledc5
+ledr1
 Text Label 10800 3050 0    60   ~ 0
-ledc4
+ledr2
 Text Label 10800 2950 0    60   ~ 0
-ledc3
+ledr3
 Text Label 10800 2850 0    60   ~ 0
-ledc2
+ledr4
 Text Label 10800 2750 0    60   ~ 0
-ledc1
+ledr5
 Text Label 10800 2650 0    60   ~ 0
-ledc0
+ledr6
 Text Label 10100 3850 2    60   ~ 0
-r6
+c5
 Text Label 10100 3750 2    60   ~ 0
-r5
+c4
 Text Label 10100 3650 2    60   ~ 0
-r4
+c3
 Text Label 10100 3550 2    60   ~ 0
-r3
+c2
 Text Label 10100 3450 2    60   ~ 0
-r2
+c1
 Text Label 10100 3350 2    60   ~ 0
-r1
+c0
 Text Label 10100 3250 2    60   ~ 0
 r0
 Text Label 10100 3150 2    60   ~ 0
-c5
+r1
 Text Label 10100 3050 2    60   ~ 0
-c4
+r2
 Text Label 10100 2950 2    60   ~ 0
-c3
+r3
 Text Label 10100 2850 2    60   ~ 0
-c2
+r4
 Text Label 10100 2750 2    60   ~ 0
-c1
+r5
 Text Label 10100 2650 2    60   ~ 0
-c0
+r6
 Text Label 7900 6200 0    60   ~ 0
 ledr3
 Text Label 9150 6200 0    60   ~ 0
