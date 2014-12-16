@@ -1,18 +1,18 @@
 $fn = 64; // Increase to render more faces per curve.
 
-key_type = 2; // XXX: Keycap shape (DCS = 1, DSA = 2)
+profile_type = 2; // XXX: Keycap shape (DCS = 1, DSA = 2)
 key_size = 1; // XXX: Length in units of key. Ergodox has (1, 1.5, 2)
 
 // Connector brim
 // Enabling this makes it easier to print and the brim should just snap off
 // easily after printing.
-has_brim = 1; // XXX: Enable brim for stem
+brim = 1; // XXX: Enable brim for stem
 brim_radius = 6;
 brim_depth = .3;
 
 // Homing bumps are usually on the two index finger keys (F and J on qwerty)
 // Sometimes on DSA just a deeper dish is used so you may want to try that.
-has_bump = 0; // XXX: Enable homing bump
+bump = 0; // XXX: Enable homing bump
 
 stem_type = 2; // XXX: Stem shape (CherryMX = 1, Matias/ALPS = 2)
 
@@ -39,7 +39,7 @@ bump_r1 = 1.9;
 bump_r2 = 0.7;
 module homingBump ()
 {
-    if (key_type == 2)
+    if (profile_type == 2)
     {
         translate([0, 0, DSA_z-DSA_dish_depth])
           cylinder(h=bump_z, r1=bump_r1, r2=bump_r2, center=false);
@@ -81,9 +81,9 @@ DSA_dish_radius = 30;
  * DCS uses a cylindrical cutout from the top face.
  * DSA uses a spherical cutout from the top face.
  */
-module dish (key_type)
+module dish (profile_type)
 {
-    if (key_type == 2)
+    if (profile_type == 2)
     {
         translate([0, DSA_top_skew, DSA_z])
           rotate([90, 0, 0])
@@ -107,11 +107,11 @@ base_corner_radius = 1.8;
 /** Key block
  * Both DCS and DSA are done in the same way, just using different variables.
  */
-module key_shape (key_type)
+module key_shape (profile_type)
 {
     difference()
     {
-        if (key_type == 2)
+        if (profile_type == 2)
         {
             hull()
             {
@@ -137,7 +137,7 @@ module key_shape (key_type)
             }
         }
 
-        dish(key_type);
+        dish(profile_type);
     }
 }
 
@@ -158,7 +158,7 @@ cherrymx_stem_y = 1.1;
 
 /** CherryMX stem
  */
-module stem_cherrymx (key_type)
+module stem_cherrymx (profile_type)
 {
     difference(){
         difference()
@@ -173,7 +173,7 @@ module stem_cherrymx (key_type)
                         cross_arm_length + cherrymx_stem_y,
                         50]);
 
-                if (has_brim == 1) cylinder(r=brim_radius, h=brim_depth);
+                if (brim == 1) cylinder(r=brim_radius, h=brim_depth);
             }
 
             // Inner cross
@@ -193,7 +193,7 @@ module stem_cherrymx (key_type)
 
             translate([0, 0, -0.1])
               scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(key_type);
+                key_shape(profile_type);
         }
     }
 }
@@ -202,7 +202,7 @@ module stem_cherrymx (key_type)
  */
 alps_stem_x = 4;
 alps_stem_y = 2;
-module stem_alps (key_type)
+module stem_alps (profile_type)
 {
     difference(){
         union()
@@ -215,7 +215,7 @@ module stem_alps (key_type)
                     alps_stem_y,
                     50]);
 
-            if (has_brim == 1) cylinder(r=brim_radius, h=brim_depth);
+            if (brim == 1) cylinder(r=brim_radius, h=brim_depth);
         }
 
         // Large cube with inner_key_shape cutout to subtract over-deep stem.
@@ -226,32 +226,32 @@ module stem_alps (key_type)
 
             translate([0, 0, -0.1])
               scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(key_type);
+                key_shape(profile_type);
         }
     }
 }
 
 /** Full keycap
  */
-module keycap (key_type)
+module keycap (profile_type)
 {
     union()
     {
         difference()
         {
-            key_shape(key_type);
+            key_shape(profile_type);
 
             translate([0, 0, -0.1])
               scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(key_type);
+                key_shape(profile_type);
         }
 
-        if (has_bump == 1) homingBump();
+        if (bump == 1) homingBump();
 
-        if (stem_type == 1) stem_cherrymx(key_type);
-        else if (stem_type == 2) stem_alps(key_type);
+        if (stem_type == 1) stem_cherrymx(profile_type);
+        else if (stem_type == 2) stem_alps(profile_type);
     }
 }
 
 
-keycap(key_type);
+keycap(profile_type);
