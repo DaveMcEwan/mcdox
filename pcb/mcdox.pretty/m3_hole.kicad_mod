@@ -1,0 +1,5 @@
+(module m3_hole (layer F.Cu) (tedit 547E31B7)
+  (descr "Mounting hole for M3 screw.")
+  (tags "M3, m3, hole")
+  (pad "" np_thru_hole circle (at 0 0) (size 3.2 3.2) (drill 3.2) (layers *.Cu))
+)

@@ -68,13 +68,13 @@ pcb = ['''
   )
 
   (setup
-    (last_trace_width 0.254)
-    (trace_clearance 0.254)
+    (last_trace_width 0.5)
+    (trace_clearance 0.5)
     (zone_clearance 1)
     (zone_45_only no)
-    (trace_min 0.254)
+    (trace_min 0.5)
     (segment_width 0.2)
-    (edge_width 0.15)
+    (edge_width 0.8)
     (via_size 0.889)
     (via_drill 0.635)
     (via_min_size 0.889)
@@ -138,6 +138,7 @@ pcb = ['''
 pattern = '\(at (-?\d+(\.\d+)?) (-?\d+(\.\d+)?) (-?\d+(\.\d+)?)\)'
 n = 0
 for (x, y, r) in pcb_sw:
+    colrow_str = 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1])
     sw_mod_lines = list(alpsmx)
     for i, l in enumerate(sw_mod_lines):
         p = re.search(pattern, l)
@@ -149,9 +150,21 @@ for (x, y, r) in pcb_sw:
     # Insert coordinates and rotation line after 1st line.
     sw_mod_lines.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
     sw_mod = ''.join(sw_mod_lines)
-    sw_mod = sw_mod.replace('VAL**', 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1]), 1)
+    sw_mod = sw_mod.replace('VAL**', colrow_str, 1)
     sw_mod = sw_mod.replace('reference alpsmx', 'reference sw%d' % n, 1)
     pcb.append(sw_mod)
+    n += 1
+
+# Reference on silkscreen.
+n = 0
+for (x, y, r) in pcb_sw:
+    colrow_str = 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1])
+    pcb.append('  (gr_text %s (at %s %s) (layer B.SilkS)\n' % (colrow_str, x+76, -y+102))
+    pcb.append('    (effects (font (size 1 1) (thickness 0.15)) (justify mirror))\n')
+    pcb.append('  )\n')
+    pcb.append('  (gr_text %s (at %s %s) (layer F.SilkS)\n' % (colrow_str, x+76, -y+102))
+    pcb.append('    (effects (font (size 1 1) (thickness 0.15)))\n')
+    pcb.append('  )\n')
     n += 1
 
 # Board outline
@@ -164,7 +177,7 @@ for i in range(1, len(pcb_outline)):
             'x_n': this[0]+80,
             'y_n': -this[1]+110,
            }
-    pcb.append('  (gr_line (start %(x_p)s %(y_p)s) (end %(x_n)s %(y_n)s) (angle 90) (layer Edge.Cuts) (width 0.8))\n' % subs)
+    pcb.append('  (gr_line (start %(x_p)s %(y_p)s) (end %(x_n)s %(y_n)s) (angle 90) (layer Edge.Cuts) (width 0.1))\n' % subs)
 
 # Pin header
 x = pcb_header_pt[0]

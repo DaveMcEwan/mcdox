@@ -238,7 +238,7 @@ thumbsL_outline = [
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
 
-# Cutouts under the PCB and fro wiring.
+# Cutouts under the PCB and for wiring.
 base0_cutout_width = 18.0 # Just enough to expose the teensy.
 base0_cutout_height = 30.0
 base0_cutout_left = center[0] - (base0_cutout_width/2)
@@ -263,31 +263,31 @@ base2_cutout_top = top_edge
 base2I = (base2_cutout_left,  base2_cutout_top)
 base2J = (base2_cutout_right,  base2_cutout_top)
 base2L_outline = [
-  pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[2][:2], [+0.5*spc, -0.5*spc], [sw_holes[2][2]]),
-  pt_relative(sw_holes[0][:2], [-1.0*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_holes[4][:2], [+(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[4][2]]),
+  pt_relative(sw_holes[2][:2], [+(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[2][2]]),
+  pt_relative(sw_holes[0][:2], [-(1.0*spc+0.5), +(0.5*spc+0.5)], [sw_holes[0][2]]),
   #
-  #pt_relative(sw_holes[17][:2], [+0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[17][:2], [-0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[22][:2], [+0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[22][:2], [-0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[27][:2], [+0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[27][:2], [-0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[32][:2], [+0.5*spc,  -0.5*spc], [sw_holes[32][2]]),
-  pt_relative(sw_holes[37][:2], [-0.5*spc,  -0.5*spc], [sw_holes[37][2]]),
-  #pt_relative(sw_holes[37][:2], [-0.5*spc,  +0.5*spc], [sw_holes[37][2]]),
-  pt_relative(sw_holes[36][:2], [-0.5*spc, -0.5*spc], [sw_holes[36][2]]),
-  pt_relative(sw_holes[33][:2], [-0.5*spc, +0.5*spc], [sw_holes[33][2]]),
+  #pt_relative(sw_holes[17][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
+  #pt_relative(sw_holes[17][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
+  #pt_relative(sw_holes[22][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
+  #pt_relative(sw_holes[22][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
+  #pt_relative(sw_holes[27][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
+  #pt_relative(sw_holes[27][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
+  #pt_relative(sw_holes[32][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[32][2]]),
+  pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[37][2]]),
+  #pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[37][2]]),
+  pt_relative(sw_holes[36][:2], [-(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[36][2]]),
+  pt_relative(sw_holes[33][:2], [-(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[33][2]]),
   #
-  pt_relative(sw_holes[28][:2], [+0.5*spc,  +0.5*spc], [sw_holes[28][2]]),
-  pt_relative(sw_holes[23][:2], [-0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [+0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[18][:2], [-0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[18][:2], [+0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[13][:2], [-0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[13][:2], [+0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[9][:2],  [-0.5*spc,  +0.5*spc], [sw_holes[9][2]]),
-  pt_relative(sw_holes[6][:2],  [+0.5*spc,  +0.5*spc], [sw_holes[6][2]]),
+  pt_relative(sw_holes[28][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
+  pt_relative(sw_holes[23][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[23][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[18][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[18][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[13][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[13][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[9][:2],  [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
+  pt_relative(sw_holes[6][:2],  [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[6][2]]),
 ]
 base2R_outline = pts_reflect(base2L_outline, [center[0], None])
 base2R_outline.reverse()
