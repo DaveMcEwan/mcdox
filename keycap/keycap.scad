@@ -6,7 +6,7 @@ key_size = 1; // XXX: Length in units of key. Ergodox has (1, 1.5, 2)
 // Connector brim
 // Enabling this makes it easier to print and the brim should just snap off
 // easily after printing.
-has_brim = 0; // XXX: Enable brim for stem
+has_brim = 1; // XXX: Enable brim for stem
 brim_radius = 6;
 brim_depth = .3;
 
@@ -14,7 +14,6 @@ brim_depth = .3;
 // Sometimes on DSA just a deeper dish is used so you may want to try that.
 has_bump = 0; // XXX: Enable homing bump
 
-// TODO: Implement stem for Matias switches.
 stem_type = 2; // XXX: Stem shape (CherryMX = 1, Matias/ALPS = 2)
 
 // DCS family
