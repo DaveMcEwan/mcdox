@@ -177,7 +177,7 @@ baseH = pt_between_pts(baseC, baseB, r_hand/(r_hand+r_bot))
 top_edge = baseD[1] - r_top - 2.0 # Lowest point of top arc, minus recess.
 spacer = 7.0 # Diameter of 2mm thick spacer between pcb and mount plate.
 pcb_width = 50.0
-fix_hole_diameter = 3.2
+fix_hole_diameter = 2.9
 pcb_hole_offset = (spacer/2) + fix_hole_diameter
 pcb_holes_top = top_edge - pcb_hole_offset
 pcb_holes_left = center[0] - (pcb_width/2) + pcb_hole_offset
@@ -403,8 +403,8 @@ def sw_outline_pts(sw_type='', args={}): # {{{
     sw_type = sw_type.lower()
 
     if sw_type in ['alps', 'matias']:
-        width = 15.4 if 'width' not in args else args['width']
-        height = 12.8 if 'height' not in args else args['height']
+        width = 15.3 if 'width' not in args else args['width']
+        height = 12.7 if 'height' not in args else args['height']
         ret = [
             (-width/2, -height/2),
             (+width/2, -height/2),
@@ -412,9 +412,9 @@ def sw_outline_pts(sw_type='', args={}): # {{{
             (-width/2, +height/2),
         ]
     elif sw_type in ['cherrymx']:
-        width = 13.5 if 'width' not in args else args['width']
-        notch_depth = 1.5 if 'notch_depth' not in args else args['notch_depth']
-        notch_height = 4.0 if 'notch_height' not in args else args['notch_height']
+        width = 13.7 if 'width' not in args else args['width']
+        notch_depth = 1.0 if 'notch_depth' not in args else args['notch_depth']
+        notch_height = 3.7 if 'notch_height' not in args else args['notch_height']
     
         inner_x = width/2
         outer_x = inner_x + notch_depth

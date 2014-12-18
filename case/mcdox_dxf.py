@@ -28,7 +28,7 @@ drill_m3.add( dxf.circle(fix_hole_diameter/2) )
 d.blocks.add(drill_m3)
 
 drill_7mm = dxf.block(name='drill_7mm')
-drill_7mm.add( dxf.circle(7.0/2) )
+drill_7mm.add( dxf.circle(6.0/2) )
 d.blocks.add(drill_7mm)
 
 # }}} Block definition
