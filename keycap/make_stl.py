@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
+import os
+from subprocess import check_call
+
 stems = ['ALPS', 'CHERRYMX']
 profiles = ['DSA', 'DCS']
 bools = ['bump']
 sizes = [1, 1.5, 2]
+
+os.makedirs('stl')
 
 cmds = []
 for s, stem in enumerate(stems):
@@ -24,5 +29,5 @@ for s, stem in enumerate(stems):
                     cmd += '-D %s=%d ' % (bool, b)
                     cmd += 'keycap.scad'
                     cmds.append(cmd)
-                    # TODO: Execute each command.
                     print(cmd)
+                    check_call(cmd, shell=True)
