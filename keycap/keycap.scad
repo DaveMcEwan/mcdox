@@ -30,7 +30,7 @@ DSA_top_x_diff = 5.3;
 DSA_top_y_diff = 5.3;
 DSA_z = 7.8;
 DSA_dish_depth = 1.2;
-DSA_dish_radius = 30;
+DSA_dish_radius = 38;
 
 straight_wall_side = 3.0;
 
@@ -144,7 +144,7 @@ module inner_key_shape (profile_type)
             key_shape(profile_type);
 
             translate([0, 0, base_width/2 + dish_bottom])
-              cube([base_width, base_width, base_width], center=true);
+              cube([key_size*base_width, base_width, base_width], center=true);
         }
 }
 
@@ -165,7 +165,7 @@ module subtractor_cube (profile_type)
     difference()
     {
         translate([0, 0, base_width/2])
-          cube([base_width+.001, base_width+.001, base_width+.001], center=true);
+          cube([key_size*base_width+1, base_width+1, base_width+1], center=true);
 
         inner_key_shape(profile_type);
     }
