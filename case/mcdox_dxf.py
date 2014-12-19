@@ -17,7 +17,7 @@ d = dxf.drawing(filename)
 # {{{ Block definition
 
 sw_mnt = dxf.block(name='sw_mnt')
-sw_mnt.add( dxf.polyline(sw_outline_pts('cherrymx')) )
+sw_mnt.add( dxf.polyline(sw_outline_pts('alps')) )
 sw_mnt.add( dxf.attdef(insert=(0.0, -0.3), tag='NAME', height=2.0, color=3) )
 #sw_mnt.add( dxf.attdef(insert=(0.0, -0.6), tag='X', height=0.25, color=4) )
 #sw_mnt.add( dxf.attdef(insert=(0.0, -0.9), tag='Y', height=0.25, color=4) )
