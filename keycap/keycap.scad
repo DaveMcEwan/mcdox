@@ -1,13 +1,13 @@
 $fn = 64; // Increase to render more faces per curve.
 
 profile_type = 2; // XXX: Keycap shape (DCS = 1, DSA = 2)
-key_size = 1; // XXX: Length in units of key. Ergodox has (1, 1.5, 2)
+key_size = 1.0; // XXX: Length in units of key. Ergodox has (1, 1.5, 2)
 
 // Connector brim
 // Enabling this makes it easier to print and the brim should just snap off
 // easily after printing.
-brim = 1; // XXX: Enable brim for stem
-brim_radius = 6;
+brim = 0; // XXX: Enable brim for stem
+brim_radius = 5;
 brim_depth = .3;
 
 // Homing bumps are usually on the two index finger keys (F and J on qwerty)
@@ -23,13 +23,28 @@ DCS_z = 8.5;
 DCS_top_tilt = -1;
 DCS_top_skew = 1.75;
 DCS_dish_depth = 1;
+DCS_dish_radius = 20;
 
 // DSA family
 DSA_top_x_diff = 5.3;
 DSA_top_y_diff = 5.3;
-DSA_z = 7.4;
-DSA_top_skew = 0;
-DSA_dish_depth = 1.6;
+DSA_z = 7.8;
+DSA_dish_depth = 1.2;
+DSA_dish_radius = 30;
+
+straight_wall_side = 3.0;
+
+// ALPS stems must be 5mm long which is slightly bigger than that required
+// for CherryMX stems.
+stem_z = stem_type == 2 ? 5.0 : 4.0;
+
+top_x_diff = profile_type == 2 ? DSA_top_x_diff : DCS_top_x_diff;
+top_y_diff = profile_type == 2 ? DSA_top_y_diff : DCS_top_y_diff;
+keycap_z = profile_type == 2 ? DSA_z : DCS_z;
+top_tilt = profile_type == 2 ? 0 : DCS_top_tilt;
+top_skew = profile_type == 2 ? 0 : DCS_top_skew;
+dish_depth = profile_type == 2 ? DSA_dish_depth : DCS_dish_depth;
+dish_radius = profile_type == 2 ? DSA_dish_radius : DCS_dish_radius;
 
 
 /** Homing bump
@@ -37,20 +52,32 @@ DSA_dish_depth = 1.6;
 bump_z = 0.9;
 bump_r1 = 1.9;
 bump_r2 = 0.7;
-module homingBump ()
+module homing_bump ()
 {
+    translate([0, 0, keycap_z - dish_depth])
+      cylinder(h=bump_z, r1=bump_r1, r2=bump_r2, center=false);
+}
+
+/** Dish
+ * DCS uses a cylindrical cutout from the top face.
+ * DSA uses a spherical cutout from the top face.
+ */
+dish_bottom = keycap_z - dish_depth;
+module dish (profile_type)
+{
+    translate([0, top_skew, keycap_z])
+      rotate([90-top_tilt, 0, 0])
+        translate([0, dish_radius - dish_depth, 0])
     if (profile_type == 2)
     {
-        translate([0, 0, DSA_z-DSA_dish_depth])
-          cylinder(h=bump_z, r1=bump_r1, r2=bump_r2, center=false);
+          scale([key_size, 1, 1])
+            sphere(r=DSA_dish_radius, $fn=256);
     }
     else
     {
-        translate([0, 0, DCS_z-DCS_dish_depth])
-          cylinder(h=bump_z, r1=bump_r1, r2=bump_r2, center=false);
+          cylinder(h=base_width, r=DCS_dish_radius*key_size, $fn=256, center=true);
     }
 }
-
 
 /** Rounded rectangle
  */
@@ -74,33 +101,6 @@ module rounded_rect (size, radius)
         }
 }
 
-
-DCS_dish_radius = 20;
-DSA_dish_radius = 30;
-/** Dish
- * DCS uses a cylindrical cutout from the top face.
- * DSA uses a spherical cutout from the top face.
- */
-module dish (profile_type)
-{
-    if (profile_type == 2)
-    {
-        translate([0, DSA_top_skew, DSA_z])
-          rotate([90, 0, 0])
-            translate([0, DSA_dish_radius - DSA_dish_depth, 0])
-              scale([key_size, 1, 1])
-                sphere(r=DSA_dish_radius, $fn=256);
-    }
-    else
-    {
-        translate([0, DCS_top_skew, DCS_z])
-          rotate([90-DCS_top_tilt, 0, 0])
-            translate([0, DCS_dish_radius*key_size - DCS_dish_depth, 0])
-              cylinder(h=100, r=DCS_dish_radius*key_size, $fn=256, center=true);
-    }
-}
-
-
 // The keybase dimensions are fairly standard between most keycap manufacturers.
 base_width = 18;
 base_corner_radius = 1.8;
@@ -111,47 +111,71 @@ module key_shape (profile_type)
 {
     difference()
     {
-        if (profile_type == 2)
+        hull()
         {
-            hull()
-            {
-                rounded_rect([base_width*key_size, base_width, 2], base_corner_radius);
+            rounded_rect([base_width*key_size,
+                          base_width,
+                          straight_wall_side], base_corner_radius);
 
-                translate([0, DSA_top_skew, DSA_z])
-                  rounded_rect([base_width*key_size - DSA_top_x_diff,
-                               base_width - DSA_top_y_diff,
-                               .001], base_corner_radius);
-            }
-        }
-        else
-        {
-            hull()
-            {
-                rounded_rect([base_width*key_size, base_width, 2], base_corner_radius);
-
-                translate([0, DCS_top_skew, DCS_z])
-                  rotate([-DCS_top_tilt, 0, 0])
-                    rounded_rect([base_width*key_size - DCS_top_x_diff,
-                                 base_width - DCS_top_y_diff,
-                                 .001], base_corner_radius);
-            }
+            translate([0, top_skew, keycap_z])
+              rotate([-top_tilt, 0, 0])
+                rounded_rect([base_width*key_size - top_x_diff,
+                              base_width - top_y_diff,
+                              .001], base_corner_radius);
         }
 
         dish(profile_type);
     }
 }
 
+// Wall thickness in mm.
+wall_thickness_x = 0.8;
+wall_thickness_y = 0.8;
+wall_thickness_z = 1.0;
+wall_scale_x = 1 - 2*(wall_thickness_x / base_width);
+wall_scale_y = 1 - 2*(wall_thickness_y / base_width);
+wall_scale_z = 1 - 2*(wall_thickness_z / keycap_z);
+module inner_key_shape (profile_type)
+{
+    translate([0, 0, -.001])
+      scale([wall_scale_x, wall_scale_y, wall_scale_z])
+        difference ()
+        {
+            key_shape(profile_type);
 
-// Scale of inner to outer key shape
-wall_thickness_x = 0.9;
-wall_thickness_y = 0.9;
-wall_thickness_z = 0.65;
+            translate([0, 0, base_width/2 + dish_bottom])
+              cube([base_width, base_width, base_width], center=true);
+        }
+}
+
+module key_shell (profile_type)
+{
+    difference()
+    {
+        key_shape(profile_type);
+
+        inner_key_shape(profile_type);
+    }
+}
+
+/** Large cube with inner_key_shape cutout.
+ */
+module subtractor_cube (profile_type)
+{
+    difference()
+    {
+        translate([0, 0, base_width/2])
+          cube([base_width+.001, base_width+.001, base_width+.001], center=true);
+
+        inner_key_shape(profile_type);
+    }
+}
 
 // Inner cross of the stem.
 cross_width_x = 1.3;
 cross_width_y = 1.4;
 cross_arm_length = 4.4;
-cross_depth = 3.8; // cross depth, stem height is 3.4mm
+cross_depth = 3.8; // Cross depth, stem height is 3.4mm.
 // Outer stem should be as big and aturdy as possible but still fit in switch.
 cherrymx_stem_x = 2.11;
 cherrymx_stem_y = 1.1;
@@ -171,7 +195,11 @@ module stem_cherrymx (profile_type)
                            0])
                   cube([cross_arm_length + cherrymx_stem_x,
                         cross_arm_length + cherrymx_stem_y,
-                        50]);
+                        base_width]);
+
+                // Support structure to reduce stress on joining corners.
+                translate([0, 0, stem_z])
+                  cylinder(h=keycap_z, r1=(cross_arm_length + cherrymx_stem_y)/2, r2=base_width/2, center=false);
 
                 if (brim == 1) cylinder(r=brim_radius, h=brim_depth);
             }
@@ -186,15 +214,7 @@ module stem_cherrymx (profile_type)
         }
 
         // Large cube with inner_key_shape cutout to subtract over-deep stem.
-        difference()
-        {
-            translate([0, 0, 50])
-              cube([100, 100, 100], center=true);
-
-            translate([0, 0, -0.1])
-              scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(profile_type);
-        }
+        subtractor_cube(profile_type);
     }
 }
 
@@ -213,21 +233,18 @@ module stem_alps (profile_type)
                        0])
               cube([alps_stem_x,
                     alps_stem_y,
-                    50]);
+                    base_width]);
+
+            // Support structure to reduce stress on joining corners.
+            // Only seen when keycap_z is very high.
+            translate([0, 0, stem_z])
+              cylinder(h=(base_width - alps_stem_y)/2, r1=alps_stem_y/2, r2=base_width/2, center=false);
 
             if (brim == 1) cylinder(r=brim_radius, h=brim_depth);
         }
 
         // Large cube with inner_key_shape cutout to subtract over-deep stem.
-        difference()
-        {
-            translate([0, 0, 50])
-              cube([100, 100, 100], center=true);
-
-            translate([0, 0, -0.1])
-              scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(profile_type);
-        }
+        subtractor_cube(profile_type);
     }
 }
 
@@ -237,21 +254,14 @@ module keycap (profile_type)
 {
     union()
     {
-        difference()
-        {
-            key_shape(profile_type);
+        key_shell(profile_type);
 
-            translate([0, 0, -0.1])
-              scale([wall_thickness_x, wall_thickness_y, wall_thickness_z])
-                key_shape(profile_type);
-        }
-
-        if (bump == 1) homingBump();
+        if (bump == 1) homing_bump();
 
         if (stem_type == 1) stem_cherrymx(profile_type);
         else if (stem_type == 2) stem_alps(profile_type);
     }
 }
 
-
 keycap(profile_type);
+
