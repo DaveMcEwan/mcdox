@@ -39,9 +39,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="667.97428"
-     inkscape:cy="506.8902"
+     inkscape:zoom="1.979899"
+     inkscape:cx="361.39358"
+     inkscape:cy="678.88262"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -652,7 +652,7 @@
          sodipodi:role="line"
          id="tspan4362"
          x="104.98085"
-         y="467.54657">15</tspan></text>
+         y="467.54657">16</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -663,7 +663,7 @@
          sodipodi:role="line"
          id="tspan4366"
          x="104.98086"
-         y="414.56689">18</tspan></text>
+         y="414.56689">19</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -674,7 +674,7 @@
          sodipodi:role="line"
          id="tspan4370"
          x="105.4203"
-         y="331.34714">23</tspan></text>
+         y="331.34714">24</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -685,7 +685,7 @@
          sodipodi:role="line"
          id="tspan4378"
          x="105.42031"
-         y="237.40154">28</tspan></text>
+         y="237.40154">29</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -696,7 +696,7 @@
          sodipodi:role="line"
          id="tspan4382"
          x="105.42031"
-         y="201.79852">30</tspan></text>
+         y="201.79852">31</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
