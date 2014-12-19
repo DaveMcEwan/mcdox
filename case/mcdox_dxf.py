@@ -5,6 +5,7 @@ from mcdox_coords import *
 
 from copy import *
 import os
+import shutil
 try:
     os.makedirs('dxf')
 except:
@@ -567,6 +568,14 @@ d_single.save()
 # }}} End of BASE2
 
 d.save()
+
+# 3mm and 5mm config.
+shutil.copyfile('dxf/mcdox_top1_4mm.dxf',  'dxf/mcdox_top1_5mm.dxf')
+shutil.copyfile('dxf/mcdox_top0_4mm.dxf',  'dxf/mcdox_top0_5mm.dxf')
+shutil.copyfile('dxf/mcdox_mnt_2mm.dxf',   'dxf/mcdox_mnt_3mm.dxf')
+shutil.copyfile('dxf/mcdox_base2_4mm.dxf', 'dxf/mcdox_base2_5mm.dxf')
+shutil.copyfile('dxf/mcdox_base2_4mm.dxf', 'dxf/mcdox_base1_3mm.dxf')
+shutil.copyfile('dxf/mcdox_base0_2mm.dxf', 'dxf/mcdox_base0_3mm.dxf')
 
 if 1:
     filename = 'dxf/dim_test.dxf'
