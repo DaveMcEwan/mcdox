@@ -177,10 +177,10 @@ col2
 Text GLabel 6350 3050 3    60   BiDi ~ 0
 col0
 $Comp
-L R R_left
+L R R_left1
 U 1 1 54986164
 P 7550 2200
-F 0 "R_left" V 7630 2200 40  0000 C CNN
+F 0 "R_left1" V 7630 2200 40  0000 C CNN
 F 1 "220R" V 7557 2201 40  0000 C CNN
 F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM15mm" V 7480 2200 30  0001 C CNN
 F 3 "" H 7550 2200 30  0000 C CNN
@@ -188,10 +188,10 @@ F 3 "" H 7550 2200 30  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R_right
+L R R_right1
 U 1 1 549861D9
 P 7550 2500
-F 0 "R_right" V 7630 2500 40  0000 C CNN
+F 0 "R_right1" V 7630 2500 40  0000 C CNN
 F 1 "220R" V 7557 2501 40  0000 C CNN
 F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM15mm" V 7480 2500 30  0001 C CNN
 F 3 "" H 7550 2500 30  0000 C CNN
