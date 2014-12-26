@@ -15,7 +15,7 @@ nipple_w = 3.0
 nipple_h = 3.15
 
 # Tactile bump to protrude from top of cap.
-ridge_w = 0.4
+ridge_w = 0.5
 ridge_h = 0.2
 ridge_pos = 4.0
 assert ridge_w >= 2*ridge_h
@@ -83,22 +83,25 @@ d.blocks.add(stem_bump)
 # Tree
 tree_len = 20
 bump_len = 1
+n_tree = 3
+tree_sep = 0.8
 
-x = total_h + tree_w/2
+for t in range(n_tree):
+    x = t*(total_h*2 + tree_w + tree_sep) + total_h + tree_w/2
 
-for i in range(tree_len):
-    y = i * stem_sep + stem_sep/2
-    # insert2() needs the block definition object as parameter 'blockdef'.
-    # See http://packages.python.org/dxfwrite/entities/insert2.html
-    # Fill attribtes by creating a dict(), key is the 'tag' name of the
-    # attribute.
-    insert = dxf.insert2(blockdef=stem, insert=(x, y))
+    for i in range(tree_len):
+        y = i * stem_sep + stem_sep/2
+        # insert2() needs the block definition object as parameter 'blockdef'.
+        # See http://packages.python.org/dxfwrite/entities/insert2.html
+        # Fill attribtes by creating a dict(), key is the 'tag' name of the
+        # attribute.
+        insert = dxf.insert2(blockdef=stem, insert=(x, y))
 
-    insert_bump = dxf.insert2(blockdef=stem_bump, insert=(x, y))
+        insert_bump = dxf.insert2(blockdef=stem_bump, insert=(x, y))
 
-    d.add(insert_bump) if i < bump_len else d.add(insert)
-d.add( dxf.line((x - tree_w/2, 0.0), (x + tree_w/2, 0.0)) )
-d.add( dxf.line((x - tree_w/2, y + stem_sep/2), (x + tree_w/2, y + stem_sep/2)) )
+        d.add(insert_bump) if i < bump_len else d.add(insert)
+    d.add( dxf.line((x - tree_w/2, 0.0), (x + tree_w/2, 0.0)) )
+    d.add( dxf.line((x - tree_w/2, y + stem_sep/2), (x + tree_w/2, y + stem_sep/2)) )
 
 d.save()
 
