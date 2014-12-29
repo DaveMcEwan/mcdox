@@ -175,10 +175,9 @@ baseH = pt_between_pts(baseC, baseB, r_hand/(r_hand+r_bot))
 
 # PCB mount
 top_edge = baseD[1] - r_top - 2.0 # Lowest point of top arc, minus recess.
-spacer = 7.0 # Diameter of 2mm thick spacer between pcb and mount plate.
+pcb_spacer = 10.0 # Diameter of 2mm thick spacer between pcb and mount plate.
 pcb_width = 50.0
-fix_hole_diameter = 2.9
-pcb_hole_offset = (spacer/2) + fix_hole_diameter
+pcb_hole_offset = (pcb_spacer/2)
 pcb_holes_top = top_edge - pcb_hole_offset
 pcb_holes_left = center[0] - (pcb_width/2) + pcb_hole_offset
 pcb_holes_right = center[0] + (pcb_width/2) - pcb_hole_offset
@@ -191,6 +190,7 @@ pcb_holes = [
 ]
 
 # Fixing holes
+fix_hole_diameter = 2.9
 Lfix_holes = gen_polygon_pts(n_fix, [radius-0.5*spc])
 Lfix_holes = pts_rotate(Lfix_holes, [hand_rotate])
 Lfix_holes = pts_shift(Lfix_holes, [radius, radius])
