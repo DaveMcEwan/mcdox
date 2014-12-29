@@ -40,13 +40,13 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
-LibName31=ctrl_teensy
+LibName31=lollybrd
 [general]
 version=1
 [pcbnew]
 version=1
 PageLayoutDescrFile=
-LastNetListRead=ctrl_teensy.net
+LastNetListRead=lollybrd.net
 UseCmpFile=0
 PadDrill=0.8128
 PadDrillOvalY=0.8128

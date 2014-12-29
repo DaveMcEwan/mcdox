@@ -29,8 +29,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:ctrl_teensy
-LIBS:ctrl_teensy-cache
+LIBS:lollybrd
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
