@@ -279,14 +279,14 @@ base2L_outline = [
   pt_relative(sw_holes[36][:2], [-(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[36][2]]),
   pt_relative(sw_holes[33][:2], [-(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[33][2]]),
   #
-  pt_relative(sw_holes[28][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
+  pt_relative(sw_holes[28][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
   pt_relative(sw_holes[23][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[23][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
   pt_relative(sw_holes[18][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
   pt_relative(sw_holes[18][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
-  pt_relative(sw_holes[13][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[13][:2], [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
   pt_relative(sw_holes[13][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
-  pt_relative(sw_holes[9][:2],  [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
+  pt_relative(sw_holes[9][:2],  [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
   pt_relative(sw_holes[6][:2],  [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[6][2]]),
 ]
 base2R_outline = pts_reflect(base2L_outline, [center[0], None])
