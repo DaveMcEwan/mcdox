@@ -449,6 +449,28 @@ def sw_outline_pts(sw_type='', args={}): # {{{
     return ret
 # }}} End of sw_outline_pts()
 
+def cap_size(n): # {{{
+    '''Return string with capsize for a particular switch number.
+    '''
+    n = n % 38
+    if n in [
+             0,
+             1,
+            ]:
+        return 'cap_20'
+    elif n in [
+               7,
+               8,
+               36,
+               35,
+               34,
+               33,
+              ]:
+        return 'cap_15'
+    else:
+        return 'cap_10'
+# }}} End of cap_size()
+
 if __name__ == '__main__':
     out = []
     out += ['Switch holes:']
