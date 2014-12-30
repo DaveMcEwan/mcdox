@@ -357,6 +357,42 @@ d_single.add(deepcopy(arc_top))
 arc_top['layer'] = 'TOP2'
 d.add(arc_top)
 
+# Cut caps from same sheet as a 2 or 3mm top layer.
+# This is also useful to confirm the profiling gap is enough.
+if 1:
+    sys.path.insert(0, '../keycap')
+    from keycap_alps_dxf_blocks import *
+    d.blocks.add(cap_10)
+    d.blocks.add(cap_15)
+    d.blocks.add(cap_20)
+    d_single.blocks.add(cap_10)
+    d_single.blocks.add(cap_15)
+    d_single.blocks.add(cap_20)
+
+    for number, (x, y, r) in enumerate(sw_holes):
+        attribs = {
+            'NAME': "%d" % number,
+            'X': "x = %.3f" % x,
+            'Y': "y = %.3f" % y,
+            'R': "r = %.3f" % r,
+        }
+
+        if cap_size(number) == 'cap_20': cap = cap_20
+        elif cap_size(number) == 'cap_15': cap = cap_15
+        elif cap_size(number) == 'cap_10': cap = cap_10
+
+        insert = dxf.insert2(blockdef=cap,
+                             insert=(x, y),
+                             attribs=attribs,
+                             xscale=1.0,
+                             yscale=1.0,
+                             rotation=degrees(r))
+
+        d_single.add(deepcopy(insert))
+
+        insert.layer = 'TOP2'
+        d.add(insert)
+
 d_single.save()
 # }}} End of TOP2
 
