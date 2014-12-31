@@ -198,42 +198,43 @@ Rfix_holes = pts_reflect(Lfix_holes, [center[0], None])
 fix_holes = Lfix_holes + Rfix_holes
 
 # Top layers cutouts.
+cap_prof_spc = 0.5
 fingersL_outline = [
-  pt_relative(sw_holes[33][:2], [-0.75*spc, +0.5*spc], [sw_holes[33][2]]),
-  pt_relative(sw_holes[36][:2], [-0.75*spc, -0.5*spc], [sw_holes[36][2]]),
-  pt_relative(sw_holes[37][:2], [-0.5*spc,  +0.5*spc], [sw_holes[37][2]]),
-  pt_relative(sw_holes[37][:2], [-0.5*spc,  -0.5*spc], [sw_holes[37][2]]),
-  pt_relative(sw_holes[32][:2], [+0.5*spc,  -0.5*spc], [sw_holes[32][2]]),
-  pt_relative(sw_holes[27][:2], [-0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  pt_relative(sw_holes[27][:2], [+0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  pt_relative(sw_holes[22][:2], [-0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  pt_relative(sw_holes[22][:2], [+0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  pt_relative(sw_holes[17][:2], [-0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  pt_relative(sw_holes[17][:2], [+0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  pt_relative(sw_holes[12][:2], [-0.5*spc,  -0.5*spc], [sw_holes[12][2]]),
-  pt_relative(sw_holes[12][:2], [+0.5*spc,  -0.5*spc], [sw_holes[12][2]]),
-  pt_relative(sw_holes[8][:2],  [-0.75*spc, -0.5*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[8][:2],  [+0.75*spc, -0.5*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[6][:2],  [+0.5*spc,  +0.5*spc], [sw_holes[6][2]]),
-  pt_relative(sw_holes[9][:2],  [-0.5*spc,  +0.5*spc], [sw_holes[9][2]]),
-  pt_relative(sw_holes[13][:2], [+0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[13][:2], [-0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[18][:2], [+0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[18][:2], [-0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[23][:2], [+0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [-0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[28][:2], [+0.5*spc,  +0.5*spc], [sw_holes[28][2]]),
+  pt_relative(sw_holes[33][:2], [-(0.75*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[33][2]]),
+  pt_relative(sw_holes[36][:2], [-(0.75*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[36][2]]),
+  pt_relative(sw_holes[37][:2], [-(0.5*spc+cap_prof_spc),  +(0.5*spc-cap_prof_spc)], [sw_holes[37][2]]),
+  pt_relative(sw_holes[37][:2], [-(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[37][2]]),
+  pt_relative(sw_holes[32][:2], [+(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[32][2]]),
+  pt_relative(sw_holes[27][:2], [-(0.5*spc-cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[27][2]]),
+  pt_relative(sw_holes[27][:2], [+(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[27][2]]),
+  pt_relative(sw_holes[22][:2], [-(0.5*spc-cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[22][2]]),
+  pt_relative(sw_holes[22][:2], [+(0.5*spc-cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[22][2]]),
+  pt_relative(sw_holes[17][:2], [-(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[17][2]]),
+  pt_relative(sw_holes[17][:2], [+(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[17][2]]),
+  pt_relative(sw_holes[12][:2], [-(0.5*spc-cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[12][2]]),
+  pt_relative(sw_holes[12][:2], [+(0.5*spc+cap_prof_spc),  -(0.5*spc+cap_prof_spc)], [sw_holes[12][2]]),
+  pt_relative(sw_holes[8][:2],  [-(0.75*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[8][2]]),
+  pt_relative(sw_holes[8][:2],  [+(0.75*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[8][2]]),
+  pt_relative(sw_holes[6][:2],  [+(0.5*spc+cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[6][2]]),
+  pt_relative(sw_holes[9][:2],  [-(0.5*spc-cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[9][2]]),
+  pt_relative(sw_holes[13][:2], [+(0.5*spc+cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[13][:2], [-(0.5*spc-cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[18][:2], [+(0.5*spc+cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[18][:2], [-(0.5*spc+cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[23][:2], [+(0.5*spc-cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[23][:2], [-(0.5*spc+cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[28][:2], [+(0.5*spc-cap_prof_spc),  +(0.5*spc+cap_prof_spc)], [sw_holes[28][2]]),
 ]
 fingersL_outline.append(fingersL_outline[0])
 fingersR_outline = pts_reflect(fingersL_outline, [center[0], None])
 
 thumbsL_outline = [
-  pt_relative(sw_holes[0][:2], [-1.0*spc, +0.5*spc], [sw_holes[0][2]]),
-  pt_relative(sw_holes[2][:2], [+0.5*spc, -0.5*spc], [sw_holes[2][2]]),
-  pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[5][:2], [-0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[1][:2], [+1.0*spc, +0.5*spc], [sw_holes[1][2]]),
-  pt_relative(sw_holes[0][:2], [+1.0*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_holes[0][:2], [-(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
+  pt_relative(sw_holes[2][:2], [+(0.5*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[2][2]]),
+  pt_relative(sw_holes[4][:2], [+(0.5*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[4][2]]),
+  pt_relative(sw_holes[5][:2], [-(0.5*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[5][2]]),
+  pt_relative(sw_holes[1][:2], [+(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[1][2]]),
+  pt_relative(sw_holes[0][:2], [+(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
 ]
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
