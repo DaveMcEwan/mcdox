@@ -12,7 +12,7 @@ stem_h = 5.0
 
 # Nipple to insert into cap.
 nipple_w = 3.0
-nipple_h = 3.15
+nipple_h = 3.0
 
 # Tactile bump to protrude from top of cap.
 ridge_w = 0.5
@@ -25,7 +25,7 @@ bump_w = 1.4
 bump_h = 0.7
 
 # Separation between base of each "leaf" in the tree of stems.
-leaf_sep = 0.5 + ridge_h
+leaf_sep = 0.7 + ridge_h
 stem_sep = stem_w + leaf_sep
 
 # Separation between base of leafs, and main branch.
@@ -33,7 +33,7 @@ branch_sep = 0.5
 total_h = branch_sep + stem_h + nipple_h + bump_h
 
 # Width of snap-off tag holding leaf to tree.
-tag_w = 0.4
+tag_w = 0.5
 
 # Thickness of tree to snap stems off.
 tree_w = 3.0
