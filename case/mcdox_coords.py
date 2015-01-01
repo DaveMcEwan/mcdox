@@ -4,7 +4,7 @@ from math import *
 import sys
 from ndim import *
 
-# Spacing between centers of cherrymx switches.
+# Spacing between centers of switches.
 spc = 19.0
 
 # Ergonomic angle of rotation for thumb cluster.
@@ -106,7 +106,7 @@ thumb_sw_holes = [
                   (2*spc, -0.5*spc),
                   (2*spc, +0.5*spc),
                   (2*spc, +1.5*spc),
-                  (1*spc, +1.5*spc),
+                  (1*spc, +1.25*spc),
                  ]
 thumb_sw_holes = pts_rotate(thumb_sw_holes, [thumb_rotate])
 thumb_sw_holes = pts_shift(thumb_sw_holes, thumb_pos)
@@ -229,12 +229,16 @@ fingersL_outline.append(fingersL_outline[0])
 fingersR_outline = pts_reflect(fingersL_outline, [center[0], None])
 
 thumbsL_outline = [
-  pt_relative(sw_holes[0][:2], [-(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
+  pt_relative(sw_holes[0][:2], [-(0.75*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
+  pt_relative(sw_holes[1][:2], [-(0.75*spc+cap_prof_spc), -(0.5*spc-cap_prof_spc)], [sw_holes[1][2]]),
+  pt_relative(sw_holes[2][:2], [-(0.5*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[2][2]]),
   pt_relative(sw_holes[2][:2], [+(0.5*spc+cap_prof_spc), -(0.5*spc+cap_prof_spc)], [sw_holes[2][2]]),
   pt_relative(sw_holes[4][:2], [+(0.5*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[4][2]]),
+  pt_relative(sw_holes[4][:2], [-(0.5*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[4][2]]),
+  pt_relative(sw_holes[5][:2], [+(0.5*spc-cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[5][2]]),
   pt_relative(sw_holes[5][:2], [-(0.5*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[5][2]]),
-  pt_relative(sw_holes[1][:2], [+(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[1][2]]),
-  pt_relative(sw_holes[0][:2], [+(1.0*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
+  pt_relative(sw_holes[1][:2], [+(0.75*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[1][2]]),
+  pt_relative(sw_holes[0][:2], [+(0.75*spc+cap_prof_spc), +(0.5*spc+cap_prof_spc)], [sw_holes[0][2]]),
 ]
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
@@ -458,16 +462,13 @@ def cap_size(n): # {{{
     if n in [
              0,
              1,
+             7,
+             8,
+             36,
+             35,
+             34,
+             33,
             ]:
-        return 'cap_20'
-    elif n in [
-               7,
-               8,
-               36,
-               35,
-               34,
-               33,
-              ]:
         return 'cap_15'
     else:
         return 'cap_10'
