@@ -194,6 +194,7 @@ fix_hole_diameter = 2.9
 Lfix_holes = gen_polygon_pts(n_fix, [radius-0.5*spc])
 Lfix_holes = pts_rotate(Lfix_holes, [hand_rotate])
 Lfix_holes = pts_shift(Lfix_holes, [radius, radius])
+Lfix_holes[0] = pt_shift(Lfix_holes[0], [0.0, -10.0])
 Rfix_holes = pts_reflect(Lfix_holes, [center[0], None])
 fix_holes = Lfix_holes + Rfix_holes
 
@@ -299,8 +300,8 @@ base2_cutout = base2L_outline + [
     base2J,
     (base2_cutout_right, base2_cutout_bot),
 ] + base2R_outline
-base2_cutout.append(pt_shift(tuple(base2_cutout[-1]), [0.0, 25.0]))
-base2_cutout.append(pt_shift(tuple(base2_cutout[0]), [0.0, 25.0]))
+base2_cutout.append(pt_shift(tuple(base2_cutout[-1]), [0.0, 15.0]))
+base2_cutout.append(pt_shift(tuple(base2_cutout[0]), [0.0, 15.0]))
 base2_cutout.append(base2_cutout[0])
 
 base1R_outline = [
@@ -309,7 +310,7 @@ base1R_outline = [
     base2J,
     (base2_cutout_right, base2_cutout_bot),
 ] + base2R_outline
-base1R_outline.append(pt_shift(tuple(base1R_outline[-1]), [0.0, 25.0]))
+base1R_outline.append(pt_shift(tuple(base1R_outline[-1]), [0.0, 15.0]))
 base1L_outline = pts_reflect(base1R_outline, [center[0], None])
 base1L_outline.reverse()
 base1_cutout = base1R_outline + base1L_outline
