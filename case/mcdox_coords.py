@@ -14,7 +14,7 @@ thumb_rotate = radians(-25)
 hand_rotate = radians(-13)
 
 # Separation of hand circles.
-hand_sep = -12.0
+hand_sep = 31.0
 
 # Number of fixing holes per hand.
 n_fix = 6
@@ -121,19 +121,19 @@ bottom_right = thumb_sw_holes[2]
 
 
 Lsw_holes = thumb_sw_holes + finger_sw_holes
+Lsw_rotates = [h[2] + hand_rotate for h in Lsw_holes]
 pcb_sw = Lsw_holes
 c = pt_between_pts(top_left[:2], bottom_right[:2])
-radius = distance_between_pts(top_left[:2], c) + 1.0*spc
+d = distance_between_pts(top_left[:2], bottom_right[:2])
+wrest_r = 93.0
+radius = wrest_r
 diameter = 2 * radius
 center = (diameter + hand_sep/2, radius)
-Lcenter = (radius, radius)
-Rcenter = pt_reflect(Lcenter, [center[0], None])
 
 
 # Center and rotate.
-Lsw_rotates = [h[2] + hand_rotate for h in Lsw_holes]
 Lsw_points = [(h[0], h[1]) for h in Lsw_holes]
-Lsw_points = pts_shift(Lsw_points, [-c[0] + radius, -c[1] + radius - 3.0])
+Lsw_points = pts_shift(Lsw_points, [-c[0] + radius, radius])
 Lsw_points = pts_rotate(Lsw_points, angle=[hand_rotate], center=(radius, radius))
 Lsw_holes = [(Lsw_points[i][0], Lsw_points[i][1], Lsw_rotates[i]) for i in range(len(Lsw_holes))]
 
@@ -175,7 +175,6 @@ leftmost_c = leftmost_pt[1] - leftmost_m*leftmost_pt[0] # c = y - mx
 
 thumbarc_pt = pt_relative(sw_holes[2][:2], [+0.5*spc+border, 0.0], [sw_holes[2][2]])
 
-wrest_r = 93.0
 wrest_center_x = leftmost_pt[0] + cos(hand_rotate)*wrest_r
 wrest_center_y = leftmost_pt[1] + sin(hand_rotate)*wrest_r
 wrest_center_ptL = (wrest_center_x, wrest_center_y)
@@ -612,6 +611,6 @@ if __name__ == '__main__':
     for h in lollybrd_holes:
         out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
     out += ['Outer:']
-    out += ['\theight=%0.2f' % diameter]
-    out += ['\twidth=%0.2f' % (diameter*2 + hand_sep)]
+    out += ['\theight=%0.2f' % top_edge]
+    out += ['\twidth=%0.2f' % (wrest_center_ptR[0] + wrest_r)]
     print('\n'.join(out))
