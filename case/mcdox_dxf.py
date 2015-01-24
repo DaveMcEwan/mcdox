@@ -174,7 +174,7 @@ d_single.save()
 # {{{ TOP2
 
 d.add_layer('TOP2')
-d_single = dxf.drawing('dxf/mcdox_top2_2mm.dxf')
+d_single = dxf.drawing('dxf/mcdox_top2_3mm.dxf')
 d_single.blocks.add(sw_mnt)
 d_single.blocks.add(drill_m3)
 d_single.blocks.add(drill_7mm)
