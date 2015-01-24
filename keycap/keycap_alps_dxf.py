@@ -53,7 +53,7 @@ rows_15 = 2
 cols_15 = 3
 rows_20 = 1
 cols_20 = 2
-cap_sep = 0.8
+cap_sep = 0.6
 
 min_x = 0.0
 min_y = 0.0
