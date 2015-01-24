@@ -14,10 +14,13 @@ thumb_rotate = radians(-25)
 hand_rotate = radians(-13)
 
 # Separation of hand circles.
-hand_sep = 20.0
+hand_sep = -12.0
 
 # Number of fixing holes per hand.
 n_fix = 6
+
+# Outline border width.
+border = 5.0
 
 
 # Ergonomic column offsets for finger cluster.
@@ -141,63 +144,149 @@ sw_holes = Lsw_holes + Rsw_holes
 # sw_holes is now a list of tuples containing the coordinates and rotations of all switches on LHS.
 
 
-# The base is composed of 2 circles with a thinner section in the middle, made
-#   from the arcs of other circles.
-# Centers of circles are:
-# A - left hand
-# B - bottom arc
-# C - right hand
-# D - top arc
-# Start stop points of the arcs are:
-# E - Between A and D
-# F - Between A and B
-# G - Between C and D
-# H - Between C and B
-# The size of the arcs is controlled by 3 parameters:
-# hand_sep - separation between hand plates
-# r_top - radius of top arc
-# r_bot - radius of bottom arc
-r_hand = radius
+# {{{ Outline paths
+toparc_center_ptL = pt_relative(sw_holes[33][:2], [-0.75*spc, +0.5*spc], [sw_holes[33][2]])
+toparc_center_ptR = pt_reflect(toparc_center_ptL, [center[0], None])
+toparc_pathL = {
+    'type':         'arc',
+    'center':       toparc_center_ptL,
+    'radius':       border,
+    'startangle':   90,
+    'endangle':     180 + degrees(hand_rotate)
+}
+toparc_pathR = {
+    'type':         'arc',
+    'center':       toparc_center_ptR,
+    'radius':       border,
+    'startangle':   -degrees(hand_rotate),
+    'endangle':     90
+}
+top_edge = toparc_center_ptL[1] + border
+topedge_upper_ptL = (toparc_center_ptL[0], top_edge)
+topedge_upper_ptR = (toparc_center_ptR[0], top_edge)
+topedge_lower_ptL = pt_relative(toparc_center_ptL, [+border, 0.0], [radians(180) + hand_rotate])
+topedge_lower_ptR = pt_relative(toparc_center_ptR, [+border, 0.0], [-hand_rotate])
 
-# Arcs spanning the gap between hand circles.
-r_top = sqrt(2)*r_hand
-r_bot = r_hand/sqrt(2)
+leftmost_pt = pt_relative(sw_holes[36][:2], [-0.75*spc-border, -0.5*spc-border], [sw_holes[36][2]])
+rightmost_pt = pt_reflect(leftmost_pt, [center[0], None])
+leftmost_a = hand_rotate
+leftmost_m = tan(leftmost_a)
+leftmost_c = leftmost_pt[1] - leftmost_m*leftmost_pt[0] # c = y - mx
 
-sep = hand_sep + 2*r_hand
-baseA = (r_hand, r_hand)
-baseB = (baseA[0] + sep/2, baseA[1] - sqrt((r_hand + r_bot)**2 - (sep/2)**2))
-baseC = (baseA[0] + sep, baseA[1])
-baseD = (baseB[0], baseA[1] + sqrt((r_hand + r_top)**2 - (sep/2)**2))
-baseE = pt_between_pts(baseA, baseD, r_hand/(r_hand+r_top))
-baseF = pt_between_pts(baseA, baseB, r_hand/(r_hand+r_bot))
-baseG = pt_between_pts(baseC, baseD, r_hand/(r_hand+r_top))
-baseH = pt_between_pts(baseC, baseB, r_hand/(r_hand+r_bot))
+thumbarc_pt = pt_relative(sw_holes[2][:2], [+0.5*spc+border, 0.0], [sw_holes[2][2]])
 
-# PCB mount
-top_edge = baseD[1] - r_top - 2.0 # Lowest point of top arc, minus recess.
-pcb_spacer = 10.0 # Diameter of 2mm thick spacer between pcb and mount plate.
-pcb_width = 50.0
-pcb_hole_offset = (pcb_spacer/2)
-pcb_holes_top = top_edge - pcb_hole_offset
-pcb_holes_left = center[0] - (pcb_width/2) + pcb_hole_offset
-pcb_holes_right = center[0] + (pcb_width/2) - pcb_hole_offset
-pcb_holes_bot = top_edge - pcb_width + pcb_hole_offset
-pcb_holes = [
-    (pcb_holes_left, pcb_holes_bot),
-    (pcb_holes_right, pcb_holes_bot),
-    (pcb_holes_left, pcb_holes_top),
-    (pcb_holes_right, pcb_holes_top),
+wrest_r = 93.0
+wrest_center_x = leftmost_pt[0] + cos(hand_rotate)*wrest_r
+wrest_center_y = leftmost_pt[1] + sin(hand_rotate)*wrest_r
+wrest_center_ptL = (wrest_center_x, wrest_center_y)
+wrest_center_ptR = pt_reflect(wrest_center_ptL, [center[0], None])
+wrest_angle_eR = -hand_rotate
+wrest_angle_sL = radians(180) + hand_rotate
+wrest_angle_eL = dir_between_pts(wrest_center_ptL, thumbarc_pt)[0]
+wrest_angle_sR = radians(180) - wrest_angle_eL
+wrest_pathL = {
+    'type':         'arc',
+    'center':       wrest_center_ptL,
+    'radius':       wrest_r,
+    'startangle':   degrees(wrest_angle_sL),
+    'endangle':     degrees(wrest_angle_eL),
+}
+wrest_pathR = {
+    'type':         'arc',
+    'center':       wrest_center_ptR,
+    'radius':       wrest_r,
+    'startangle':   degrees(wrest_angle_sR),
+    'endangle':     degrees(wrest_angle_eR),
+}
+
+botarc_m = tan(wrest_angle_eL)
+botarc_c = wrest_center_ptL[1] - botarc_m*wrest_center_ptL[0] # c = y - mx
+botarc_center_x = center[0]
+botarc_center_y = botarc_m*botarc_center_x + botarc_c
+botarc_center_pt = (botarc_center_x, botarc_center_y)
+botarc_r = distance_between_pts(wrest_center_ptL, botarc_center_pt) - wrest_r
+botarc_path = {
+    'type':         'arc',
+    'center':       botarc_center_pt,
+    'radius':       botarc_r,
+    'startangle':   degrees(wrest_angle_sR) - 180,
+    'endangle':     degrees(wrest_angle_eL) - 180,
+}
+# }}}
+
+# {{{ Hand PCB mount in base layers
+handbrdL_cutout = [
+  pt_relative(sw_holes[4][:2], [+(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[4][2]]),
+  pt_relative(sw_holes[2][:2], [+(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[2][2]]),
+  pt_relative(sw_holes[0][:2], [-(1.0*spc+0.5), +(0.5*spc+0.5)], [sw_holes[0][2]]),
+  #
+  #pt_relative(sw_holes[17][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
+  #pt_relative(sw_holes[17][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
+  #pt_relative(sw_holes[22][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
+  #pt_relative(sw_holes[22][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
+  #pt_relative(sw_holes[27][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
+  #pt_relative(sw_holes[27][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
+  #pt_relative(sw_holes[32][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[32][2]]),
+  pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[37][2]]),
+  #pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[37][2]]),
+  pt_relative(sw_holes[36][:2], [-(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[36][2]]),
+  pt_relative(sw_holes[33][:2], [-(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[33][2]]),
+  #
+  pt_relative(sw_holes[28][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
+  pt_relative(sw_holes[23][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[23][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
+  pt_relative(sw_holes[18][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[18][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
+  pt_relative(sw_holes[13][:2], [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[13][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
+  pt_relative(sw_holes[9][:2],  [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
+  pt_relative(sw_holes[6][:2],  [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[6][2]]),
+]
+handbrdR_cutout = pts_reflect(handbrdL_cutout, [center[0], None])
+handbrdR_cutout.reverse()
+# }}}
+
+# {{{ Controller PCB (lollybrd) mount
+lollybrd_width = 50.0
+lollybrd_height = 50.0
+lollybrd_spacer = 10.0 # Diameter of 2mm thick spacer between pcb and mount plate.
+lollybrd_hole_offset = (lollybrd_spacer/2)
+
+lollybrd_cutout_spc = 2.0
+lollybrd_cutout_width = lollybrd_width + lollybrd_cutout_spc
+lollybrd_cutout_height = lollybrd_height + lollybrd_cutout_spc
+lollybrd_cutout_left = center[0] - (lollybrd_cutout_width/2)
+lollybrd_cutout_right = center[0] + (lollybrd_cutout_width/2)
+#lollybrd_cutout_bot = top_edge - lollybrd_cutout_height
+lollybrd_cutout_bot = handbrdL_cutout[-1][1] # Doesn't go all the way to the bottom.
+lollybrd_cutout_top = top_edge - border
+
+lollybrd_holes_top = lollybrd_cutout_top - lollybrd_hole_offset - (lollybrd_cutout_spc/2)
+lollybrd_holes_left = center[0] - (lollybrd_width/2) + lollybrd_hole_offset
+lollybrd_holes_right = center[0] + (lollybrd_width/2) - lollybrd_hole_offset
+lollybrd_holes_bot = lollybrd_cutout_top - lollybrd_height + lollybrd_hole_offset - (lollybrd_cutout_spc/2)
+lollybrd_holes = [
+    (lollybrd_holes_left, lollybrd_holes_bot),
+    (lollybrd_holes_right, lollybrd_holes_bot),
+    (lollybrd_holes_left, lollybrd_holes_top),
+    (lollybrd_holes_right, lollybrd_holes_top),
 ]
 
-# Fixing holes
-fix_hole_diameter = 2.9
-Lfix_holes = gen_polygon_pts(n_fix, [radius-0.5*spc])
-Lfix_holes = pts_rotate(Lfix_holes, [hand_rotate])
-Lfix_holes = pts_shift(Lfix_holes, [radius, radius])
-Rfix_holes = pts_reflect(Lfix_holes, [center[0], None])
-fix_holes = Lfix_holes + Rfix_holes
+teensy_cutout_width = 18.0 # Just enough to expose the teensy.
+teensy_cutout_height = 30.0
+teensy_cutout_left = center[0] - (teensy_cutout_width/2)
+teensy_cutout_right = center[0] + (teensy_cutout_width/2)
+teensy_cutout_bot = top_edge - teensy_cutout_height - border
+teensy_cutout_top = top_edge
+teensy_cutout = [
+    (teensy_cutout_left,  teensy_cutout_top),
+    (teensy_cutout_left,  teensy_cutout_bot),
+    (teensy_cutout_right, teensy_cutout_bot),
+    (teensy_cutout_right,  teensy_cutout_top),
+]
+# }}}
 
-# Top layers cutouts.
+# {{{ Top layers cutouts.
 fingersL_outline = [
   pt_relative(sw_holes[33][:2], [-0.75*spc, +0.5*spc], [sw_holes[33][2]]),
   pt_relative(sw_holes[36][:2], [-0.75*spc, -0.5*spc], [sw_holes[36][2]]),
@@ -238,79 +327,119 @@ thumbsL_outline = [
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
 
-# Cutouts under the PCB and for wiring.
-base0_cutout_width = 18.0 # Just enough to expose the teensy.
-base0_cutout_height = 30.0
-base0_cutout_left = center[0] - (base0_cutout_width/2)
-base0_cutout_right = center[0] + (base0_cutout_width/2)
-base0_cutout_bot = top_edge - base0_cutout_height
-base0_cutout_top = -(r_top**2 - (base0_cutout_left - baseD[0])**2)**0.5 + baseD[1]
-base0I = (base0_cutout_left,  base0_cutout_top)
-base0J = (base0_cutout_right,  base0_cutout_top)
-base0_cutout = [
-    base0I,
-    (base0_cutout_left,  base0_cutout_bot),
-    (base0_cutout_right, base0_cutout_bot),
-    base0J,
+top_cutout_paths = [
+    {'type': 'polyline', 'pts': fingersL_outline},
+    {'type': 'polyline', 'pts': fingersR_outline},
+    {'type': 'polyline', 'pts': thumbsL_outline},
+    {'type': 'polyline', 'pts': thumbsR_outline},
+]
+# }}}
+
+# {{{ Fixing holes
+fix_hole_diameter = 2.9
+fix_hole_top = top_edge - border - 2.0
+fix_holesL = [
+    pt_relative(sw_holes[4][:2], [+1.0*spc, 0.0], [sw_holes[4][2]]),
+    (sw_holes[6][0], fix_hole_top),
+    (sw_holes[28][0], fix_hole_top),
+    pt_relative(leftmost_pt, [border + 2.0, -border], [hand_rotate]),
+    pt_relative(wrest_center_ptL, [10.0, -wrest_r + border + 2.0], [-hand_rotate]),
+    pt_relative(wrest_center_ptL, [10.0, -wrest_r + border + 2.0], [5*hand_rotate]),
+]
+fix_holesR = pts_reflect(fix_holesL, [center[0], None])
+fix_holesR.reverse()
+fix_holes = fix_holesL + fix_holesR
+# }}}
+
+# {{{ Layer outline paths
+mnt_outline_path = [
+    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
+    toparc_pathL,
+    {'type': 'polyline', 'pts': [topedge_upper_ptL, topedge_upper_ptR]},
+    toparc_pathR,
+    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
+    wrest_pathR,
+    botarc_path,
+    wrest_pathL,
 ]
 
-base2_cutout_width = 52.0 # Expose the PCB.
-base2_cutout_height = 52.0
-base2_cutout_left = center[0] - (base2_cutout_width/2)
-base2_cutout_right = center[0] + (base2_cutout_width/2)
-base2_cutout_bot = top_edge - base2_cutout_height
-base2_cutout_top = top_edge
-base2I = (base2_cutout_left,  base2_cutout_top)
-base2J = (base2_cutout_right,  base2_cutout_top)
-base2L_outline = [
-  pt_relative(sw_holes[4][:2], [+(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[4][2]]),
-  pt_relative(sw_holes[2][:2], [+(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[2][2]]),
-  pt_relative(sw_holes[0][:2], [-(1.0*spc+0.5), +(0.5*spc+0.5)], [sw_holes[0][2]]),
-  #
-  #pt_relative(sw_holes[17][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[17][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[22][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[22][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[27][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[27][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[32][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[32][2]]),
-  pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[37][2]]),
-  #pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[37][2]]),
-  pt_relative(sw_holes[36][:2], [-(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[36][2]]),
-  pt_relative(sw_holes[33][:2], [-(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[33][2]]),
-  #
-  pt_relative(sw_holes[28][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
-  pt_relative(sw_holes[23][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
-  pt_relative(sw_holes[18][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
-  pt_relative(sw_holes[18][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
-  pt_relative(sw_holes[13][:2], [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
-  pt_relative(sw_holes[13][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
-  pt_relative(sw_holes[9][:2],  [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
-  pt_relative(sw_holes[6][:2],  [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[6][2]]),
+base0_outline_path = [
+    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
+    toparc_pathL,
+    {'type': 'polyline', 'pts': [topedge_upper_ptL] + teensy_cutout + [topedge_upper_ptR]},
+    toparc_pathR,
+    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
+    wrest_pathR,
+    botarc_path,
+    wrest_pathL,
 ]
-base2R_outline = pts_reflect(base2L_outline, [center[0], None])
-base2R_outline.reverse()
-base2_cutout = base2L_outline + [
-    (base2_cutout_left,  base2_cutout_bot),
-    base2I,
-    base2J,
-    (base2_cutout_right, base2_cutout_bot),
-] + base2R_outline
-base2_cutout.append(pt_shift(tuple(base2_cutout[-1]), [0.0, 25.0]))
-base2_cutout.append(pt_shift(tuple(base2_cutout[0]), [0.0, 25.0]))
-base2_cutout.append(base2_cutout[0])
 
-base1R_outline = [
-    base0J,
-    (base0_cutout_right, top_edge),
-    base2J,
-    (base2_cutout_right, base2_cutout_bot),
-] + base2R_outline
-base1R_outline.append(pt_shift(tuple(base1R_outline[-1]), [0.0, 25.0]))
-base1L_outline = pts_reflect(base1R_outline, [center[0], None])
-base1L_outline.reverse()
-base1_cutout = base1R_outline + base1L_outline
+
+lollybrd_toparc_r = lollybrd_spacer/2 + lollybrd_cutout_spc/2
+lollybrd_toparc_pathL = {
+    'type':         'arc',
+    'center':       lollybrd_holes[2],
+    'radius':       lollybrd_toparc_r,
+    'startangle':   90,
+    'endangle':     180
+}
+lollybrd_toparc_pathR = {
+    'type':         'arc',
+    'center':       lollybrd_holes[3],
+    'radius':       lollybrd_toparc_r,
+    'startangle':   0,
+    'endangle':     90
+}
+base1_top_cutoutL = [
+    (teensy_cutout_left, top_edge),
+    (teensy_cutout_left, lollybrd_cutout_top),
+    (lollybrd_cutout_left + lollybrd_toparc_r, lollybrd_cutout_top),
+]
+base1_top_cutoutR = pts_reflect(base1_top_cutoutL, [center[0], None])
+base1_top_cutoutR.reverse()
+
+base1_main_cutoutL = [
+    (lollybrd_cutout_left, lollybrd_cutout_top - lollybrd_toparc_r),
+    (lollybrd_cutout_left, lollybrd_cutout_bot),
+] + handbrdL_cutout[::-1]
+base1_main_cutoutR = pts_reflect(base1_main_cutoutL, [center[0], None])
+base1_main_cutoutR.reverse()
+base1_main_cutout = base1_main_cutoutL + base1_main_cutoutR
+
+base1_outline_path = [
+    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
+    toparc_pathL,
+    {'type': 'polyline', 'pts': [topedge_upper_ptL] + base1_top_cutoutL},
+    lollybrd_toparc_pathL,
+    {'type': 'polyline', 'pts': base1_main_cutout},
+    lollybrd_toparc_pathR,
+    {'type': 'polyline', 'pts': base1_top_cutoutR + [topedge_upper_ptR]},
+    toparc_pathR,
+    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
+    wrest_pathR,
+    botarc_path,
+    wrest_pathL,
+]
+
+
+base2_top_cutout = [
+    (lollybrd_cutout_right - lollybrd_toparc_r, lollybrd_cutout_top),
+    (lollybrd_cutout_left + lollybrd_toparc_r, lollybrd_cutout_top),
+]
+base2_main_cutoutL = [
+    (lollybrd_cutout_left, lollybrd_cutout_top - lollybrd_toparc_r),
+    (lollybrd_cutout_left, lollybrd_cutout_bot),
+] + handbrdL_cutout[::-1]
+base2_main_cutoutR = pts_reflect(base2_main_cutoutL, [center[0], None])
+base2_main_cutoutR.reverse()
+base2_main_cutout = base2_main_cutoutL + base2_main_cutoutR
+base2_cutout_path = [
+    {'type': 'polyline', 'pts': base2_top_cutout},
+    lollybrd_toparc_pathL,
+    {'type': 'polyline', 'pts': base2_main_cutout},
+    lollybrd_toparc_pathR,
+]
+# }}}
 
 pcb_cut_bot = pt_relative(pcb_sw[4][:2], [+0.5*spc, +0.5*spc], [pcb_sw[4][2]])
 pcb_cut_top = pt_relative(pcb_sw[6][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[6][2]])
@@ -480,7 +609,7 @@ if __name__ == '__main__':
     for h in fix_holes:
         out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
     out += ['PCB holes:']
-    for h in pcb_holes:
+    for h in lollybrd_holes:
         out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
     out += ['Outer:']
     out += ['\theight=%0.2f' % diameter]
