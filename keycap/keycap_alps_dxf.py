@@ -21,8 +21,8 @@ d.blocks.add(stem_bump)
 # Tree
 tree_len = 20
 bump_len = 1
-n_tree = 3
-tree_sep = 0.8
+n_tree = 2
+tree_sep = 0.5
 
 for t in range(n_tree):
     x = t*(total_h*2 + tree_w + tree_sep) + total_h + tree_w/2

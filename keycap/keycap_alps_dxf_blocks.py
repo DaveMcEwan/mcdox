@@ -4,20 +4,22 @@ from dxfwrite import DXFEngine as dxf
 from ndim import *
 import os
 
+kerf = 0.3
+
 # {{{ Stems
 
 # Main dimension to be inserted into Matias/ALPS switch.
-stem_w = 4.3
-stem_h = 5.0
+stem_w = 4.7
+stem_h = 5.1
 
 # Nipple to insert into cap.
 nipple_w = 3.0
 nipple_h = 3.0
 
 # Tactile bump to protrude from top of cap.
-ridge_w = 0.5
-ridge_h = 0.2
-ridge_pos = 4.0
+ridge_w = 0.6
+ridge_h = 0.3
+ridge_pos = 2.9
 assert ridge_w >= 2*ridge_h
 
 # Tactile bump to protrude from top of cap.
@@ -29,14 +31,14 @@ leaf_sep = 0.7 + ridge_h
 stem_sep = stem_w + leaf_sep
 
 # Separation between base of leafs, and main branch.
-branch_sep = 0.5
+branch_sep = 0.7
 total_h = branch_sep + stem_h + nipple_h + bump_h
 
 # Width of snap-off tag holding leaf to tree.
-tag_w = 0.5
+tag_w = 0.6
 
 # Thickness of tree to snap stems off.
-tree_w = 3.0
+tree_w = 1.8
 
 def stem_leaf_pts(left_side=False, bump=False):
 
@@ -83,8 +85,8 @@ cap_15_x = cap_x*1.5
 cap_20_x = cap_x*2.0
 
 # Receiver hole for stem nipple.
-recv_x = nipple_w - 0.25
-recv_y = 1.75
+recv_x = nipple_w - kerf + 0.15
+recv_y = 2.0 - kerf + 0.15
 recv = [
         (+recv_x/2, +recv_y/2),
         (-recv_x/2, +recv_y/2),
@@ -147,8 +149,8 @@ cap_20.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_B + cap_corne
 
 # Receiver hole for stem.
 # Add just a little room to make them easier to insert.
-card_recv_x = stem_w + 0.2
-card_recv_y = 2.2
+card_recv_x = stem_w + 0.5
+card_recv_y = 2.5
 card_recv = [
         (+card_recv_x/2, +card_recv_y/2),
         (-card_recv_x/2, +card_recv_y/2),
