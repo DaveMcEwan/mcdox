@@ -74,23 +74,51 @@ def svg_path_add(drawing, path={}):
                        absolute=True)
         drawing.add(e)
 
+def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0):
+    for p in path:
+        if 'type' not in p: continue # TODO: maybe warn here?
+
+        t = p['type']
+        if t == 'polyline':
+            pts = p['pts']
+            pts = pts_shift(pts, list(center))
+            pts = pts_rotate(pts, [rotation], center)
+            e = polyline(svg_pts(pts), style=style_cut)
+        elif t == 'arc':
+            a = arcinfo_center_angles(center=pt_rotate(p['center'], [rotation]),
+                                      radius=p['radius'],
+                                      start_a=[radians(p['startangle']) + rotation],
+                                      end_a=[radians(p['endangle']) + rotation])
+            e = svg.path.Path('M%f,%f' % svg_pt(pt_shift(a['start_pt'], list(center))),
+                              style=style_cut)
+            e.push_arc(target=svg_pt(pt_shift(a['end_pt'], list(center))),
+                       r=a['radius']*mm_scale,
+                       rotation=0.0,
+                       large_arc=a['big'][0],
+                       angle_dir='+' if a['diff_a'] < 0.0 else '-',
+                       absolute=True)
+        drawing.add(e)
+
 
 ####d = svg.Drawing(filename='svg/mcdox_all.svg', size=('%dmm'%page_w, '%dmm'%page_h))
 
 # {{{ MNT
-
 ####d.add_layer('MNT')
-d_single = svg.Drawing(filename='svg/mcdox_mnt_3mm.svg', size=('%dmm'%page_w, '%dmm'%page_h))
+d_single = svg.Drawing(filename='svg/mcdox_mnt_3mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
 
 for number, (x, y, r) in enumerate(sw_holes):
-    d_single.add(polyline(svg_sw_pts(swtype='cherrymx', center=(x, y), rotation=r), style=style_cut))
-
+    d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
+                                     center=(x, y),
+                                     rotation=r),
+                                     style=style_cut))
 ####    insert.layer = 'MNT'
 ####    d.add(insert)
 
 for (x, y) in fix_holes + lollybrd_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2, center=svg_pt((x, y)), style=style_cut))
-
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'MNT'
 ####    d.add(insert)
 
@@ -99,216 +127,148 @@ svg_path_add(d_single, mnt_outline_path)
 
 d_single.save()
 # }}} End of MNT
-####
-##### {{{ TOP0
+
+# {{{ TOP0
 ####
 ####d.add_layer('TOP0')
-####d_single = svg.drawing('svg/mcdox_top0_5mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for (x, y) in fix_holes:
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+d_single = svg.Drawing(filename='svg/mcdox_top0_5mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'TOP0'
 ####    d.add(insert)
-####
-####for (x, y) in lollybrd_holes:
-####    insert = svg.insert2(blockdef=drill_7mm,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+
+for (x, y) in lollybrd_holes:
+    d_single.add(circle(r=6.0*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'TOP0'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, top_cutout_paths, {'layer': 'TOP0'})
-####svg_path_add(d_single, top_cutout_paths)
-####
+svg_path_add(d_single, top_cutout_paths)
+
 ####svg_path_add(d, mnt_outline_path, {'layer': 'TOP0'})
-####svg_path_add(d_single, mnt_outline_path)
-####
-####d_single.save()
-##### }}} End of TOP0
-####
-##### {{{ TOP1
-####
+svg_path_add(d_single, mnt_outline_path)
+
+d_single.save()
+# }}} End of TOP0
+
+# {{{ TOP1
 ####d.add_layer('TOP1')
-####d_single = svg.drawing('svg/mcdox_top1_3mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for number, (x, y) in enumerate(fix_holes):
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+d_single = svg.Drawing(filename='svg/mcdox_top1_3mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'TOP1'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, top_cutout_paths, {'layer': 'TOP1'})
-####svg_path_add(d_single, top_cutout_paths)
-####
+svg_path_add(d_single, top_cutout_paths)
+
 ####svg_path_add(d, mnt_outline_path, {'layer': 'TOP1'})
-####svg_path_add(d_single, mnt_outline_path)
-####
-####d_single.save()
-##### }}} End of TOP1
-####
-##### {{{ TOP2
-####
+svg_path_add(d_single, mnt_outline_path)
+
+d_single.save()
+# }}} End of TOP1
+
+# {{{ TOP2
 ####d.add_layer('TOP2')
-####d_single = svg.drawing('svg/mcdox_top2_3mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for number, (x, y) in enumerate(fix_holes):
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+d_single = svg.Drawing(filename='svg/mcdox_top2_3mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'TOP2'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, top_cutout_paths, {'layer': 'TOP2'})
-####svg_path_add(d_single, top_cutout_paths)
-####
+svg_path_add(d_single, top_cutout_paths)
+
 ####svg_path_add(d, mnt_outline_path, {'layer': 'TOP2'})
-####svg_path_add(d_single, mnt_outline_path)
-####
-##### Cut caps from same sheet as a 2 or 3mm top layer.
-##### This is also useful to confirm the profiling gap is enough.
-####if 1:
-####    sys.path.insert(0, '../keycap')
-####    from keycap_alps_svg_blocks import *
-####    d.blocks.add(cap_10)
-####    d.blocks.add(cap_15)
-####    d.blocks.add(cap_20)
-####    d_single.blocks.add(cap_10)
-####    d_single.blocks.add(cap_15)
-####    d_single.blocks.add(cap_20)
-####
-####    for number, (x, y, r) in enumerate(sw_holes):
-####        attribs = {
-####            'NAME': "%d" % number,
-####            'X': "x = %.3f" % x,
-####            'Y': "y = %.3f" % y,
-####            'R': "r = %.3f" % r,
-####        }
-####
-####        if cap_size(number) == 'cap_20': cap = cap_20
-####        elif cap_size(number) == 'cap_15': cap = cap_15
-####        elif cap_size(number) == 'cap_10': cap = cap_10
-####
-####        insert = svg.insert2(blockdef=cap,
-####                             insert=(x, y),
-####                             attribs=attribs,
-####                             xscale=1.0,
-####                             yscale=1.0,
-####                             rotation=degrees(r))
-####
-####        d_single.add(deepcopy(insert))
-####
-####        insert.layer = 'TOP2'
-####        d.add(insert)
-####
-####d_single.save()
-##### }}} End of TOP2
-####
-##### {{{ BASE0
-####
+svg_path_add(d_single, mnt_outline_path)
+
+# Cut caps from same sheet as a 2 or 3mm top layer.
+# This is also useful to confirm the profiling gap is enough.
+if 1:
+    sys.path.insert(0, '../keycap')
+    from keycap_alps_dxf_blocks import *
+
+    for number, (x, y, r) in enumerate(sw_holes):
+        if cap_size(number) == 'cap_20': blk = cap_20_path
+        elif cap_size(number) == 'cap_15': blk = cap_15_path
+        elif cap_size(number) == 'cap_10': blk = cap_10_path
+
+        svg_blk_path_add(d_single, blk, (x, y), r)
+####    insert.layer = 'TOP2'
+####    d.add(insert)
+
+d_single.save()
+# }}} End of TOP2
+
+# {{{ BASE0
 ####d.add_layer('BASE0')
-####d_single = svg.drawing('svg/mcdox_base0_3mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for number, (x, y) in enumerate(fix_holes):
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+d_single = svg.Drawing(filename='svg/mcdox_base0_3mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'BASE0'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, base0_outline_path, {'layer': 'BASE0'})
-####svg_path_add(d_single, base0_outline_path)
-####
-####d_single.save()
-##### }}} End of BASE0
-####
-##### {{{ BASE1
-####
-####d.add_layer('BASE1')
-####d_single = svg.drawing('svg/mcdox_base1_5mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for number, (x, y) in enumerate(fix_holes):
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+svg_path_add(d_single, base0_outline_path)
+
+d_single.save()
+# }}} End of BASE0
+
+# {{{ BASE1
+d_single = svg.Drawing(filename='svg/mcdox_base1_5mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'BASE1'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, base1_outline_path, {'layer': 'BASE1'})
-####svg_path_add(d_single, base1_outline_path)
-####
-####d_single.save()
-##### }}} End of BASE1
-####
-##### {{{ BASE2
-####
-####d.add_layer('BASE2')
-####d_single = svg.drawing('svg/mcdox_base2_5mm.svg')
-####d_single.blocks.add(sw_mnt)
-####d_single.blocks.add(drill_m3)
-####d_single.blocks.add(drill_7mm)
-####
-####for number, (x, y) in enumerate(fix_holes):
-####    insert = svg.insert2(blockdef=drill_m3,
-####                         insert=(x, y),
-####                         xscale=1.0,
-####                         yscale=1.0)
-####
-####    d_single.add(deepcopy(insert))
-####
+svg_path_add(d_single, base1_outline_path)
+
+d_single.save()
+# }}} End of BASE1
+
+# {{{ BASE2
+d_single = svg.Drawing(filename='svg/mcdox_base2_5mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for (x, y) in fix_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
 ####    insert.layer = 'BASE2'
 ####    d.add(insert)
-####
+
 ####svg_path_add(d, base2_cutout_path, {'layer': 'BASE2'})
-####svg_path_add(d_single, base2_cutout_path)
-####
+svg_path_add(d_single, base2_cutout_path)
+
 ####svg_path_add(d, mnt_outline_path, {'layer': 'BASE2'})
-####svg_path_add(d_single, mnt_outline_path)
-####
-####d_single.save()
-##### }}} End of BASE2
-####
+svg_path_add(d_single, mnt_outline_path)
+
+d_single.save()
+# }}} End of BASE2
+
 ####d.save()
 
 if 1:
