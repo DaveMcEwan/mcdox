@@ -108,7 +108,7 @@ d_single = svg.Drawing(filename='svg/mcdox_mnt_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for number, (x, y, r) in enumerate(sw_holes):
-    d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
+    d_single.add(polyline(svg_sw_pts(swtype='alps',
                                      center=(x, y),
                                      rotation=r),
                                      style=style_cut))
