@@ -208,6 +208,14 @@ if 1:
         elif cap_size(number) == 'cap_10': blk = cap_10_path
 
         svg_blk_path_add(d_single, blk, (x, y), r)
+
+        l = labels[number]
+        text = l[0]
+        r = degrees(r) + l[1]
+        x, y = svg_pt((x + l[2], y + l[3]))
+        transform = 'rotate(%f, %f, %f)' % (-r, x, y)
+        style = "-inkscape-font-specification:Courier 10 Pitch;font-family:Courier 10 Pitch;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
+        d_single.add(svg.text.Text(text, x=[x], y=[y], transform=transform, style=style))
 ####    insert.layer = 'TOP2'
 ####    d.add(insert)
 
