@@ -210,10 +210,10 @@ if 1:
         svg_blk_path_add(d_single, blk, (x, y), r)
 
         l = labels[number]
-        r = degrees(r) + l[1]
+        r = degrees(r) + l[0]
         style = "-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
-        for i, text in enumerate(l[0]):
-            this_x, this_y = x + l[2], y + l[3]*i
+        for text, x_sh, y_sh in l[1]:
+            this_x, this_y = x + x_sh, y + y_sh
             this_x, this_y = svg_pt((this_x, this_y))
             transform = 'rotate(%f, %f, %f)' % (-r, this_x, this_y)
             d_single.add(svg.text.Text(text, x=[this_x], y=[this_y], transform=transform, style=style))
