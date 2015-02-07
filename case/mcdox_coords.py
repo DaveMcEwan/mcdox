@@ -14,7 +14,7 @@ thumb_rotate = radians(-25)
 hand_rotate = radians(-13)
 
 # Separation of hand circles.
-hand_sep = 31.0
+hand_sep = 29.0
 
 # Number of fixing holes per hand.
 n_fix = 6
