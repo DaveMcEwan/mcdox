@@ -213,7 +213,7 @@ if 1:
         r = degrees(r) + l[0]
         style = "-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
         for text, x_sh, y_sh in l[1]:
-            this_x, this_y = x + x_sh, y + y_sh
+            this_x, this_y = pt_relative((x, y), [x_sh, y_sh], [radians(r)])
             this_x, this_y = svg_pt((this_x, this_y))
             transform = 'rotate(%f, %f, %f)' % (-r, this_x, this_y)
             d_single.add(svg.text.Text(text, x=[this_x], y=[this_y], transform=transform, style=style))
