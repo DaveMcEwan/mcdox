@@ -4,24 +4,6 @@ from dxfwrite import DXFEngine as dxf
 from ndim import *
 import os
 
-def dxf_blk_path_add(drawing, path={}):
-    for p in path:
-        if 'type' not in p: continue # TODO: maybe warn here?
-
-        t = p['type']
-        if t == 'polyline':
-            e = dxf.polyline(p['pts'])
-        elif t == 'arc':
-            e = dxf.arc()
-
-        atts = p.keys()
-        atts.remove('type')
-        if 'pts' in atts: atts.remove('pts')
-        for a in atts:
-            e[a] = p[a]
-
-        drawing.add(e)
-
 kerf = 0.3
 
 # {{{ Stems
@@ -103,8 +85,8 @@ cap_15_x = cap_x*1.5
 cap_20_x = cap_x*2.0
 
 # Receiver hole for stem nipple.
-recv_x = nipple_w - kerf/2 - 0.05 # Precise cut nipple from stem tree.
-recv_y = 2.0 - kerf/2 + 0.20 # Thickness of acrylic is +/- 10%
+recv_x = nipple_w - kerf + 0.15
+recv_y = 2.0 - kerf + 0.15
 recv = [
         (+recv_x/2, +recv_y/2),
         (-recv_x/2, +recv_y/2),
@@ -121,54 +103,45 @@ this_L = -cap_10_x/2
 this_R = +cap_10_x/2
 this_T = +cap_y/2
 this_B = -cap_y/2
-cap_10_path = [
-    {'type': 'polyline', 'pts': recv},
-    {'type': 'polyline', 'pts': [(this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)]},
-    {'type': 'polyline', 'pts': [(this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)]},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_T - cap_corner_rad), 'startangle': 90, 'endangle': 180},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_T - cap_corner_rad), 'startangle': 0, 'endangle': 90},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_B + cap_corner_rad), 'startangle': 270, 'endangle': 0},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_B + cap_corner_rad), 'startangle': 180, 'endangle': 270},
-]
-dxf_blk_path_add(cap_10, cap_10_path)
+cap_10.add( dxf.polyline(recv) )
+cap_10.add( dxf.line((this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)) )
+cap_10.add( dxf.line((this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)) )
+cap_10.add( dxf.line((this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)) )
+cap_10.add( dxf.line((this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)) )
+cap_10.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_T - cap_corner_rad), 90, 180) )
+cap_10.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_T - cap_corner_rad), 0, 90) )
+cap_10.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_B + cap_corner_rad), 270, 0) )
+cap_10.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_B + cap_corner_rad), 180, 270) )
 
 cap_15 = dxf.block(name='cap_15')
 this_L = -cap_15_x/2
 this_R = +cap_15_x/2
 this_T = +cap_y/2
 this_B = -cap_y/2
-cap_15_path = [
-    {'type': 'polyline', 'pts': recv},
-    {'type': 'polyline', 'pts': [(this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)]},
-    {'type': 'polyline', 'pts': [(this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)]},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_T - cap_corner_rad), 'startangle': 90, 'endangle': 180},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_T - cap_corner_rad), 'startangle': 0, 'endangle': 90},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_B + cap_corner_rad), 'startangle': 270, 'endangle': 0},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_B + cap_corner_rad), 'startangle': 180, 'endangle': 270},
-]
-dxf_blk_path_add(cap_15, cap_15_path)
+cap_15.add( dxf.polyline(recv) )
+cap_15.add( dxf.line((this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)) )
+cap_15.add( dxf.line((this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)) )
+cap_15.add( dxf.line((this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)) )
+cap_15.add( dxf.line((this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)) )
+cap_15.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_T - cap_corner_rad), 90, 180) )
+cap_15.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_T - cap_corner_rad), 0, 90) )
+cap_15.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_B + cap_corner_rad), 270, 0) )
+cap_15.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_B + cap_corner_rad), 180, 270) )
 
 cap_20 = dxf.block(name='cap_20')
 this_L = -cap_20_x/2
 this_R = +cap_20_x/2
 this_T = +cap_y/2
 this_B = -cap_y/2
-cap_20_path = [
-    {'type': 'polyline', 'pts': recv},
-    {'type': 'polyline', 'pts': [(this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)]},
-    {'type': 'polyline', 'pts': [(this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)]},
-    {'type': 'polyline', 'pts': [(this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)]},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_T - cap_corner_rad), 'startangle': 90, 'endangle': 180},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_T - cap_corner_rad), 'startangle': 0, 'endangle': 90},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_R - cap_corner_rad, this_B + cap_corner_rad), 'startangle': 270, 'endangle': 0},
-    {'type': 'arc', 'radius': cap_corner_rad, 'center': (this_L + cap_corner_rad, this_B + cap_corner_rad), 'startangle': 180, 'endangle': 270},
-]
-dxf_blk_path_add(cap_20, cap_20_path)
+cap_20.add( dxf.polyline(recv) )
+cap_20.add( dxf.line((this_L, this_B + cap_corner_rad), (this_L*1.0, this_T - cap_corner_rad)) )
+cap_20.add( dxf.line((this_L + cap_corner_rad, this_T), (this_R*1.0 - cap_corner_rad, this_T)) )
+cap_20.add( dxf.line((this_R, this_B + cap_corner_rad), (this_R*1.0, this_T - cap_corner_rad)) )
+cap_20.add( dxf.line((this_R - cap_corner_rad, this_B), (this_L*1.0 + cap_corner_rad, this_B)) )
+cap_20.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_T - cap_corner_rad), 90, 180) )
+cap_20.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_T - cap_corner_rad), 0, 90) )
+cap_20.add( dxf.arc(cap_corner_rad, (this_R - cap_corner_rad, this_B + cap_corner_rad), 270, 0) )
+cap_20.add( dxf.arc(cap_corner_rad, (this_L + cap_corner_rad, this_B + cap_corner_rad), 180, 270) )
 
 # }}} Caps
 
@@ -176,8 +149,8 @@ dxf_blk_path_add(cap_20, cap_20_path)
 
 # Receiver hole for stem.
 # Add just a little room to make them easier to insert.
-card_recv_x = stem_w + 0.2
-card_recv_y = 2.2
+card_recv_x = stem_w + 0.5
+card_recv_y = 2.5
 card_recv = [
         (+card_recv_x/2, +card_recv_y/2),
         (-card_recv_x/2, +card_recv_y/2),

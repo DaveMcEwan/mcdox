@@ -19,9 +19,9 @@ d.blocks.add(stem)
 d.blocks.add(stem_bump)
 
 # Tree
-tree_len = 11
+tree_len = 20
 bump_len = 1
-n_tree = 1
+n_tree = 5
 tree_sep = 0.7
 
 for t in range(n_tree):
@@ -47,8 +47,8 @@ d.save()
 
 # {{{ Cap coords
 
-rows_10 = 5
-cols_10 = 4
+rows_10 = 10
+cols_10 = 10
 rows_15 = 0
 cols_15 = 0
 rows_20 = 0
