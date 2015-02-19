@@ -85,8 +85,8 @@ cap_15_x = cap_x*1.5
 cap_20_x = cap_x*2.0
 
 # Receiver hole for stem nipple.
-recv_x = nipple_w - kerf + 0.15
-recv_y = 2.0 - kerf + 0.15
+recv_x = nipple_w - kerf + 0.15 # 2.85
+recv_y = 2.0 - kerf + 0.15 # 1.85
 recv = [
         (+recv_x/2, +recv_y/2),
         (-recv_x/2, +recv_y/2),

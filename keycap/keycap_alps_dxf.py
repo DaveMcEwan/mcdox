@@ -128,6 +128,25 @@ d.save()
 
 # }}} Caps
 
+# {{{ Stem holes dimension test
+
+# Thickness may be changed as long as nipple_h is changed accordingly.
+d = dxf.drawing('dxf/alps_dimtest_3mm.dxf')
+
+stemholes = [[dxf.block(name='sh_%d_%d' % (i, j)) for j in range(10)] for i in range(10)]
+for i, h in enumerate([1.80, 1.85, 1.90, 1.95, 2.00, 2.05, 2.10, 2.15]):
+    y = i * 4.0 # mm
+    for j, w in enumerate([2.70, 2.75, 2.80, 2.85, 2.90, 3.00]):
+        x = j * 6.0 # mm
+        s = stemholes[i][j]
+        s.add(dxf.polyline(gen_recv_pts(w, h)))
+        d.blocks.add(s)
+        d.add(dxf.insert2(blockdef=s, insert=(x, y)))
+
+d.save()
+
+# }}} Stem holes dimension test
+
 # {{{ Labelled
 
 labelsL = [
