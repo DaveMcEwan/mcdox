@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name dmcewan)(type KiCad)(uri /home/galu/projects/fp-lib-dmcewan/dmcewan.pretty)(options "")(descr ""))
+)
