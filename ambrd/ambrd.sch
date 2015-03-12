@@ -468,36 +468,36 @@ Wire Wire Line
 Wire Wire Line
 	5300 5600 5450 5600
 $Comp
-L CONN_02X13 P?
+L CONN_01X13 P?
 U 1 1 54DC1BBC
-P 4050 1900
-F 0 "P?" H 4050 2600 50  0000 C CNN
-F 1 "LEFT_HAND" V 4050 1900 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_2x13" H 4050 750 60  0001 C CNN
-F 3 "" H 4050 750 60  0000 C CNN
-	1    4050 1900
+P 3750 1900
+F 0 "P?" H 3750 2600 50  0000 C CNN
+F 1 "LEFT_SW" V 3750 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x13" H 3750 750 60  0001 C CNN
+F 3 "" H 3750 750 60  0000 C CNN
+	1    3750 1900
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_02X13 P?
+L CONN_01X13 P?
 U 1 1 54DC1C76
-P 5050 1900
-F 0 "P?" H 5050 2600 50  0000 C CNN
-F 1 "RIGHT_HAND" V 5050 1900 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_2x13" H 5050 750 60  0001 C CNN
-F 3 "" H 5050 750 60  0000 C CNN
-	1    5050 1900
+P 6150 1900
+F 0 "P?" H 6150 2600 50  0000 C CNN
+F 1 "RIGHT_LED" V 6150 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x13" H 6150 750 60  0001 C CNN
+F 3 "" H 6150 750 60  0000 C CNN
+	1    6150 1900
 	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_02X03 P?
 U 1 1 54DC1D75
-P 2200 3300
-F 0 "P?" H 2200 3500 50  0000 C CNN
-F 1 "PROG" H 2200 3100 50  0000 C CNN
-F 2 "dmcewan:avr_isp6_header" H 2200 2100 60  0001 C CNN
-F 3 "" H 2200 2100 60  0000 C CNN
-	1    2200 3300
+P 2300 2400
+F 0 "P?" H 2300 2600 50  0000 C CNN
+F 1 "PROG" H 2300 2200 50  0000 C CNN
+F 2 "dmcewan:avr_isp6_header" H 2300 1200 60  0001 C CNN
+F 3 "" H 2300 1200 60  0000 C CNN
+	1    2300 2400
 	1    0    0    -1  
 $EndComp
 Text GLabel 1400 6450 0    50   Input ~ 0
@@ -535,48 +535,48 @@ Wire Wire Line
 	1500 7050 1500 6950
 Wire Wire Line
 	1950 7050 1950 6950
-Text GLabel 1850 3200 0    50   Input ~ 0
+Text GLabel 1950 2300 0    50   Input ~ 0
 MISO
-Text GLabel 1850 3300 0    50   Input ~ 0
+Text GLabel 1950 2400 0    50   Input ~ 0
 SCK
-Text GLabel 1850 3400 0    50   Input ~ 0
+Text GLabel 1950 2500 0    50   Input ~ 0
 RST
-Text GLabel 2550 3200 2    50   Input ~ 0
+Text GLabel 2650 2300 2    50   Input ~ 0
 VCC
-Text GLabel 2550 3300 2    50   Input ~ 0
+Text GLabel 2650 2400 2    50   Input ~ 0
 MOSI
-Text GLabel 2550 3400 2    50   Input ~ 0
+Text GLabel 2650 2500 2    50   Input ~ 0
 GND
 Wire Wire Line
-	2550 3400 2450 3400
+	2650 2500 2550 2500
 Wire Wire Line
-	2550 3300 2450 3300
+	2650 2400 2550 2400
 Wire Wire Line
-	2450 3200 2550 3200
+	2550 2300 2650 2300
 Wire Wire Line
-	1950 3200 1850 3200
+	2050 2300 1950 2300
 Wire Wire Line
-	1950 3300 1850 3300
+	2050 2400 1950 2400
 Wire Wire Line
-	1950 3400 1850 3400
-Text GLabel 2250 2750 2    50   Input ~ 0
+	2050 2500 1950 2500
+Text GLabel 2350 1850 2    50   Input ~ 0
 SCK
-Text GLabel 2250 2850 2    50   Input ~ 0
+Text GLabel 2350 1950 2    50   Input ~ 0
 MOSI
-Text GLabel 2250 2950 2    50   Input ~ 0
+Text GLabel 2350 2050 2    50   Input ~ 0
 MISO
-Text GLabel 2150 2750 0    50   Input ~ 0
+Text GLabel 2250 1850 0    50   Input ~ 0
 row1
-Text GLabel 2150 2850 0    50   Input ~ 0
+Text GLabel 2250 1950 0    50   Input ~ 0
 row2
-Text GLabel 2150 2950 0    50   Input ~ 0
+Text GLabel 2250 2050 0    50   Input ~ 0
 row3
 Wire Wire Line
-	2150 2750 2250 2750
+	2250 1850 2350 1850
 Wire Wire Line
-	2150 2850 2250 2850
+	2250 1950 2350 1950
 Wire Wire Line
-	2150 2950 2250 2950
+	2250 2050 2350 2050
 $Comp
 L MAX7313 IC?
 U 1 1 54FE12F6
@@ -708,4 +708,130 @@ Wire Wire Line
 	5300 4600 5400 4600
 Wire Wire Line
 	5300 4700 5400 4700
+$Comp
+L CONN_01X13 P?
+U 1 1 5502000F
+P 5300 1900
+F 0 "P?" H 5300 2600 50  0000 C CNN
+F 1 "LEFT_LED" V 5300 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x13" H 5300 750 60  0001 C CNN
+F 3 "" H 5300 750 60  0000 C CNN
+	1    5300 1900
+	1    0    0    -1  
+$EndComp
+Text GLabel 3550 1800 0    60   Input ~ 0
+col0
+Text GLabel 3550 1700 0    60   Input ~ 0
+col1
+Text GLabel 3550 1600 0    60   Input ~ 0
+col2
+Text GLabel 3550 1500 0    60   Input ~ 0
+col3
+Text GLabel 3550 1400 0    60   Input ~ 0
+col4
+Text GLabel 3550 1300 0    60   Input ~ 0
+col5
+$Comp
+L CONN_01X13 P?
+U 1 1 5502068F
+P 4400 1900
+F 0 "P?" H 4400 2600 50  0000 C CNN
+F 1 "RIGHT_SW" V 4400 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x13" H 4400 750 60  0001 C CNN
+F 3 "" H 4400 750 60  0000 C CNN
+	1    4400 1900
+	1    0    0    -1  
+$EndComp
+Text GLabel 4200 1800 0    60   Input ~ 0
+col0
+Text GLabel 4200 1700 0    60   Input ~ 0
+col1
+Text GLabel 4200 1600 0    60   Input ~ 0
+col2
+Text GLabel 4200 1500 0    60   Input ~ 0
+col3
+Text GLabel 4200 1400 0    60   Input ~ 0
+col4
+Text GLabel 4200 1300 0    60   Input ~ 0
+col5
+Text GLabel 3550 1900 0    60   Input ~ 0
+row0
+Text GLabel 3550 2000 0    60   Input ~ 0
+row1
+Text GLabel 3550 2100 0    60   Input ~ 0
+row2
+Text GLabel 3550 2200 0    60   Input ~ 0
+row3
+Text GLabel 3550 2300 0    60   Input ~ 0
+row4
+Text GLabel 3550 2400 0    60   Input ~ 0
+row5
+Text GLabel 3550 2500 0    60   Input ~ 0
+row6
+Text GLabel 4200 2400 0    60   Input ~ 0
+row8
+Text GLabel 4200 2300 0    60   Input ~ 0
+row9
+Text GLabel 4200 2200 0    60   Input ~ 0
+row10
+Text GLabel 4200 2100 0    60   Input ~ 0
+row11
+Text GLabel 4200 2000 0    60   Input ~ 0
+row12
+Text GLabel 4200 1900 0    60   Input ~ 0
+row13
+Text GLabel 4200 2500 0    60   Input ~ 0
+row7
+Text GLabel 5100 1800 0    60   Input ~ 0
+ledl_col0
+Text GLabel 5100 1700 0    60   Input ~ 0
+ledl_col1
+Text GLabel 5100 1600 0    60   Input ~ 0
+ledl_col2
+Text GLabel 5100 1500 0    60   Input ~ 0
+ledl_col3
+Text GLabel 5100 1400 0    60   Input ~ 0
+ledl_col4
+Text GLabel 5100 1300 0    60   Input ~ 0
+ledl_col5
+Text GLabel 5950 1800 0    60   Input ~ 0
+ledr_col0
+Text GLabel 5950 1700 0    60   Input ~ 0
+ledr_col1
+Text GLabel 5950 1600 0    60   Input ~ 0
+ledr_col2
+Text GLabel 5950 1500 0    60   Input ~ 0
+ledr_col3
+Text GLabel 5950 1400 0    60   Input ~ 0
+ledr_col4
+Text GLabel 5950 1300 0    60   Input ~ 0
+ledr_col5
+Text GLabel 5100 1900 0    60   Input ~ 0
+ledl_row0
+Text GLabel 5100 2000 0    60   Input ~ 0
+ledl_row1
+Text GLabel 5100 2100 0    60   Input ~ 0
+ledl_row2
+Text GLabel 5100 2200 0    60   Input ~ 0
+ledl_row3
+Text GLabel 5100 2300 0    60   Input ~ 0
+ledl_row4
+Text GLabel 5100 2400 0    60   Input ~ 0
+ledl_row5
+Text GLabel 5100 2500 0    60   Input ~ 0
+ledl_row6
+Text GLabel 5950 2500 0    60   Input ~ 0
+ledr_row7
+Text GLabel 5950 2400 0    60   Input ~ 0
+ledr_row8
+Text GLabel 5950 2300 0    60   Input ~ 0
+ledr_row9
+Text GLabel 5950 2200 0    60   Input ~ 0
+ledr_row10
+Text GLabel 5950 2100 0    60   Input ~ 0
+ledr_row11
+Text GLabel 5950 2000 0    60   Input ~ 0
+ledr_row12
+Text GLabel 5950 1900 0    60   Input ~ 0
+ledr_row13
 $EndSCHEMATC
