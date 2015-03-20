@@ -27,7 +27,7 @@ kerf = 0.3
 # {{{ Stems
 
 # Main dimension to be inserted into Matias/ALPS switch.
-stem_w = 4.7
+stem_w = 4.6
 stem_h = 5.1
 
 # Nipple to insert into cap.
@@ -103,8 +103,11 @@ cap_15_x = cap_x*1.5
 cap_20_x = cap_x*2.0
 
 # Receiver hole for stem nipple.
-recv_x = nipple_w - kerf/2 - 0.05 # Precise cut nipple from stem tree.
-recv_y = 2.0 - kerf/2 + 0.20 # Thickness of acrylic is +/- 10%
+#
+# Precise cut nipple from stem tree.
+recv_x = nipple_w - kerf/2 - 0.05 # 2.8
+# Thickness of acrylic is +/- 10%
+recv_y = 2.0 - kerf/2 + 0.30 # 2.15
 
 def gen_recv_pts(x, y):
     ret = [
