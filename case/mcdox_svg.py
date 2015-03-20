@@ -108,7 +108,7 @@ d_single = svg.Drawing(filename='svg/mcdox_mnt_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for number, (x, y, r) in enumerate(sw_holes):
-    d_single.add(polyline(svg_sw_pts(swtype='alps',
+    d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
                                      center=(x, y),
                                      rotation=r),
                                      style=style_cut))
@@ -211,7 +211,7 @@ if 1:
 
         l = labels[number]
         r = degrees(r) + l[0]
-        style = "-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
+        style = "stroke:#0000ff;-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
         for text, x_sh, y_sh in l[1]:
             this_x, this_y = pt_relative((x, y), [x_sh, y_sh], [radians(r)])
             this_x, this_y = svg_pt((this_x, this_y))

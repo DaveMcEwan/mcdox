@@ -19,9 +19,9 @@ d.blocks.add(stem)
 d.blocks.add(stem_bump)
 
 # Tree
-tree_len = 11
+tree_len = 19
 bump_len = 1
-n_tree = 1
+n_tree = 2
 tree_sep = 0.7
 
 for t in range(n_tree):
