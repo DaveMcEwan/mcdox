@@ -99,12 +99,9 @@ def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0):
                        absolute=True)
         drawing.add(e)
 
-
-####d = svg.Drawing(filename='svg/mcdox_all.svg', size=('%dmm'%page_w, '%dmm'%page_h))
-
-# {{{ MNT
+# {{{ MNT cherrymx
 ####d.add_layer('MNT')
-d_single = svg.Drawing(filename='svg/mcdox_mnt_3mm.svg',
+d_single = svg.Drawing(filename='svg/mcdox_mnt_cherrymx_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for number, (x, y, r) in enumerate(sw_holes):
@@ -126,7 +123,33 @@ for (x, y) in fix_holes + lollybrd_holes:
 svg_path_add(d_single, mnt_outline_path)
 
 d_single.save()
-# }}} End of MNT
+# }}} End of MNT cherrymx
+
+# {{{ MNT alps
+####d.add_layer('MNT')
+d_single = svg.Drawing(filename='svg/mcdox_mnt_alps_3mm.svg',
+                       size=('%dmm'%page_w, '%dmm'%page_h))
+
+for number, (x, y, r) in enumerate(sw_holes):
+    d_single.add(polyline(svg_sw_pts(swtype='alps',
+                                     center=(x, y),
+                                     rotation=r),
+                                     style=style_cut))
+####    insert.layer = 'MNT'
+####    d.add(insert)
+
+for (x, y) in fix_holes + lollybrd_holes:
+    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+                        center=svg_pt((x, y)),
+                        style=style_cut))
+####    insert.layer = 'MNT'
+####    d.add(insert)
+
+####svg_path_add(d, mnt_outline_path, {'layer': 'MNT'})
+svg_path_add(d_single, mnt_outline_path)
+
+d_single.save()
+# }}} End of MNT alps
 
 # {{{ TOP0
 ####
