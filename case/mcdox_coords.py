@@ -543,12 +543,12 @@ def sw_outline_pts(sw_type='', args={}): # {{{
         width = 13.7 if 'width' not in args else args['width']
         notch_depth = 1.0 if 'notch_depth' not in args else args['notch_depth']
         notch_height = 3.7 if 'notch_height' not in args else args['notch_height']
-    
+
         inner_x = width/2
         outer_x = inner_x + notch_depth
         outer_y = inner_x
         inner_y =  width/2 - notch_height
-    
+
         # Points relative to centre listed in CW direction.
         ret = [
             (-inner_x, +inner_y),
