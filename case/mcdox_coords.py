@@ -100,7 +100,7 @@ finger_sw_holes = [(p[0], p[1], p[2]*pi/2) for p in finger_sw_holes]
 
 
 # Lower left of thumb cluster is taken as the origin.
-thumb_pos = [c5_X +0.5*spc + 1.5, -0.5*spc - 3]
+thumb_pos = [c5_X +0.5*spc + 1.5, -0.5*spc - 1]
 
 # Centers of switch holes in thumb cluster.
 thumb_sw_holes = [
@@ -109,7 +109,7 @@ thumb_sw_holes = [
                   (2*spc, -0.5*spc),
                   (2*spc, +0.5*spc),
                   (2*spc, +1.5*spc),
-                  (1*spc, +1.5*spc),
+                  (1*spc, +1.25*spc),
                  ]
 thumb_sw_holes = pts_rotate(thumb_sw_holes, [thumb_rotate])
 thumb_sw_holes = pts_shift(thumb_sw_holes, thumb_pos)
@@ -316,12 +316,16 @@ fingersL_outline.append(fingersL_outline[0])
 fingersR_outline = pts_reflect(fingersL_outline, [center[0], None])
 
 thumbsL_outline = [
-  pt_relative(sw_holes[0][:2], [-1.0*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_holes[0][:2], [-0.75*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_holes[1][:2], [-0.75*spc, -0.5*spc], [sw_holes[1][2]]),
+  pt_relative(sw_holes[2][:2], [-0.5*spc, -0.5*spc], [sw_holes[2][2]]),
   pt_relative(sw_holes[2][:2], [+0.5*spc, -0.5*spc], [sw_holes[2][2]]),
   pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
+  pt_relative(sw_holes[4][:2], [-0.5*spc, +0.5*spc], [sw_holes[4][2]]),
+  pt_relative(sw_holes[5][:2], [+0.5*spc, +0.5*spc], [sw_holes[5][2]]),
   pt_relative(sw_holes[5][:2], [-0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[1][:2], [+1.0*spc, +0.5*spc], [sw_holes[1][2]]),
-  pt_relative(sw_holes[0][:2], [+1.0*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_holes[1][:2], [+0.75*spc, +0.5*spc], [sw_holes[1][2]]),
+  pt_relative(sw_holes[0][:2], [+0.75*spc, +0.5*spc], [sw_holes[0][2]]),
 ]
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
@@ -582,11 +586,8 @@ def cap_size(n): # {{{
     '''
     n = n % 38
     if n in [
-             0,
-             1,
-            ]:
-        return 'cap_20'
-    elif n in [
+               0,
+               1,
                7,
                8,
                36,
@@ -601,8 +602,8 @@ def cap_size(n): # {{{
 
 # {{{ Labels
 labelsL_dvorak = [
- (-90, [('Shift',   -7.0, +12.0)                                                    ]),
- (-90, [('Ctrl',    -7.0, +12.0)                                                    ]),
+ (-90, [('Shift',   -7.0, +8.0)                                                     ]),
+ (-90, [('Ctrl',    -7.0, +8.0)                                                     ]),
  (0,   [('Flip',    -7.0, +4.0)                                                     ]),
  (0,   [('Del',     -7.0, +4.0),                            ('Ins',    +1.0, -8.0)  ]),
  (0,   [('Alt',     -7.0, +4.0)                                                     ]),
@@ -638,12 +639,12 @@ labelsL_dvorak = [
  (0,   [('Tab',     -11.0,+4.0)                                                     ]),
  (0,   [('Fn',      -11.0,+4.0)                                                     ]),
  (0,   [('Bkspc',   -11.0,+4.0)                                                     ]),
- (0,   [('PgUp',    -7.0, +4.0),                            ('Teensy', -5.0, -8.0)  ]),
+ (0,   [('PgUp',    -7.0, +4.0)                                                     ]),
 ]
 
 labelsR_dvorak = [
- (90,  [('Space',   -7.0, +12.0)                                                    ]),
- (90,  [('Enter',   -7.0, +12.0)                                                    ]),
+ (90,  [('Space',   -7.0, +8.0)                                                     ]),
+ (90,  [('Enter',   -7.0, +8.0)                                                     ]),
  (0,   [('Flip',    -7.0, +4.0)                                                     ]),
  (0,   [('Shift',   -7.0, +4.0),                                                    ]),
  (0,   [('Mute',    -7.0, +4.0)                                                     ]),
