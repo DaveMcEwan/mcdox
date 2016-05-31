@@ -271,8 +271,8 @@ lollybrd_holes = [
     (lollybrd_holes_right, lollybrd_holes_top),
 ]
 
-teensy_cutout_width = 18.0 # Just enough to expose the teensy.
-teensy_cutout_height = 30.0
+teensy_cutout_width = 24.0 # Just enough to expose the teensy.
+teensy_cutout_height = 50.0
 teensy_cutout_left = center[0] - (teensy_cutout_width/2)
 teensy_cutout_right = center[0] + (teensy_cutout_width/2)
 teensy_cutout_bot = top_edge - teensy_cutout_height - border
