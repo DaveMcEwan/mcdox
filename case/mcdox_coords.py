@@ -4,7 +4,7 @@ from math import *
 import sys
 from ndim import *
 
-# Spacing between centers of cherrymx switches.
+# Spacing between centers of switches.
 spc = 19.0
 
 # Ergonomic angle of rotation for thumb cluster.
