@@ -305,27 +305,27 @@ d_single.save()
 
 if 1:
     t = svg.Drawing(filename='svg/dim_test.svg', size=('%dmm'%page_w, '%dmm'%page_h))
-    
+
     for i in range(10):
         args = {'width': 13.2 + i*0.1}
         t.add(polyline(svg_sw_pts(swtype='cherrymx',
                                   center=(10.0, 10.0+i*18),
                                   args=args), style=style_cut))
-    
+
     for i in range(10):
         args = {'width': 14.5 + i*0.1, 'height': 11.8 + i*0.1,}
         t.add(polyline(svg_sw_pts(swtype='alps',
                                   center=(30.0, 10.0+i*18),
                                   args=args), style=style_cut))
-    
+
     for i in range(10):
         t.add(circle(r=(5.5 + i*0.3)*mm_scale/2,
                      center=svg_pt((45.0, 10.0+i*18)),
                      style=style_cut))
-    
+
     for i in range(10):
         t.add(circle(r=(2.7 + i*0.1)*mm_scale/2,
                      center=svg_pt((55.0, 10.0+i*18)),
                      style=style_cut))
-    
+
     t.save()
