@@ -122,6 +122,9 @@ for (x, y) in fix_holes + lollybrd_holes:
 ####svg_path_add(d, mnt_outline_path, {'layer': 'MNT'})
 svg_path_add(d_single, mnt_outline_path)
 
+####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
+svg_path_add(d_single, ctrlmnt_path)
+
 d_single.save()
 # }}} End of MNT cherrymx
 
@@ -147,6 +150,9 @@ for (x, y) in fix_holes + lollybrd_holes:
 
 ####svg_path_add(d, mnt_outline_path, {'layer': 'MNT'})
 svg_path_add(d_single, mnt_outline_path)
+
+####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
+svg_path_add(d_single, ctrlmnt_path)
 
 d_single.save()
 # }}} End of MNT alps
