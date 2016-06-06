@@ -418,12 +418,12 @@ top_cutout_paths = [
 fix_hole_diameter = 3.3
 fix_hole_top = top_edge - border - 2.0
 fix_holesL = [
-    pt_relative(sw_holes[4][:2], [+1.0*spc, 0.0], [sw_holes[4][2]]),
+    pt_relative(sw_holes[4][:2], [+1.0*spc, -7.0], [sw_holes[4][2]]),
     (sw_holes[6][0], fix_hole_top),
     (sw_holes[28][0], fix_hole_top),
     pt_relative(leftmost_pt, [border + 2.0, -border], [hand_rotate]),
-    pt_relative(wrest_center_ptL, [10.0, -wrest_r + border + 2.0], [-hand_rotate]),
-    pt_relative(wrest_center_ptL, [10.0, -wrest_r + border + 2.0], [5*hand_rotate]),
+    pt_relative(wrest_center_ptL, [5.0, -wrest_r + border + 1.0], [-hand_rotate]),
+    pt_relative(wrest_center_ptL, [9.0, -wrest_r + border + 2.0], [5*hand_rotate]),
 ]
 fix_holesR = pts_reflect(fix_holesL, [center[0], None])
 fix_holesR.reverse()
