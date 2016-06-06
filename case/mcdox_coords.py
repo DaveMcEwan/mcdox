@@ -428,6 +428,31 @@ fix_holesL = [
 fix_holesR = pts_reflect(fix_holesL, [center[0], None])
 fix_holesR.reverse()
 fix_holes = fix_holesL + fix_holesR
+
+misc_holesL = [
+    (center[0] -25.0, ctrlmnt_bot -10.0),
+    (center[0]  -5.0, ctrlmnt_bot -20.0),
+    (center[0] -15.0, ctrlmnt_bot -20.0),
+    (center[0] -25.0, ctrlmnt_bot -20.0),
+    (center[0] -35.0, ctrlmnt_bot -20.0),
+    (center[0]  -5.0, ctrlmnt_bot -30.0),
+    (center[0] -15.0, ctrlmnt_bot -30.0),
+    (center[0] -25.0, ctrlmnt_bot -30.0),
+    (center[0] -35.0, ctrlmnt_bot -30.0),
+    (center[0]  -5.0, ctrlmnt_bot -40.0),
+    (center[0] -15.0, ctrlmnt_bot -40.0),
+    (center[0] -25.0, ctrlmnt_bot -40.0),
+    (center[0] -35.0, ctrlmnt_bot -40.0),
+    (center[0]  -5.0, ctrlmnt_bot -50.0),
+    (center[0] -15.0, ctrlmnt_bot -50.0),
+    (center[0] -25.0, ctrlmnt_bot -50.0),
+    (center[0] -35.0, ctrlmnt_bot -50.0),
+    (center[0]  -5.0, ctrlmnt_bot -60.0),
+    (center[0] -15.0, ctrlmnt_bot -60.0),
+]
+misc_holesR = pts_reflect(misc_holesL, [center[0], None])
+misc_holesR.reverse()
+misc_holes = misc_holesL + misc_holesR
 # }}}
 
 # {{{ Layer outline paths
