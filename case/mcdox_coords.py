@@ -308,7 +308,7 @@ ctrlmnt_arcBL = {
     'type':         'arc',
     'center':       (lollybrd_holes_left, lollybrd_holes_bot),
     'radius':       ctrlmnt_arc_r,
-    'startangle':   0,
+    'startangle':   -90,
     'endangle':     90
 }
 ctrlmnt_arcBR = {
@@ -316,15 +316,21 @@ ctrlmnt_arcBR = {
     'center':       (lollybrd_holes_right, lollybrd_holes_bot),
     'radius':       ctrlmnt_arc_r,
     'startangle':   90,
-    'endangle':     180
+    'endangle':     270
 }
-ctrlmnt_arcB = {
-    'type':         'arc',
-    'center':       (center[0], ctrlmnt_bot-lollybrd_cutout_spc),
-    'radius':       lollybrd_holes_right-ctrlmnt_arc_r - center[0],
-    'startangle':   180,
-    'endangle':     0
-}
+
+midmnt_cutoutL = [
+  (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
+  pt_relative(sw_holes[7][:2], [+0.5*spc, -0.5*spc], [sw_holes[7][2]]),
+  pt_relative(sw_holes[8][:2], [+0.5*spc, -0.5*spc], [sw_holes[8][2]]),
+  pt_relative(sw_holes[5][:2], [-0.5*spc, +0.5*spc], [sw_holes[5][2]]),
+  pt_relative(sw_holes[5][:2], [+0.5*spc, +0.5*spc], [sw_holes[5][2]]),
+  pt_relative(sw_holes[4][:2], [-0.5*spc, +0.5*spc], [sw_holes[4][2]]),
+  pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
+]
+midmnt_cutoutR = pts_reflect(midmnt_cutoutL, [center[0], None])
+midmnt_cutoutR.reverse()
+midmnt_cutout = midmnt_cutoutL + midmnt_cutoutR
 
 ctrlmnt_path = [
     {'type': 'polyline', 'pts': [
@@ -349,13 +355,13 @@ ctrlmnt_path = [
                                 ]},
     ctrlmnt_arcBR,
     {'type': 'polyline', 'pts': [
-                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_bot+ctrlmnt_arc_r),
-                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
+                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
+                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_bot-ctrlmnt_arc_r),
                                 ]},
-    ctrlmnt_arcB,
+    {'type': 'polyline', 'pts': midmnt_cutout},
     {'type': 'polyline', 'pts': [
-                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
-                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_bot-ctrlmnt_arc_r),
+                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
                                 ]},
     ctrlmnt_arcBL,
 ]
