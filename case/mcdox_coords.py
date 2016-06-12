@@ -16,9 +16,6 @@ hand_rotate = radians(-13)
 # Separation of hand circles.
 hand_sep = 29.0
 
-# Number of fixing holes per hand.
-n_fix = 6
-
 # Outline border width.
 border = 5.0
 
