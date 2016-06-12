@@ -113,7 +113,7 @@ for number, (x, y, r) in enumerate(sw_holes):
 ####    d.add(insert)
 
 for (x, y) in fix_holes + lollybrd_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'MNT'
@@ -142,7 +142,7 @@ for number, (x, y, r) in enumerate(sw_holes):
 ####    d.add(insert)
 
 for (x, y) in fix_holes + lollybrd_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'MNT'
@@ -164,7 +164,7 @@ d_single = svg.Drawing(filename='svg/mcdox_top0_5mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'TOP0'
@@ -192,7 +192,7 @@ d_single = svg.Drawing(filename='svg/mcdox_top1_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'TOP1'
@@ -213,7 +213,7 @@ d_single = svg.Drawing(filename='svg/mcdox_top2_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'TOP2'
@@ -258,7 +258,7 @@ d_single = svg.Drawing(filename='svg/mcdox_base0_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'BASE0'
@@ -275,7 +275,7 @@ d_single = svg.Drawing(filename='svg/mcdox_base1_5mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'BASE1'
@@ -292,7 +292,7 @@ d_single = svg.Drawing(filename='svg/mcdox_base2_5mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
 for (x, y) in fix_holes:
-    d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
+    d_single.add(circle(r=M3_r*mm_scale,
                         center=svg_pt((x, y)),
                         style=style_cut))
 ####    insert.layer = 'BASE2'

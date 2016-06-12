@@ -421,7 +421,8 @@ top_cutout_paths = [
 # }}}
 
 # {{{ Fixing holes
-fix_hole_diameter = 3.3
+M3_d = 3.3
+M3_r = M3_d/2
 fix_hole_top = top_edge - border - 2.0
 fix_holesL = [
     #pt_relative(sw_holes[4][:2], [+1.0*spc, -7.0], [sw_holes[4][2]]),
