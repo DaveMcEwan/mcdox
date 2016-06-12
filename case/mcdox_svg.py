@@ -309,7 +309,7 @@ d_single.save()
 
 ####d.save()
 
-if 1:
+if 0:
     t = svg.Drawing(filename='svg/dim_test.svg', size=('%dmm'%page_w, '%dmm'%page_h))
 
     for i in range(10):
