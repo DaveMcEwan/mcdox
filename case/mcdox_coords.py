@@ -321,12 +321,12 @@ ctrlmnt_arcBR = {
 
 midmnt_cutoutL = [
   (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
-  pt_relative(sw_holes[7][:2], [+0.5*spc, -0.5*spc], [sw_holes[7][2]]),
-  pt_relative(sw_holes[8][:2], [+0.5*spc, -0.5*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[5][:2], [-0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[5][:2], [+0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[4][:2], [-0.5*spc, +0.5*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
+  pt_relative(sw_holes[7][:2], [+0.55*spc, -0.55*spc], [sw_holes[7][2]]),
+  pt_relative(sw_holes[8][:2], [+0.55*spc, -0.55*spc], [sw_holes[8][2]]),
+  pt_relative(sw_holes[5][:2], [-0.55*spc, +0.55*spc], [sw_holes[5][2]]),
+  pt_relative(sw_holes[5][:2], [+0.45*spc, +0.55*spc], [sw_holes[5][2]]),
+  pt_relative(sw_holes[4][:2], [-0.55*spc, +0.55*spc], [sw_holes[4][2]]),
+  pt_relative(sw_holes[4][:2], [+0.55*spc, +0.55*spc], [sw_holes[4][2]]),
 ]
 midmnt_cutoutR = pts_reflect(midmnt_cutoutL, [center[0], None])
 midmnt_cutoutR.reverse()
