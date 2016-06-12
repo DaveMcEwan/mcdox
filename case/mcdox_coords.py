@@ -288,32 +288,32 @@ ctrlmnt_top = lollybrd_cutout_top - lollybrd_cutout_spc
 ctrlmnt_left = center[0] - (lollybrd_width/2)
 ctrlmnt_right = center[0] + (lollybrd_width/2)
 ctrlmnt_bot = ctrlmnt_top - lollybrd_height
-ctrlmnt_arc_r = lollybrd_spacer * 2**0.5
+ctrlmnt_arc_r = lollybrd_spacer/2
 
 ctrlmnt_arcTL = {
     'type':         'arc',
-    'center':       (ctrlmnt_left, ctrlmnt_top),
+    'center':       (lollybrd_holes_left, lollybrd_holes_top),
     'radius':       ctrlmnt_arc_r,
     'startangle':   -90,
     'endangle':     0
 }
 ctrlmnt_arcTR = {
     'type':         'arc',
-    'center':       (ctrlmnt_right, ctrlmnt_top),
+    'center':       (lollybrd_holes_right, lollybrd_holes_top),
     'radius':       ctrlmnt_arc_r,
     'startangle':   180,
     'endangle':     -90
 }
 ctrlmnt_arcBL = {
     'type':         'arc',
-    'center':       (ctrlmnt_left, ctrlmnt_bot),
+    'center':       (lollybrd_holes_left, lollybrd_holes_bot),
     'radius':       ctrlmnt_arc_r,
     'startangle':   0,
     'endangle':     90
 }
 ctrlmnt_arcBR = {
     'type':         'arc',
-    'center':       (ctrlmnt_right, ctrlmnt_bot),
+    'center':       (lollybrd_holes_right, lollybrd_holes_bot),
     'radius':       ctrlmnt_arc_r,
     'startangle':   90,
     'endangle':     180
@@ -321,41 +321,41 @@ ctrlmnt_arcBR = {
 ctrlmnt_arcB = {
     'type':         'arc',
     'center':       (center[0], ctrlmnt_bot-lollybrd_cutout_spc),
-    'radius':       ctrlmnt_right-ctrlmnt_arc_r - center[0],
+    'radius':       lollybrd_holes_right-ctrlmnt_arc_r - center[0],
     'startangle':   180,
     'endangle':     0
 }
 
 ctrlmnt_path = [
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_left,ctrlmnt_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_left-lollybrd_cutout_spc,ctrlmnt_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_left-lollybrd_cutout_spc,ctrlmnt_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_left,ctrlmnt_top-ctrlmnt_arc_r),
+                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_top-ctrlmnt_arc_r),
+                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_top-ctrlmnt_arc_r),
                                 ]},
     ctrlmnt_arcTL,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_left+ctrlmnt_arc_r,ctrlmnt_top),
-                                 (ctrlmnt_left+ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
-                                 (ctrlmnt_right-ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
-                                 (ctrlmnt_right-ctrlmnt_arc_r,ctrlmnt_top),
+                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_top-ctrlmnt_arc_r),
+                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
+                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
+                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_top-ctrlmnt_arc_r),
                                 ]},
     ctrlmnt_arcTR,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_right,ctrlmnt_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_right+lollybrd_cutout_spc,ctrlmnt_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_right+lollybrd_cutout_spc,ctrlmnt_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_right,ctrlmnt_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_top-ctrlmnt_arc_r),
+                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_top-ctrlmnt_arc_r),
+                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_bot+ctrlmnt_arc_r),
                                 ]},
     ctrlmnt_arcBR,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_right-ctrlmnt_arc_r,ctrlmnt_bot),
-                                 (ctrlmnt_right-ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
+                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_bot+ctrlmnt_arc_r),
+                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
                                 ]},
     ctrlmnt_arcB,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_left+ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
-                                 (ctrlmnt_left+ctrlmnt_arc_r,ctrlmnt_bot),
+                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_bot-lollybrd_cutout_spc),
+                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_bot+ctrlmnt_arc_r),
                                 ]},
     ctrlmnt_arcBL,
 ]
