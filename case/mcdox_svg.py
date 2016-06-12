@@ -112,7 +112,7 @@ for number, (x, y, r) in enumerate(sw_holes):
 ####    insert.layer = 'MNT'
 ####    d.add(insert)
 
-for (x, y) in fix_holes + lollybrd_holes + misc_holes:
+for (x, y) in fix_holes + lollybrd_holes:
     d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
                         center=svg_pt((x, y)),
                         style=style_cut))
@@ -141,7 +141,7 @@ for number, (x, y, r) in enumerate(sw_holes):
 ####    insert.layer = 'MNT'
 ####    d.add(insert)
 
-for (x, y) in fix_holes + lollybrd_holes + misc_holes:
+for (x, y) in fix_holes + lollybrd_holes:
     d_single.add(circle(r=fix_hole_diameter*mm_scale/2,
                         center=svg_pt((x, y)),
                         style=style_cut))
@@ -170,7 +170,7 @@ for (x, y) in fix_holes:
 ####    insert.layer = 'TOP0'
 ####    d.add(insert)
 
-for (x, y) in lollybrd_holes + misc_holes:
+for (x, y) in lollybrd_holes:
     d_single.add(circle(r=6.0*mm_scale/2,
                         center=svg_pt((x, y)),
                         style=style_cut))
