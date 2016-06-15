@@ -4,14 +4,36 @@ from math import *
 import sys
 from ndim import *
 
-# Spacing between centers of switches.
-spc = 19.0
+# TODO: refactoring
+# Regular naming scheme:
+#   angle       - _a
+#   radius      - _r
+#   width       - _w
+#   height      - _h
+#   depth       - _d
+#   gradient    - _m
+#   offset      - _c
+#   cutout      - _co
+#   hole        - _hl
+#   point       - _pt
+#   extended point - _ept Point with angle and possibly other info attached.
+#   left        - _L
+#   right       - _R
+#   bottom      - _B
+#   top         - _T
+# Consistent naming scheme:
+#   wrest - Wrist rest.
+#   base0, base1, base2, mnt, top0, top1, top2 - layer names.
+# M3 module
 
-# Ergonomic angle of rotation for thumb cluster.
-thumb_rotate = radians(-25)
+# Unit width of one switch, standardised at 19mm.
+u = 19.0
 
 # Ergonomic angle of rotation for whole hand.
-hand_rotate = radians(-13)
+hand_a = radians(-13)
+
+# Ergonomic angle of rotation for thumb cluster, in addition to hand_a.
+thumb_a = radians(-25)
 
 # Separation of hand circles.
 hand_sep = 29.0
@@ -19,6 +41,14 @@ hand_sep = 29.0
 # Outline border width.
 border = 5.0
 
+# Radius of wrist rests.
+wrest_r = 93.0
+
+# Center of entire keyboard.
+center = (2*wrest_r + hand_sep/2, wrest_r)
+
+
+# {{{ Switch grid for left hand (not rotated)
 
 # Ergonomic column offsets for finger cluster.
 c0_Y = 0.0 # 1.5x outer.
@@ -30,154 +60,157 @@ c5_Y = 1.5 # Other index finger.
 c6_Y = 1.5 # 1.5x inner.
 
 # Non-ergonomic positions from origin
-c0_X = 0.0              # 1.5x outer.
-c1_X = c0_X + 1.25*spc  # Pinky finger.
-c2_X = c1_X + spc       # Ring finger.
-c3_X = c2_X + spc       # Middle finger.
-c4_X = c3_X + spc       # Index finger.
-c5_X = c4_X + spc       # Other index finger.
-c6_X = c5_X + spc       # 1.5x inner.
+c0_X = 0.0            # 1.5x outer.
+c1_X = c0_X + 1.25*u  # Pinky finger.
+c2_X = c1_X + u       # Ring finger.
+c3_X = c2_X + u       # Middle finger.
+c4_X = c3_X + u       # Index finger.
+c5_X = c4_X + u       # Other index finger.
+c6_X = c5_X + u       # 1.5x inner.
 
+#    X                  Y               angle
 c0 = [
-      (c0_X,             4*spc+c0_Y, 0),
-      (c0_X,             3*spc+c0_Y, 0),
-      (c0_X,             2*spc+c0_Y, 0),
-      (c0_X,             1*spc+c0_Y, 0),
-      (c0_X + 0.25*spc,  0*spc+c0_Y, 0),
-     ]
-top_left = c0[0]
+    (c0_X,              4*u+c0_Y,       0.0),
+    (c0_X,              3*u+c0_Y,       0.0),
+    (c0_X,              2*u+c0_Y,       0.0),
+    (c0_X,              1*u+c0_Y,       0.0),
+    (c0_X + 0.25*u,     0*u+c0_Y,       0.0),
+]
 
 c1 = [
-      (c1_X,  4*spc+c1_Y, 0),
-      (c1_X,  3*spc+c1_Y, 0),
-      (c1_X,  2*spc+c1_Y, 0),
-      (c1_X,  1*spc+c1_Y, 0),
-      (c1_X,  0*spc+c1_Y, 0),
-     ]
+    (c1_X,              4*u+c1_Y,       0.0),
+    (c1_X,              3*u+c1_Y,       0.0),
+    (c1_X,              2*u+c1_Y,       0.0),
+    (c1_X,              1*u+c1_Y,       0.0),
+    (c1_X,              0*u+c1_Y,       0.0),
+]
 
 c2 = [
-      (c2_X,  4*spc+c2_Y, 0),
-      (c2_X,  3*spc+c2_Y, 0),
-      (c2_X,  2*spc+c2_Y, 0),
-      (c2_X,  1*spc+c2_Y, 0),
-      (c2_X,  0*spc+c2_Y, 0),
-     ]
+    (c2_X,              4*u+c2_Y,       0.0),
+    (c2_X,              3*u+c2_Y,       0.0),
+    (c2_X,              2*u+c2_Y,       0.0),
+    (c2_X,              1*u+c2_Y,       0.0),
+    (c2_X,              0*u+c2_Y,       0.0),
+]
 
 c3 = [
-      (c3_X,  4*spc+c3_Y, 0),
-      (c3_X,  3*spc+c3_Y, 0),
-      (c3_X,  2*spc+c3_Y, 0),
-      (c3_X,  1*spc+c3_Y, 0),
-      (c3_X,  0*spc+c3_Y, 0),
-     ]
+    (c3_X,              4*u+c3_Y,       0.0),
+    (c3_X,              3*u+c3_Y,       0.0),
+    (c3_X,              2*u+c3_Y,       0.0),
+    (c3_X,              1*u+c3_Y,       0.0),
+    (c3_X,              0*u+c3_Y,       0.0),
+]
 
 c4 = [
-      (c4_X,  4*spc+c4_Y, 0),
-      (c4_X,  3*spc+c4_Y, 0),
-      (c4_X,  2*spc+c4_Y, 0),
-      (c4_X,  1*spc+c4_Y, 0),
-      (c4_X,  0*spc+c4_Y, 0),
-     ]
+    (c4_X,              4*u+c4_Y,       0.0),
+    (c4_X,              3*u+c4_Y,       0.0),
+    (c4_X,              2*u+c4_Y,       0.0),
+    (c4_X,              1*u+c4_Y,       0.0),
+    (c4_X,              0*u+c4_Y,       0.0),
+]
 
 c5 = [
-      (c5_X,  4*spc+c5_Y, 0),
-      (c5_X,  3*spc+c5_Y, 0),
-      (c5_X,  2*spc+c5_Y, 0),
-      (c5_X,  1*spc+c5_Y, 0),
-     ]
+    (c5_X,              4*u+c5_Y,       0.0),
+    (c5_X,              3*u+c5_Y,       0.0),
+    (c5_X,              2*u+c5_Y,       0.0),
+    (c5_X,              1*u+c5_Y,       0.0),
+]
 
 c6 = [
-      (c6_X,  4*spc+c6_Y,    0),
-      (c6_X,  2.75*spc+c6_Y, 1),
-      (c6_X,  1.25*spc+c6_Y, 1),
-     ]
+    (c6_X,              4*u+c6_Y,       0.0),
+    (c6_X,              2.75*u+c6_Y,    pi/2),
+    (c6_X,              1.25*u+c6_Y,    pi/2),
+]
 
-finger_sw_holes = c6 + c5 + c4 + c3 + c2 + c1 + c0
-finger_sw_holes = [(p[0], p[1], p[2]*pi/2) for p in finger_sw_holes]
-
-
-# Lower left of thumb cluster is taken as the origin.
-thumb_pos = [c5_X +0.5*spc + 1.5, -0.5*spc - 1]
-
-# Centers of switch holes in thumb cluster.
-thumb_sw_holes = [
-                  (0*spc, 0*spc),
-                  (1*spc, 0*spc),
-                  (2*spc, -0.5*spc),
-                  (2*spc, +0.5*spc),
-                  (2*spc, +1.5*spc),
-                  (1*spc, +1.25*spc),
-                 ]
-thumb_sw_holes = pts_rotate(thumb_sw_holes, [thumb_rotate])
-thumb_sw_holes = pts_shift(thumb_sw_holes, thumb_pos)
-thumb_sw_holes = [list(p) + [thumb_rotate] for p in thumb_sw_holes]
-thumb_sw_holes[0][2] += pi/2
-thumb_sw_holes[1][2] += pi/2
-thumb_sw_holes = [tuple(p) for p in thumb_sw_holes]
-bottom_right = thumb_sw_holes[2]
+pcb_sw_finger_epts = c6 + c5 + c4 + c3 + c2 + c1 + c0
 
 
-Lsw_holes = thumb_sw_holes + finger_sw_holes
-Lsw_rotates = [h[2] + hand_rotate for h in Lsw_holes]
-pcb_sw = Lsw_holes
-c = pt_between_pts(top_left[:2], bottom_right[:2])
-d = distance_between_pts(top_left[:2], bottom_right[:2])
-wrest_r = 93.0
-radius = wrest_r
-diameter = 2 * radius
-center = (diameter + hand_sep/2, radius)
+thumb_ptBL = [c5_X + 0.5*u + 1.5, -0.5*u - 1]
+
+pcb_sw_thumb_pts = [
+    (0*u, 0*u),
+    (1*u, 0*u),
+    (2*u, -0.5*u),
+    (2*u, +0.5*u),
+    (2*u, +1.5*u),
+    (1*u, +1.25*u),
+]
+pcb_sw_thumb_pts = pts_rotate(pcb_sw_thumb_pts, [thumb_a])
+pcb_sw_thumb_pts = pts_shift(pcb_sw_thumb_pts, thumb_ptBL)
+pcb_sw_thumb_epts = [list(p) + [thumb_a] for p in pcb_sw_thumb_pts]
+pcb_sw_thumb_epts[0][2] += pi/2
+pcb_sw_thumb_epts[1][2] += pi/2
+pcb_sw_thumb_epts = [tuple(p) for p in pcb_sw_thumb_epts]
+
+# Switch points at opposite corners are used to find the center of the hand.
+# Opposite corners are top-left to bottom-right.
+# hand_pt: Center between opposite corners.
+sw_ptTL = c0[0][:2]
+sw_ptBR = pcb_sw_thumb_pts[2]
+hand_pt = pt_between_pts(sw_ptTL, sw_ptBR)
 
 
-# Center and rotate.
-Lsw_points = [(h[0], h[1]) for h in Lsw_holes]
-Lsw_points = pts_shift(Lsw_points, [-c[0] + radius, radius])
-Lsw_points = pts_rotate(Lsw_points, angle=[hand_rotate], center=(radius, radius))
-Lsw_holes = [(Lsw_points[i][0], Lsw_points[i][1], Lsw_rotates[i]) for i in range(len(Lsw_holes))]
+pcb_sw_epts = pcb_sw_thumb_epts + pcb_sw_finger_epts
+pcb_sw_pts = [(h[0], h[1]) for h in pcb_sw_epts]
+pcb_sw_a = [h[2] + hand_a for h in pcb_sw_epts]
+n_sw = len(pcb_sw_epts)
 
-Rsw_points = pts_reflect(Lsw_points, [center[0], None])
-Rsw_rotates = [-h[2] for h in Lsw_holes]
-Rsw_holes = [(Rsw_points[i][0], Rsw_points[i][1], Rsw_rotates[i]) for i in range(len(Lsw_holes))]
-sw_holes = Lsw_holes + Rsw_holes
-# sw_holes is now a list of tuples containing the coordinates and rotations of all switches on LHS.
+pcb_sw = pcb_sw_epts
+
+
+# Real coordinates of switches.
+sw_ptsL = pts_shift(pcb_sw_pts, [-hand_pt[0] + wrest_r, wrest_r])
+sw_ptsL = pts_rotate(sw_ptsL, angle=[hand_a], center=(wrest_r, wrest_r))
+sw_ptsR = pts_reflect(sw_ptsL, [center[0], None])
+sw_pts = sw_ptsL + sw_ptsR
+
+sw_aL = pcb_sw_a
+sw_aR = [-a for a in pcb_sw_a]
+sw_a = sw_aL + sw_aR
+
+sw_eptsL = [(sw_ptsL[i][0], sw_ptsL[i][1], sw_aL[i]) for i in range(n_sw)]
+sw_eptsR = [(sw_ptsR[i][0], sw_ptsR[i][1], sw_aR[i]) for i in range(n_sw)]
+sw_epts = sw_eptsL + sw_eptsR
+
+# }}} Switch grid for left hand (not rotated)
 
 
 # {{{ Outline paths
-toparc_center_ptL = pt_relative(sw_holes[33][:2], [-0.75*spc, +0.5*spc], [sw_holes[33][2]])
+toparc_center_ptL = pt_relative(sw_pts[33], [-0.75*u, +0.5*u], [sw_a[33]])
 toparc_center_ptR = pt_reflect(toparc_center_ptL, [center[0], None])
 toparc_pathL = {
     'type':         'arc',
     'center':       toparc_center_ptL,
     'radius':       border,
     'startangle':   90,
-    'endangle':     180 + degrees(hand_rotate)
+    'endangle':     180 + degrees(hand_a)
 }
 toparc_pathR = {
     'type':         'arc',
     'center':       toparc_center_ptR,
     'radius':       border,
-    'startangle':   -degrees(hand_rotate),
+    'startangle':   -degrees(hand_a),
     'endangle':     90
 }
 top_edge = toparc_center_ptL[1] + border
 topedge_upper_ptL = (toparc_center_ptL[0], top_edge)
 topedge_upper_ptR = (toparc_center_ptR[0], top_edge)
-topedge_lower_ptL = pt_relative(toparc_center_ptL, [+border, 0.0], [radians(180) + hand_rotate])
-topedge_lower_ptR = pt_relative(toparc_center_ptR, [+border, 0.0], [-hand_rotate])
+topedge_lower_ptL = pt_relative(toparc_center_ptL, [+border, 0.0], [radians(180) + hand_a])
+topedge_lower_ptR = pt_relative(toparc_center_ptR, [+border, 0.0], [-hand_a])
 
-leftmost_pt = pt_relative(sw_holes[36][:2], [-0.75*spc-border, -0.5*spc-border], [sw_holes[36][2]])
+leftmost_pt = pt_relative(sw_pts[36], [-0.75*u-border, -0.5*u-border], [sw_a[36]])
 rightmost_pt = pt_reflect(leftmost_pt, [center[0], None])
-leftmost_a = hand_rotate
-leftmost_m = tan(leftmost_a)
+leftmost_m = tan(hand_a)
 leftmost_c = leftmost_pt[1] - leftmost_m*leftmost_pt[0] # c = y - mx
 
-thumbarc_pt = pt_relative(sw_holes[2][:2], [+0.5*spc+border, 0.0], [sw_holes[2][2]])
+thumbarc_pt = pt_relative(sw_pts[2], [+0.5*u+border, 0.0], [sw_a[2]])
 
-wrest_center_x = leftmost_pt[0] + cos(hand_rotate)*wrest_r
-wrest_center_y = leftmost_pt[1] + sin(hand_rotate)*wrest_r
+wrest_center_x = leftmost_pt[0] + cos(hand_a)*wrest_r
+wrest_center_y = leftmost_pt[1] + sin(hand_a)*wrest_r
 wrest_center_ptL = (wrest_center_x, wrest_center_y)
 wrest_center_ptR = pt_reflect(wrest_center_ptL, [center[0], None])
-wrest_angle_eR = -hand_rotate
-wrest_angle_sL = radians(180) + hand_rotate
+wrest_angle_eR = -hand_a
+wrest_angle_sL = radians(180) + hand_a
 wrest_angle_eL = dir_between_pts(wrest_center_ptL, thumbarc_pt)[0]
 wrest_angle_sR = radians(180) - wrest_angle_eL
 wrest_pathL = {
@@ -212,31 +245,31 @@ botarc_path = {
 
 # {{{ Hand PCB mount in base layers
 handbrdL_cutout = [
-  pt_relative(sw_holes[4][:2], [+(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[4][2]]),
-  pt_relative(sw_holes[2][:2], [+(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[2][2]]),
-  pt_relative(sw_holes[0][:2], [-(1.0*spc+0.5), +(0.5*spc+0.5)], [sw_holes[0][2]]),
+  pt_relative(sw_pts[4], [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[4]]),
+  pt_relative(sw_pts[2], [+(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[2]]),
+  pt_relative(sw_pts[0], [-(1.0*u+0.5), +(0.5*u+0.5)], [sw_a[0]]),
   #
-  #pt_relative(sw_holes[17][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[17][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[17][2]]),
-  #pt_relative(sw_holes[22][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[22][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[22][2]]),
-  #pt_relative(sw_holes[27][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[27][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[27][2]]),
-  #pt_relative(sw_holes[32][:2], [+(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[32][2]]),
-  pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  -(0.5*spc+0.5)], [sw_holes[37][2]]),
-  #pt_relative(sw_holes[37][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[37][2]]),
-  pt_relative(sw_holes[36][:2], [-(0.5*spc+0.5), -(0.5*spc+0.5)], [sw_holes[36][2]]),
-  pt_relative(sw_holes[33][:2], [-(0.5*spc+0.5), +(0.5*spc+0.5)], [sw_holes[33][2]]),
+  #pt_relative(sw_pts[17], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[17]]),
+  #pt_relative(sw_pts[17], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[17]]),
+  #pt_relative(sw_pts[22], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[22]]),
+  #pt_relative(sw_pts[22], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[22]]),
+  #pt_relative(sw_pts[27], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[27]]),
+  #pt_relative(sw_pts[27], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[27]]),
+  #pt_relative(sw_pts[32], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[32]]),
+  pt_relative(sw_pts[37], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[37]]),
+  #pt_relative(sw_pts[37], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[37]]),
+  pt_relative(sw_pts[36], [-(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[36]]),
+  pt_relative(sw_pts[33], [-(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[33]]),
   #
-  pt_relative(sw_holes[28][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[28][2]]),
-  pt_relative(sw_holes[23][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [+(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[23][2]]),
-  pt_relative(sw_holes[18][:2], [-(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
-  pt_relative(sw_holes[18][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[18][2]]),
-  pt_relative(sw_holes[13][:2], [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
-  pt_relative(sw_holes[13][:2], [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[13][2]]),
-  pt_relative(sw_holes[9][:2],  [-(0.5*spc-0.5),  +(0.5*spc+0.5)], [sw_holes[9][2]]),
-  pt_relative(sw_holes[6][:2],  [+(0.5*spc+0.5),  +(0.5*spc+0.5)], [sw_holes[6][2]]),
+  pt_relative(sw_pts[28], [+(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[28]]),
+  pt_relative(sw_pts[23], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[23]]),
+  pt_relative(sw_pts[23], [+(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[23]]),
+  pt_relative(sw_pts[18], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[18]]),
+  pt_relative(sw_pts[18], [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[18]]),
+  pt_relative(sw_pts[13], [-(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[13]]),
+  pt_relative(sw_pts[13], [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[13]]),
+  pt_relative(sw_pts[9],  [-(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[9]]),
+  pt_relative(sw_pts[6],  [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[6]]),
 ]
 handbrdR_cutout = pts_reflect(handbrdL_cutout, [center[0], None])
 handbrdR_cutout.reverse()
@@ -318,12 +351,12 @@ ctrlmnt_arcBR = {
 
 midmnt_cutoutL = [
   (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
-  pt_relative(sw_holes[7][:2], [+0.55*spc, -0.55*spc], [sw_holes[7][2]]),
-  pt_relative(sw_holes[8][:2], [+0.55*spc, -0.55*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[5][:2], [-0.55*spc, +0.55*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[5][:2], [+0.45*spc, +0.55*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[4][:2], [-0.55*spc, +0.55*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[4][:2], [+0.55*spc, +0.55*spc], [sw_holes[4][2]]),
+  pt_relative(sw_pts[7], [+0.55*u, -0.55*u], [sw_a[7]]),
+  pt_relative(sw_pts[8], [+0.55*u, -0.55*u], [sw_a[8]]),
+  pt_relative(sw_pts[5], [-0.55*u, +0.55*u], [sw_a[5]]),
+  pt_relative(sw_pts[5], [+0.45*u, +0.55*u], [sw_a[5]]),
+  pt_relative(sw_pts[4], [-0.55*u, +0.55*u], [sw_a[4]]),
+  pt_relative(sw_pts[4], [+0.55*u, +0.55*u], [sw_a[4]]),
 ]
 midmnt_cutoutR = pts_reflect(midmnt_cutoutL, [center[0], None])
 midmnt_cutoutR.reverse()
@@ -366,45 +399,45 @@ ctrlmnt_path = [
 
 # {{{ Top layers cutouts.
 fingersL_outline = [
-  pt_relative(sw_holes[33][:2], [-0.75*spc, +0.5*spc], [sw_holes[33][2]]),
-  pt_relative(sw_holes[36][:2], [-0.75*spc, -0.5*spc], [sw_holes[36][2]]),
-  pt_relative(sw_holes[37][:2], [-0.5*spc,  +0.5*spc], [sw_holes[37][2]]),
-  pt_relative(sw_holes[37][:2], [-0.5*spc,  -0.5*spc], [sw_holes[37][2]]),
-  pt_relative(sw_holes[32][:2], [+0.5*spc,  -0.5*spc], [sw_holes[32][2]]),
-  pt_relative(sw_holes[27][:2], [-0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  pt_relative(sw_holes[27][:2], [+0.5*spc,  -0.5*spc], [sw_holes[27][2]]),
-  pt_relative(sw_holes[22][:2], [-0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  pt_relative(sw_holes[22][:2], [+0.5*spc,  -0.5*spc], [sw_holes[22][2]]),
-  pt_relative(sw_holes[17][:2], [-0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  pt_relative(sw_holes[17][:2], [+0.5*spc,  -0.5*spc], [sw_holes[17][2]]),
-  pt_relative(sw_holes[12][:2], [-0.5*spc,  -0.5*spc], [sw_holes[12][2]]),
-  pt_relative(sw_holes[12][:2], [+0.5*spc,  -0.5*spc], [sw_holes[12][2]]),
-  pt_relative(sw_holes[8][:2],  [-0.75*spc, -0.5*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[8][:2],  [+0.75*spc, -0.5*spc], [sw_holes[8][2]]),
-  pt_relative(sw_holes[6][:2],  [+0.5*spc,  +0.5*spc], [sw_holes[6][2]]),
-  pt_relative(sw_holes[9][:2],  [-0.5*spc,  +0.5*spc], [sw_holes[9][2]]),
-  pt_relative(sw_holes[13][:2], [+0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[13][:2], [-0.5*spc,  +0.5*spc], [sw_holes[13][2]]),
-  pt_relative(sw_holes[18][:2], [+0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[18][:2], [-0.5*spc,  +0.5*spc], [sw_holes[18][2]]),
-  pt_relative(sw_holes[23][:2], [+0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[23][:2], [-0.5*spc,  +0.5*spc], [sw_holes[23][2]]),
-  pt_relative(sw_holes[28][:2], [+0.5*spc,  +0.5*spc], [sw_holes[28][2]]),
+  pt_relative(sw_pts[33], [-0.75*u, +0.5*u], [sw_a[33]]),
+  pt_relative(sw_pts[36], [-0.75*u, -0.5*u], [sw_a[36]]),
+  pt_relative(sw_pts[37], [-0.5*u,  +0.5*u], [sw_a[37]]),
+  pt_relative(sw_pts[37], [-0.5*u,  -0.5*u], [sw_a[37]]),
+  pt_relative(sw_pts[32], [+0.5*u,  -0.5*u], [sw_a[32]]),
+  pt_relative(sw_pts[27], [-0.5*u,  -0.5*u], [sw_a[27]]),
+  pt_relative(sw_pts[27], [+0.5*u,  -0.5*u], [sw_a[27]]),
+  pt_relative(sw_pts[22], [-0.5*u,  -0.5*u], [sw_a[22]]),
+  pt_relative(sw_pts[22], [+0.5*u,  -0.5*u], [sw_a[22]]),
+  pt_relative(sw_pts[17], [-0.5*u,  -0.5*u], [sw_a[17]]),
+  pt_relative(sw_pts[17], [+0.5*u,  -0.5*u], [sw_a[17]]),
+  pt_relative(sw_pts[12], [-0.5*u,  -0.5*u], [sw_a[12]]),
+  pt_relative(sw_pts[12], [+0.5*u,  -0.5*u], [sw_a[12]]),
+  pt_relative(sw_pts[8],  [-0.75*u, -0.5*u], [sw_a[8]]),
+  pt_relative(sw_pts[8],  [+0.75*u, -0.5*u], [sw_a[8]]),
+  pt_relative(sw_pts[6],  [+0.5*u,  +0.5*u], [sw_a[6]]),
+  pt_relative(sw_pts[9],  [-0.5*u,  +0.5*u], [sw_a[9]]),
+  pt_relative(sw_pts[13], [+0.5*u,  +0.5*u], [sw_a[13]]),
+  pt_relative(sw_pts[13], [-0.5*u,  +0.5*u], [sw_a[13]]),
+  pt_relative(sw_pts[18], [+0.5*u,  +0.5*u], [sw_a[18]]),
+  pt_relative(sw_pts[18], [-0.5*u,  +0.5*u], [sw_a[18]]),
+  pt_relative(sw_pts[23], [+0.5*u,  +0.5*u], [sw_a[23]]),
+  pt_relative(sw_pts[23], [-0.5*u,  +0.5*u], [sw_a[23]]),
+  pt_relative(sw_pts[28], [+0.5*u,  +0.5*u], [sw_a[28]]),
 ]
 fingersL_outline.append(fingersL_outline[0])
 fingersR_outline = pts_reflect(fingersL_outline, [center[0], None])
 
 thumbsL_outline = [
-  pt_relative(sw_holes[0][:2], [-0.75*spc, +0.5*spc], [sw_holes[0][2]]),
-  pt_relative(sw_holes[1][:2], [-0.75*spc, -0.5*spc], [sw_holes[1][2]]),
-  pt_relative(sw_holes[2][:2], [-0.5*spc, -0.5*spc], [sw_holes[2][2]]),
-  pt_relative(sw_holes[2][:2], [+0.5*spc, -0.5*spc], [sw_holes[2][2]]),
-  pt_relative(sw_holes[4][:2], [+0.5*spc, +0.5*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[4][:2], [-0.5*spc, +0.5*spc], [sw_holes[4][2]]),
-  pt_relative(sw_holes[5][:2], [+0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[5][:2], [-0.5*spc, +0.5*spc], [sw_holes[5][2]]),
-  pt_relative(sw_holes[1][:2], [+0.75*spc, +0.5*spc], [sw_holes[1][2]]),
-  pt_relative(sw_holes[0][:2], [+0.75*spc, +0.5*spc], [sw_holes[0][2]]),
+  pt_relative(sw_pts[0], [-0.75*u, +0.5*u], [sw_a[0]]),
+  pt_relative(sw_pts[1], [-0.75*u, -0.5*u], [sw_a[1]]),
+  pt_relative(sw_pts[2], [-0.5*u, -0.5*u], [sw_a[2]]),
+  pt_relative(sw_pts[2], [+0.5*u, -0.5*u], [sw_a[2]]),
+  pt_relative(sw_pts[4], [+0.5*u, +0.5*u], [sw_a[4]]),
+  pt_relative(sw_pts[4], [-0.5*u, +0.5*u], [sw_a[4]]),
+  pt_relative(sw_pts[5], [+0.5*u, +0.5*u], [sw_a[5]]),
+  pt_relative(sw_pts[5], [-0.5*u, +0.5*u], [sw_a[5]]),
+  pt_relative(sw_pts[1], [+0.75*u, +0.5*u], [sw_a[1]]),
+  pt_relative(sw_pts[0], [+0.75*u, +0.5*u], [sw_a[0]]),
 ]
 thumbsL_outline.append(thumbsL_outline[0])
 thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
@@ -417,17 +450,37 @@ top_cutout_paths = [
 ]
 # }}}
 
+# {{{ Weight saving cutouts
+# TODO
+wsco_above_ptsL = [
+    (ctrlmnt_left - border, pt_relative(sw_pts[6], [+0.5*u,  +0.5*u + border], [0.0])[1]),
+    (ctrlmnt_left - border, top_edge - 2*border),
+]
+wsco_above_ptsR = pts_reflect(wsco_above_ptsL, [center[0], None])
+wsco_above_ptsR.reverse()
+
+#wsco_below_ptsL = [
+#]
+#wsco_below_ptsR = pts_reflect(wsco_below_ptsL, [center[0], None])
+#wsco_below_ptsR.reverse()
+
+wsco_paths = [
+    {'type': 'polyline', 'pts': wsco_above_ptsL},
+    {'type': 'polyline', 'pts': wsco_above_ptsR},
+]
+# }}}
+
 # {{{ Fixing holes
 M3_d = 3.3
 M3_r = M3_d/2
 fix_hole_top = top_edge - border - 2.0
 fix_holesL = [
-    #pt_relative(sw_holes[4][:2], [+1.0*spc, -7.0], [sw_holes[4][2]]),
-    (sw_holes[6][0], fix_hole_top),
-    (sw_holes[28][0], fix_hole_top),
-    pt_relative(leftmost_pt, [border + 2.0, -border], [hand_rotate]),
-    pt_relative(wrest_center_ptL, [5.0, -wrest_r + border + 1.0], [-hand_rotate]),
-    pt_relative(wrest_center_ptL, [9.0, -wrest_r + border + 2.0], [5*hand_rotate]),
+    #pt_relative(sw_pts[4], [+1.0*u, -7.0], [sw_a[4]]),
+    (sw_pts[6][0], fix_hole_top),
+    (sw_pts[28][0], fix_hole_top),
+    pt_relative(leftmost_pt, [border + 2.0, -border], [hand_a]),
+    pt_relative(wrest_center_ptL, [5.0, -wrest_r + border + 1.0], [-hand_a]),
+    pt_relative(wrest_center_ptL, [9.0, -wrest_r + border + 2.0], [5*hand_a]),
 ]
 fix_holesR = pts_reflect(fix_holesL, [center[0], None])
 fix_holesR.reverse()
@@ -524,33 +577,33 @@ base2_cutout_path = [
 ]
 # }}}
 
-pcb_cut_bot = pt_relative(pcb_sw[4][:2], [+0.5*spc, +0.5*spc], [pcb_sw[4][2]])
-pcb_cut_top = pt_relative(pcb_sw[6][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[6][2]])
+pcb_cut_bot = pt_relative(pcb_sw_pts[4], [+0.5*u, +0.5*u], [pcb_sw_a[4]])
+pcb_cut_top = pt_relative(pcb_sw_pts[6], [+0.5*u, +0.5*u], [pcb_sw_a[6]])
 pcb_outline = [
   pcb_cut_bot,
-  pt_relative(pcb_sw[2][:2], [+0.5*spc, -0.5*spc], [pcb_sw[2][2]]),
-  pt_relative(pcb_sw[0][:2], [-1.0*spc, +0.5*spc], [pcb_sw[0][2]]),
+  pt_relative(pcb_sw_pts[2], [+0.5*u, -0.5*u], [pcb_sw_a[2]]),
+  pt_relative(pcb_sw_pts[0], [-1.0*u, +0.5*u], [pcb_sw_a[0]]),
   #
-#  pt_relative(pcb_sw[17][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[17][2]]),
-#  pt_relative(pcb_sw[17][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[17][2]]),
-#  pt_relative(pcb_sw[22][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[22][2]]),
-#  pt_relative(pcb_sw[22][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[22][2]]),
-#  pt_relative(pcb_sw[27][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[27][2]]),
-#  pt_relative(pcb_sw[27][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[27][2]]),
-#  pt_relative(pcb_sw[32][:2], [+0.5*spc,  -0.5*spc], [pcb_sw[32][2]]),
-  pt_relative(pcb_sw[37][:2], [-0.5*spc,  -0.5*spc], [pcb_sw[37][2]]),
-#  pt_relative(pcb_sw[37][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[37][2]]),
-  pt_relative(pcb_sw[36][:2], [-0.5*spc, -0.5*spc], [pcb_sw[36][2]]),
-  pt_relative(pcb_sw[33][:2], [-0.5*spc, +0.5*spc], [pcb_sw[33][2]]),
+#  pt_relative(pcb_sw_pts[17], [+0.5*u,  -0.5*u], [pcb_sw_a[17]]),
+#  pt_relative(pcb_sw_pts[17], [-0.5*u,  -0.5*u], [pcb_sw_a[17]]),
+#  pt_relative(pcb_sw_pts[22], [+0.5*u,  -0.5*u], [pcb_sw_a[22]]),
+#  pt_relative(pcb_sw_pts[22], [-0.5*u,  -0.5*u], [pcb_sw_a[22]]),
+#  pt_relative(pcb_sw_pts[27], [+0.5*u,  -0.5*u], [pcb_sw_a[27]]),
+#  pt_relative(pcb_sw_pts[27], [-0.5*u,  -0.5*u], [pcb_sw_a[27]]),
+#  pt_relative(pcb_sw_pts[32], [+0.5*u,  -0.5*u], [pcb_sw_a[32]]),
+  pt_relative(pcb_sw_pts[37], [-0.5*u,  -0.5*u], [pcb_sw_a[37]]),
+#  pt_relative(pcb_sw_pts[37], [-0.5*u,  +0.5*u], [pcb_sw_a[37]]),
+  pt_relative(pcb_sw_pts[36], [-0.5*u, -0.5*u], [pcb_sw_a[36]]),
+  pt_relative(pcb_sw_pts[33], [-0.5*u, +0.5*u], [pcb_sw_a[33]]),
   #
-  pt_relative(pcb_sw[28][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[28][2]]),
-  pt_relative(pcb_sw[23][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[23][2]]),
-  pt_relative(pcb_sw[23][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[23][2]]),
-  pt_relative(pcb_sw[18][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[18][2]]),
-  pt_relative(pcb_sw[18][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[18][2]]),
-  pt_relative(pcb_sw[13][:2], [-0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
-  pt_relative(pcb_sw[13][:2], [+0.5*spc,  +0.5*spc], [pcb_sw[13][2]]),
-  pt_relative(pcb_sw[9][:2],  [-0.5*spc,  +0.5*spc], [pcb_sw[9][2]]),
+  pt_relative(pcb_sw_pts[28], [+0.5*u,  +0.5*u], [pcb_sw_a[28]]),
+  pt_relative(pcb_sw_pts[23], [-0.5*u,  +0.5*u], [pcb_sw_a[23]]),
+  pt_relative(pcb_sw_pts[23], [+0.5*u,  +0.5*u], [pcb_sw_a[23]]),
+  pt_relative(pcb_sw_pts[18], [-0.5*u,  +0.5*u], [pcb_sw_a[18]]),
+  pt_relative(pcb_sw_pts[18], [+0.5*u,  +0.5*u], [pcb_sw_a[18]]),
+  pt_relative(pcb_sw_pts[13], [-0.5*u,  +0.5*u], [pcb_sw_a[13]]),
+  pt_relative(pcb_sw_pts[13], [+0.5*u,  +0.5*u], [pcb_sw_a[13]]),
+  pt_relative(pcb_sw_pts[9],  [-0.5*u,  +0.5*u], [pcb_sw_a[9]]),
   pcb_cut_top,
 ]
 pcb_outline.append(pcb_outline[0])
@@ -603,7 +656,7 @@ sw_pos = [ # {{{ (column, row) map of switch positions in the matrix.
 (4, 0),
 ]
 assert len(sw_pos) == 38
-assert len(sw_pos) == len(pcb_sw)
+assert len(sw_pos) == len(pcb_sw_pts)
 # }}} End of sw_pos
 pcb_header_pt = pt_between_pts(pcb_cut_bot, pcb_cut_top, 0.5)
 pcb_header_dir = dir_between_pts(pcb_cut_top, pcb_cut_bot)[0]
@@ -650,10 +703,10 @@ def sw_outline_pts(sw_type='', args={}): # {{{
         ]
     else:
         ret = [
-            (-spc/2, -spc/2),
-            (+spc/2, -spc/2),
-            (+spc/2, +spc/2),
-            (-spc/2, +spc/2),
+            (-u/2, -u/2),
+            (+u/2, -u/2),
+            (+u/2, +u/2),
+            (-u/2, +u/2),
         ]
 
     ret.append(ret[0]) # Join back to start point.
@@ -851,7 +904,7 @@ labels = labelsL_dvorak + labelsR_dvorak
 if __name__ == '__main__':
     out = []
     out += ['Switch holes:']
-    for h in sw_holes:
+    for h in sw_epts:
         out += ['\t(%0.2f, %0.2f) rotate=%d' % (h[0], h[1], degrees(h[2]))]
     out += ['Fixing holes:']
     for h in fix_holes:

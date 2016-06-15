@@ -104,7 +104,7 @@ def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0):
 d_single = svg.Drawing(filename='svg/mcdox_mnt_cherrymx_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
-for number, (x, y, r) in enumerate(sw_holes):
+for i, (x, y, r) in enumerate(sw_epts):
     d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
                                      center=(x, y),
                                      rotation=r),
@@ -125,6 +125,9 @@ svg_path_add(d_single, mnt_outline_path)
 ####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
 svg_path_add(d_single, ctrlmnt_path)
 
+####svg_path_add(d, wsco_paths, {'layer': 'MNT'})
+svg_path_add(d_single, wsco_paths)
+
 d_single.save()
 # }}} End of MNT cherrymx
 
@@ -133,7 +136,7 @@ d_single.save()
 d_single = svg.Drawing(filename='svg/mcdox_mnt_alps_3mm.svg',
                        size=('%dmm'%page_w, '%dmm'%page_h))
 
-for number, (x, y, r) in enumerate(sw_holes):
+for i, (x, y, r) in enumerate(sw_epts):
     d_single.add(polyline(svg_sw_pts(swtype='alps',
                                      center=(x, y),
                                      rotation=r),
@@ -153,6 +156,9 @@ svg_path_add(d_single, mnt_outline_path)
 
 ####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
 svg_path_add(d_single, ctrlmnt_path)
+
+####svg_path_add(d, wsco_paths, {'layer': 'MNT'})
+svg_path_add(d_single, wsco_paths)
 
 d_single.save()
 # }}} End of MNT alps
@@ -231,14 +237,14 @@ if 1:
     sys.path.insert(0, '../keycap')
     from keycap_alps_dxf_blocks import *
 
-    for number, (x, y, r) in enumerate(sw_holes):
-        if cap_size(number) == 'cap_20': blk = cap_20_path
-        elif cap_size(number) == 'cap_15': blk = cap_15_path
-        elif cap_size(number) == 'cap_10': blk = cap_10_path
+    for i, (x, y, r) in enumerate(sw_epts):
+        if cap_size(i) == 'cap_20': blk = cap_20_path
+        elif cap_size(i) == 'cap_15': blk = cap_15_path
+        elif cap_size(i) == 'cap_10': blk = cap_10_path
 
         svg_blk_path_add(d_single, blk, (x, y), r)
 
-        l = labels[number]
+        l = labels[i]
         r = degrees(r) + l[0]
         style = "stroke:#0000ff;-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
         for text, x_sh, y_sh in l[1]:
@@ -284,6 +290,9 @@ for (x, y) in fix_holes:
 ####svg_path_add(d, base1_outline_path, {'layer': 'BASE1'})
 svg_path_add(d_single, base1_outline_path)
 
+####svg_path_add(d, wsco_paths, {'layer': 'BASE1'})
+svg_path_add(d_single, wsco_paths)
+
 d_single.save()
 # }}} End of BASE1
 
@@ -303,6 +312,9 @@ svg_path_add(d_single, base2_cutout_path)
 
 ####svg_path_add(d, mnt_outline_path, {'layer': 'BASE2'})
 svg_path_add(d_single, mnt_outline_path)
+
+####svg_path_add(d, wsco_paths, {'layer': 'BASE2'})
+svg_path_add(d_single, wsco_paths)
 
 d_single.save()
 # }}} End of BASE2

@@ -7,7 +7,7 @@ import re
 def floatf(n):
     ret = (' %0.3f' % n).rstrip('0').rstrip('.')
     if ret == ' 0': ret = ''
-    return ret 
+    return ret
 
 def get_fp_lines(filename=''):
     with open(filename) as fd:
@@ -137,7 +137,7 @@ pcb = ['''
 # Rotate and insert switches
 pattern = '\(at (-?\d+(\.\d+)?) (-?\d+(\.\d+)?) (-?\d+(\.\d+)?)\)'
 n = 0
-for (x, y, r) in pcb_sw:
+for (x, y, r) in pcb_sw_epts:
     colrow_str = 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1])
     sw_mod_lines = list(alpsmx)
     for i, l in enumerate(sw_mod_lines):
@@ -146,7 +146,7 @@ for (x, y, r) in pcb_sw:
             rotate = float(p.group(5))
             rotate = (rotate + degrees(r)) % 360
             sw_mod_lines[i] = re.sub(pattern, '(at \g<1> \g<3>%s)' % floatf(rotate), l)
-    
+
     # Insert coordinates and rotation line after 1st line.
     sw_mod_lines.insert(1, '  (at %s %s%s)\n' % (x+80, -y+110, floatf(degrees(r))))
     sw_mod = ''.join(sw_mod_lines)
@@ -157,7 +157,7 @@ for (x, y, r) in pcb_sw:
 
 # Reference on silkscreen.
 n = 0
-for (x, y, r) in pcb_sw:
+for (x, y, r) in pcb_sw_epts:
     colrow_str = 'c%dr%d' % (sw_pos[n][0], sw_pos[n][1])
     pcb.append('  (gr_text %s (at %s %s) (layer B.SilkS)\n' % (colrow_str, x+76, -y+102))
     pcb.append('    (effects (font (size 1 1) (thickness 0.15)) (justify mirror))\n')
