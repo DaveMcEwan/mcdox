@@ -23,8 +23,10 @@ from ndim import *
 #   top         - _T
 # Consistent naming scheme:
 #   wrest - Wrist rest.
-#   base0, base1, base2, mnt, top0, top1, top2 - layer names.
 # M3 module
+
+# M3 bolt hole radius.
+M3_r = 3.3/2
 
 # Unit width of one switch, standardised at 19mm.
 u = 19.0
@@ -48,7 +50,7 @@ wrest_r = 93.0
 center = (2*wrest_r + hand_sep/2, wrest_r)
 
 
-# {{{ Switch grid for left hand (not rotated)
+# {{{ PCB switch coords
 
 # Ergonomic column offsets for finger cluster.
 c0_Y = 0.0 # 1.5x outer.
@@ -124,7 +126,6 @@ c6 = [
 
 pcb_sw_finger_epts = c6 + c5 + c4 + c3 + c2 + c1 + c0
 
-
 thumb_ptBL = [c5_X + 0.5*u + 1.5, -0.5*u - 1]
 
 pcb_sw_thumb_pts = [
@@ -142,6 +143,59 @@ pcb_sw_thumb_epts[0][2] += pi/2
 pcb_sw_thumb_epts[1][2] += pi/2
 pcb_sw_thumb_epts = [tuple(p) for p in pcb_sw_thumb_epts]
 
+
+pcb_sw_epts = pcb_sw_thumb_epts + pcb_sw_finger_epts
+pcb_sw_pts = [(h[0], h[1]) for h in pcb_sw_epts]
+
+# }}} PCB switch coords
+
+# {{{ case layer enable
+
+case_layers = [
+    # Minimalist top of kbd with builtin ALPS keycaps.
+    # 1.5mm acrylic.
+    # v2 always uses CherryMX so unnecessary.
+#    'top2',
+
+    # Minimalist top of kbd.
+    # 1.5mm aluminium, acrylic, OR stainless steel.
+    'top1',
+
+    # Spacer between mnt and top.
+    # 4mm acrylic.
+    # Snug fit around ctrlmnt bolt heads, and battery pack keep it solid.
+    'top0',
+
+    # Mount plate for switches and controller board.
+    # 1.5mm aluminium, acrylic, OR stainless steel.
+    # For a barebones build you can use just this layer in stainless steel with
+    # M3 10mm standoffs.
+    'mnt_cherrymx',
+#    'mnt_alps',
+
+    # Spacer for depth of switch pins below mnt, closed end.
+    # 4mm acrylic.
+    # v2 is thinner and requires both spacer layers around USB to be open.
+#    'base2',
+
+    # Spacer for depth of switch pins below mnt, open end.
+    # 4mm acrylic.
+    'base1',
+
+    # Bottom of kbd.
+    # 1.5mm aluminium, acrylic, OR stainless steel.
+    'base0',
+
+    # Dimension test
+#    'dimtst',
+]
+
+# }}} case layer enable
+
+# {{{ case switch coords
+
+n_sw = len(pcb_sw_epts)
+
 # Switch points at opposite corners are used to find the center of the hand.
 # Opposite corners are top-left to bottom-right.
 # hand_pt: Center between opposite corners.
@@ -149,30 +203,112 @@ sw_ptTL = c0[0][:2]
 sw_ptBR = pcb_sw_thumb_pts[2]
 hand_pt = pt_between_pts(sw_ptTL, sw_ptBR)
 
-
-pcb_sw_epts = pcb_sw_thumb_epts + pcb_sw_finger_epts
-pcb_sw_pts = [(h[0], h[1]) for h in pcb_sw_epts]
-pcb_sw_a = [h[2] + hand_a for h in pcb_sw_epts]
-n_sw = len(pcb_sw_epts)
-
-pcb_sw = pcb_sw_epts
-
-
 # Real coordinates of switches.
 sw_ptsL = pts_shift(pcb_sw_pts, [-hand_pt[0] + wrest_r, wrest_r])
 sw_ptsL = pts_rotate(sw_ptsL, angle=[hand_a], center=(wrest_r, wrest_r))
 sw_ptsR = pts_reflect(sw_ptsL, [center[0], None])
 sw_pts = sw_ptsL + sw_ptsR
 
-sw_aL = pcb_sw_a
-sw_aR = [-a for a in pcb_sw_a]
+sw_aL = [h[2] + hand_a for h in pcb_sw_epts]
+sw_aR = [-a for a in sw_aL]
 sw_a = sw_aL + sw_aR
 
 sw_eptsL = [(sw_ptsL[i][0], sw_ptsL[i][1], sw_aL[i]) for i in range(n_sw)]
 sw_eptsR = [(sw_ptsR[i][0], sw_ptsR[i][1], sw_aR[i]) for i in range(n_sw)]
 sw_epts = sw_eptsL + sw_eptsR
 
-# }}} Switch grid for left hand (not rotated)
+# }}} case switch coords
+
+# {{{ PCB outline
+
+pcb_cut_bot = pt_relative(pcb_sw_pts[4], [+0.5*u, +0.5*u], [sw_aL[4]])
+pcb_cut_top = pt_relative(pcb_sw_pts[6], [+0.5*u, +0.5*u], [sw_aL[6]])
+pcb_outline = [
+  pcb_cut_bot,
+  pt_relative(pcb_sw_pts[2], [+0.5*u, -0.5*u], [sw_aL[2]]),
+  pt_relative(pcb_sw_pts[0], [-1.0*u, +0.5*u], [sw_aL[0]]),
+  #
+#  pt_relative(pcb_sw_pts[17], [+0.5*u,  -0.5*u], [sw_aL[17]]),
+#  pt_relative(pcb_sw_pts[17], [-0.5*u,  -0.5*u], [sw_aL[17]]),
+#  pt_relative(pcb_sw_pts[22], [+0.5*u,  -0.5*u], [sw_aL[22]]),
+#  pt_relative(pcb_sw_pts[22], [-0.5*u,  -0.5*u], [sw_aL[22]]),
+#  pt_relative(pcb_sw_pts[27], [+0.5*u,  -0.5*u], [sw_aL[27]]),
+#  pt_relative(pcb_sw_pts[27], [-0.5*u,  -0.5*u], [sw_aL[27]]),
+#  pt_relative(pcb_sw_pts[32], [+0.5*u,  -0.5*u], [sw_aL[32]]),
+  pt_relative(pcb_sw_pts[37], [-0.5*u,  -0.5*u], [sw_aL[37]]),
+#  pt_relative(pcb_sw_pts[37], [-0.5*u,  +0.5*u], [sw_aL[37]]),
+  pt_relative(pcb_sw_pts[36], [-0.5*u, -0.5*u], [sw_aL[36]]),
+  pt_relative(pcb_sw_pts[33], [-0.5*u, +0.5*u], [sw_aL[33]]),
+  #
+  pt_relative(pcb_sw_pts[28], [+0.5*u,  +0.5*u], [sw_aL[28]]),
+  pt_relative(pcb_sw_pts[23], [-0.5*u,  +0.5*u], [sw_aL[23]]),
+  pt_relative(pcb_sw_pts[23], [+0.5*u,  +0.5*u], [sw_aL[23]]),
+  pt_relative(pcb_sw_pts[18], [-0.5*u,  +0.5*u], [sw_aL[18]]),
+  pt_relative(pcb_sw_pts[18], [+0.5*u,  +0.5*u], [sw_aL[18]]),
+  pt_relative(pcb_sw_pts[13], [-0.5*u,  +0.5*u], [sw_aL[13]]),
+  pt_relative(pcb_sw_pts[13], [+0.5*u,  +0.5*u], [sw_aL[13]]),
+  pt_relative(pcb_sw_pts[9],  [-0.5*u,  +0.5*u], [sw_aL[9]]),
+  pcb_cut_top,
+]
+pcb_outline.append(pcb_outline[0])
+
+pcb_header_pt = pt_between_pts(pcb_cut_bot, pcb_cut_top, 0.5)
+pcb_header_dir = dir_between_pts(pcb_cut_top, pcb_cut_bot)[0]
+pcb_header_pt = pt_relative(pcb_header_pt, [-(3*0.8+3.0), 0.0], [pcb_header_dir + pi/2])
+
+# {{{ (column, row) map of switch positions in the matrix.
+sw_pos = [
+(5, 3),
+(5, 2),
+(5, 1),
+(5, 4),
+(5, 6),
+(5, 5),
+#
+(0, 6),
+(1, 6),
+(3, 6),
+#
+(0, 5),
+(1, 5),
+(2, 5),
+(3, 5),
+#
+(0, 4),
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 4),
+#
+(0, 3),
+(1, 3),
+(2, 3),
+(3, 3),
+(4, 3),
+#
+(0, 2),
+(1, 2),
+(2, 2),
+(3, 2),
+(4, 2),
+#
+(0, 1),
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+#
+(0, 0),
+(1, 0),
+(2, 0),
+(3, 0),
+(4, 0),
+]
+assert len(sw_pos) == 38
+assert len(sw_pos) == n_sw
+# }}} sw_pos
+
+# }}} PCB outline
 
 
 # {{{ Outline paths
@@ -471,8 +607,6 @@ wsco_paths = [
 # }}}
 
 # {{{ Fixing holes
-M3_d = 3.3
-M3_r = M3_d/2
 fix_hole_top = top_edge - border - 2.0
 fix_holesL = [
     #pt_relative(sw_pts[4], [+1.0*u, -7.0], [sw_a[4]]),
@@ -502,7 +636,8 @@ mnt_outline_path = [
 base0_outline_path = [
     {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
     toparc_pathL,
-    {'type': 'polyline', 'pts': [topedge_upper_ptL] + teensy_cutout + [topedge_upper_ptR]},
+#    {'type': 'polyline', 'pts': [topedge_upper_ptL] + teensy_cutout + [topedge_upper_ptR]},
+    {'type': 'polyline', 'pts': [topedge_upper_ptL, topedge_upper_ptR]},
     toparc_pathR,
     {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
     wrest_pathR,
@@ -576,91 +711,6 @@ base2_cutout_path = [
     lollybrd_toparc_pathR,
 ]
 # }}}
-
-pcb_cut_bot = pt_relative(pcb_sw_pts[4], [+0.5*u, +0.5*u], [pcb_sw_a[4]])
-pcb_cut_top = pt_relative(pcb_sw_pts[6], [+0.5*u, +0.5*u], [pcb_sw_a[6]])
-pcb_outline = [
-  pcb_cut_bot,
-  pt_relative(pcb_sw_pts[2], [+0.5*u, -0.5*u], [pcb_sw_a[2]]),
-  pt_relative(pcb_sw_pts[0], [-1.0*u, +0.5*u], [pcb_sw_a[0]]),
-  #
-#  pt_relative(pcb_sw_pts[17], [+0.5*u,  -0.5*u], [pcb_sw_a[17]]),
-#  pt_relative(pcb_sw_pts[17], [-0.5*u,  -0.5*u], [pcb_sw_a[17]]),
-#  pt_relative(pcb_sw_pts[22], [+0.5*u,  -0.5*u], [pcb_sw_a[22]]),
-#  pt_relative(pcb_sw_pts[22], [-0.5*u,  -0.5*u], [pcb_sw_a[22]]),
-#  pt_relative(pcb_sw_pts[27], [+0.5*u,  -0.5*u], [pcb_sw_a[27]]),
-#  pt_relative(pcb_sw_pts[27], [-0.5*u,  -0.5*u], [pcb_sw_a[27]]),
-#  pt_relative(pcb_sw_pts[32], [+0.5*u,  -0.5*u], [pcb_sw_a[32]]),
-  pt_relative(pcb_sw_pts[37], [-0.5*u,  -0.5*u], [pcb_sw_a[37]]),
-#  pt_relative(pcb_sw_pts[37], [-0.5*u,  +0.5*u], [pcb_sw_a[37]]),
-  pt_relative(pcb_sw_pts[36], [-0.5*u, -0.5*u], [pcb_sw_a[36]]),
-  pt_relative(pcb_sw_pts[33], [-0.5*u, +0.5*u], [pcb_sw_a[33]]),
-  #
-  pt_relative(pcb_sw_pts[28], [+0.5*u,  +0.5*u], [pcb_sw_a[28]]),
-  pt_relative(pcb_sw_pts[23], [-0.5*u,  +0.5*u], [pcb_sw_a[23]]),
-  pt_relative(pcb_sw_pts[23], [+0.5*u,  +0.5*u], [pcb_sw_a[23]]),
-  pt_relative(pcb_sw_pts[18], [-0.5*u,  +0.5*u], [pcb_sw_a[18]]),
-  pt_relative(pcb_sw_pts[18], [+0.5*u,  +0.5*u], [pcb_sw_a[18]]),
-  pt_relative(pcb_sw_pts[13], [-0.5*u,  +0.5*u], [pcb_sw_a[13]]),
-  pt_relative(pcb_sw_pts[13], [+0.5*u,  +0.5*u], [pcb_sw_a[13]]),
-  pt_relative(pcb_sw_pts[9],  [-0.5*u,  +0.5*u], [pcb_sw_a[9]]),
-  pcb_cut_top,
-]
-pcb_outline.append(pcb_outline[0])
-
-sw_pos = [ # {{{ (column, row) map of switch positions in the matrix.
-(5, 3),
-(5, 2),
-(5, 1),
-(5, 4),
-(5, 6),
-(5, 5),
-#
-(0, 6),
-(1, 6),
-(3, 6),
-#
-(0, 5),
-(1, 5),
-(2, 5),
-(3, 5),
-#
-(0, 4),
-(1, 4),
-(2, 4),
-(3, 4),
-(4, 4),
-#
-(0, 3),
-(1, 3),
-(2, 3),
-(3, 3),
-(4, 3),
-#
-(0, 2),
-(1, 2),
-(2, 2),
-(3, 2),
-(4, 2),
-#
-(0, 1),
-(1, 1),
-(2, 1),
-(3, 1),
-(4, 1),
-#
-(0, 0),
-(1, 0),
-(2, 0),
-(3, 0),
-(4, 0),
-]
-assert len(sw_pos) == 38
-assert len(sw_pos) == len(pcb_sw_pts)
-# }}} End of sw_pos
-pcb_header_pt = pt_between_pts(pcb_cut_bot, pcb_cut_top, 0.5)
-pcb_header_dir = dir_between_pts(pcb_cut_top, pcb_cut_bot)[0]
-pcb_header_pt = pt_relative(pcb_header_pt, [-(3*0.8+3.0), 0.0], [pcb_header_dir + pi/2])
 
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.

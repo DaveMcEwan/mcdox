@@ -13,46 +13,48 @@ try:
 except:
     pass
 
+imgpath_fmt = 'svg/mcdox_%s.svg'
+
 # In SVG path units are always "SVG user units" (px, 90dpi), not mm.
 # Inkscape internally converts to mm.
 # Therefore scale by 90/25.4 = 3.54
-mm_scale = 90/25.4
+mm = 90/25.4
 
 # Standard line style for cutting.
 # Set to 0.3mm to be the same as most laser cutters.
 # Cut = Red
 # Score/vector etch = Blue
 # Raster etch = Black
-style_cut = 'fill:none;stroke:#ff0000;stroke-opacity:1;stroke-width:%f' % (0.3*mm_scale)
-style_score = 'fill:none;stroke:#0000ff;stroke-opacity:1;stroke-width:%f' % (0.3*mm_scale)
+style_cut = 'fill:none;stroke:#ff0000;stroke-opacity:1;stroke-width:%f' % (0.3*mm)
+style_score = 'fill:none;stroke:#0000ff;stroke-opacity:1;stroke-width:%f' % (0.3*mm)
 
 # Define page size which is required for the coordinate calculations since SVG
 # specifies that top left is the origin.
 page_h = 200
 page_w = 400
 
+# Inkscape 0.48 does not support symbols (the SVG equivilant to DXF blocks) so
+# they are all converted to individual paths.
+# TODO: Support for <symbol> and <use> coming in 0.91 so make use of them.
+
 # Coordinate calculation from mm to SVG user points.
 def svg_pt(pt=(0.0, 0.0), page_h=page_h):
-    return pt_scale(pt_change_axis(pt, [False, True], [0.0, float(page_h)]), mm_scale)
+    return pt_scale(pt_change_axis(pt, [False, True], [0.0, float(page_h)]), mm)
 def svg_pts(pts=[], page_h=page_h):
     return [svg_pt(pt, float(page_h)) for pt in pts]
 
 def svg_sw_pts(swtype='alps',
                center=(0.0, 0.0),
                rotation=0.0,
-               args={}):
+               args={}): # {{{
     pts_at_origin = sw_outline_pts(swtype, args)
     pts_at_origin = pts_rotate(pts_at_origin, [rotation])
-    pts_at_origin = pts_scale(pts_at_origin, mm_scale)
-    pts = pts_shift(pts_at_origin, list(pt_scale(center, mm_scale)))
-    return pts_change_axis(pts, [False, True], [0.0, page_h*mm_scale])
+    pts_at_origin = pts_scale(pts_at_origin, mm)
+    pts = pts_shift(pts_at_origin, list(pt_scale(center, mm)))
+    return pts_change_axis(pts, [False, True], [0.0, page_h*mm])
+# }}} svg_sw_pts()
 
-# Inkscape 0.48 does not support symbols (the SVG equivilant to DXF blocks) so
-# they are all converted to individual paths.
-# TODO: Support for <symbol> and <use> coming in 0.91 so make use of them.
-
-
-def svg_path_add(drawing, path={}):
+def svg_path_add(drawing, path={}): # {{{
     for p in path:
         if 'type' not in p: continue # TODO: maybe warn here?
 
@@ -67,14 +69,15 @@ def svg_path_add(drawing, path={}):
             e = svg.path.Path('M%f,%f' % svg_pt(a['start_pt']),
                               style=style_cut)
             e.push_arc(target=svg_pt(a['end_pt']),
-                       r=a['radius']*mm_scale,
+                       r=a['radius']*mm,
                        rotation=0.0,
                        large_arc=a['big'][0],
                        angle_dir='+' if a['diff_a'] < 0.0 else '-',
                        absolute=True)
         drawing.add(e)
+# }}} svg_path_add()
 
-def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0):
+def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0): # {{{
     for p in path:
         if 'type' not in p: continue # TODO: maybe warn here?
 
@@ -92,148 +95,30 @@ def svg_blk_path_add(drawing, path={}, center=(0.0, 0.0), rotation=0.0):
             e = svg.path.Path('M%f,%f' % svg_pt(pt_shift(a['start_pt'], list(center))),
                               style=style_cut)
             e.push_arc(target=svg_pt(pt_shift(a['end_pt'], list(center))),
-                       r=a['radius']*mm_scale,
+                       r=a['radius']*mm,
                        rotation=0.0,
                        large_arc=a['big'][0],
                        angle_dir='+' if a['diff_a'] < 0.0 else '-',
                        absolute=True)
         drawing.add(e)
+# }}} svg_blk_path_add()
 
-# {{{ MNT cherrymx
-####d.add_layer('MNT')
-d_single = svg.Drawing(filename='svg/mcdox_mnt_cherrymx_3mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
+layername = 'top2' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
 
-for i, (x, y, r) in enumerate(sw_epts):
-    d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
-                                     center=(x, y),
-                                     rotation=r),
-                                     style=style_cut))
-####    insert.layer = 'MNT'
-####    d.add(insert)
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
 
-for (x, y) in fix_holes + lollybrd_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'MNT'
-####    d.add(insert)
+    svg_path_add(d_single, top_cutout_paths)
 
-####svg_path_add(d, mnt_outline_path, {'layer': 'MNT'})
-svg_path_add(d_single, mnt_outline_path)
+    svg_path_add(d_single, mnt_outline_path)
 
-####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
-svg_path_add(d_single, ctrlmnt_path)
-
-####svg_path_add(d, wsco_paths, {'layer': 'MNT'})
-svg_path_add(d_single, wsco_paths)
-
-d_single.save()
-# }}} End of MNT cherrymx
-
-# {{{ MNT alps
-####d.add_layer('MNT')
-d_single = svg.Drawing(filename='svg/mcdox_mnt_alps_3mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
-
-for i, (x, y, r) in enumerate(sw_epts):
-    d_single.add(polyline(svg_sw_pts(swtype='alps',
-                                     center=(x, y),
-                                     rotation=r),
-                                     style=style_cut))
-####    insert.layer = 'MNT'
-####    d.add(insert)
-
-for (x, y) in fix_holes + lollybrd_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'MNT'
-####    d.add(insert)
-
-####svg_path_add(d, mnt_outline_path, {'layer': 'MNT'})
-svg_path_add(d_single, mnt_outline_path)
-
-####svg_path_add(d, ctrlmnt_path, {'layer': 'MNT'})
-svg_path_add(d_single, ctrlmnt_path)
-
-####svg_path_add(d, wsco_paths, {'layer': 'MNT'})
-svg_path_add(d_single, wsco_paths)
-
-d_single.save()
-# }}} End of MNT alps
-
-# {{{ TOP0
-####
-####d.add_layer('TOP0')
-d_single = svg.Drawing(filename='svg/mcdox_top0_5mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
-
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'TOP0'
-####    d.add(insert)
-
-for (x, y) in lollybrd_holes:
-    d_single.add(circle(r=6.0*mm_scale/2,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'TOP0'
-####    d.add(insert)
-
-####svg_path_add(d, top_cutout_paths, {'layer': 'TOP0'})
-svg_path_add(d_single, top_cutout_paths)
-
-####svg_path_add(d, mnt_outline_path, {'layer': 'TOP0'})
-svg_path_add(d_single, mnt_outline_path)
-
-d_single.save()
-# }}} End of TOP0
-
-# {{{ TOP1
-####d.add_layer('TOP1')
-d_single = svg.Drawing(filename='svg/mcdox_top1_3mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
-
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'TOP1'
-####    d.add(insert)
-
-####svg_path_add(d, top_cutout_paths, {'layer': 'TOP1'})
-svg_path_add(d_single, top_cutout_paths)
-
-####svg_path_add(d, mnt_outline_path, {'layer': 'TOP1'})
-svg_path_add(d_single, mnt_outline_path)
-
-d_single.save()
-# }}} End of TOP1
-
-# {{{ TOP2
-####d.add_layer('TOP2')
-d_single = svg.Drawing(filename='svg/mcdox_top2_3mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
-
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'TOP2'
-####    d.add(insert)
-
-####svg_path_add(d, top_cutout_paths, {'layer': 'TOP2'})
-svg_path_add(d_single, top_cutout_paths)
-
-####svg_path_add(d, mnt_outline_path, {'layer': 'TOP2'})
-svg_path_add(d_single, mnt_outline_path)
-
-# Cut caps from same sheet as a 2 or 3mm top layer.
-# This is also useful to confirm the profiling gap is enough.
-if 1:
+    # Cut caps from same sheet as a 2 or 3mm top layer.
+    # This is also useful to confirm the profiling gap is enough.
     sys.path.insert(0, '../keycap')
     from keycap_alps_dxf_blocks import *
 
@@ -244,7 +129,7 @@ if 1:
 
         svg_blk_path_add(d_single, blk, (x, y), r)
 
-        l = labels[i]
+        l = keycap_labels[i]
         r = degrees(r) + l[0]
         style = "stroke:#0000ff;-inkscape-font-specification:sans-serif;font-family:sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px"
         for text, x_sh, y_sh in l[1]:
@@ -252,77 +137,158 @@ if 1:
             this_x, this_y = svg_pt((this_x, this_y))
             transform = 'rotate(%f, %f, %f)' % (-r, this_x, this_y)
             d_single.add(svg.text.Text(text, x=[this_x], y=[this_y], transform=transform, style=style))
-####    insert.layer = 'TOP2'
-####    d.add(insert)
 
-d_single.save()
-# }}} End of TOP2
+    d_single.save()
+# }}} top2
 
-# {{{ BASE0
-####d.add_layer('BASE0')
-d_single = svg.Drawing(filename='svg/mcdox_base0_3mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
+layername = 'top1' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
 
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'BASE0'
-####    d.add(insert)
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
 
-####svg_path_add(d, base0_outline_path, {'layer': 'BASE0'})
-svg_path_add(d_single, base0_outline_path)
+    svg_path_add(d_single, top_cutout_paths)
 
-d_single.save()
-# }}} End of BASE0
+    svg_path_add(d_single, mnt_outline_path)
 
-# {{{ BASE1
-d_single = svg.Drawing(filename='svg/mcdox_base1_5mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
+    d_single.save()
+# }}} top1
 
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'BASE1'
-####    d.add(insert)
+layername = 'top0' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
 
-####svg_path_add(d, base1_outline_path, {'layer': 'BASE1'})
-svg_path_add(d_single, base1_outline_path)
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
 
-####svg_path_add(d, wsco_paths, {'layer': 'BASE1'})
-svg_path_add(d_single, wsco_paths)
+    for (x, y) in lollybrd_holes:
+        d_single.add(circle(r=6.0*mm/2,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
 
-d_single.save()
-# }}} End of BASE1
+    svg_path_add(d_single, top_cutout_paths)
 
-# {{{ BASE2
-d_single = svg.Drawing(filename='svg/mcdox_base2_5mm.svg',
-                       size=('%dmm'%page_w, '%dmm'%page_h))
+    svg_path_add(d_single, mnt_outline_path)
 
-for (x, y) in fix_holes:
-    d_single.add(circle(r=M3_r*mm_scale,
-                        center=svg_pt((x, y)),
-                        style=style_cut))
-####    insert.layer = 'BASE2'
-####    d.add(insert)
+    d_single.save()
+# }}} top0
 
-####svg_path_add(d, base2_cutout_path, {'layer': 'BASE2'})
-svg_path_add(d_single, base2_cutout_path)
+layername = 'mnt_cherrymx' # {{{
+if layername in case_layers:
+    if 'mnt_alps' not in case_layers:
+        layername = 'mnt'
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
 
-####svg_path_add(d, mnt_outline_path, {'layer': 'BASE2'})
-svg_path_add(d_single, mnt_outline_path)
+    for i, (x, y, r) in enumerate(sw_epts):
+        d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
+                                         center=(x, y),
+                                         rotation=r),
+                                         style=style_cut))
 
-####svg_path_add(d, wsco_paths, {'layer': 'BASE2'})
-svg_path_add(d_single, wsco_paths)
+    for (x, y) in fix_holes + lollybrd_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
 
-d_single.save()
-# }}} End of BASE2
+    svg_path_add(d_single, mnt_outline_path)
 
-####d.save()
+    svg_path_add(d_single, ctrlmnt_path)
 
-if 0:
-    t = svg.Drawing(filename='svg/dim_test.svg', size=('%dmm'%page_w, '%dmm'%page_h))
+    svg_path_add(d_single, wsco_paths)
+
+    d_single.save()
+# }}} mnt cherrymx
+
+layername = 'mnt_alps' # {{{
+if layername in case_layers:
+    if 'mnt_cherrymx' not in case_layers:
+        layername = 'mnt'
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
+
+    for i, (x, y, r) in enumerate(sw_epts):
+        d_single.add(polyline(svg_sw_pts(swtype='alps',
+                                         center=(x, y),
+                                         rotation=r),
+                                         style=style_cut))
+
+    for (x, y) in fix_holes + lollybrd_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
+
+    svg_path_add(d_single, mnt_outline_path)
+
+    svg_path_add(d_single, ctrlmnt_path)
+
+    svg_path_add(d_single, wsco_paths)
+
+    d_single.save()
+# }}} mnt_alps
+
+layername = 'base2' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
+
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
+
+    svg_path_add(d_single, base2_cutout_path)
+
+    svg_path_add(d_single, mnt_outline_path)
+
+    svg_path_add(d_single, wsco_paths)
+
+    d_single.save()
+# }}} base2
+
+layername = 'base1' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
+
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
+
+    svg_path_add(d_single, base1_outline_path)
+
+    svg_path_add(d_single, wsco_paths)
+
+    d_single.save()
+# }}} base1
+
+layername = 'base0' # {{{
+if layername in case_layers:
+    d_single = svg.Drawing(filename=imgpath_fmt % layername,
+                           size=('%dmm'%page_w, '%dmm'%page_h))
+
+    for (x, y) in fix_holes:
+        d_single.add(circle(r=M3_r*mm,
+                            center=svg_pt((x, y)),
+                            style=style_cut))
+
+    svg_path_add(d_single, base0_outline_path)
+
+    d_single.save()
+# }}} base0
+
+layername = 'dimtst' # {{{
+if layername in case_layers:
+    t = svg.Drawing(filename=imgpath_fmt % layername,
+                    size=('%dmm'%page_w, '%dmm'%page_h))
 
     for i in range(10):
         args = {'width': 13.2 + i*0.1}
@@ -337,13 +303,15 @@ if 0:
                                   args=args), style=style_cut))
 
     for i in range(10):
-        t.add(circle(r=(5.5 + i*0.3)*mm_scale/2,
+        t.add(circle(r=(5.5 + i*0.3)*mm/2,
                      center=svg_pt((45.0, 10.0+i*18)),
                      style=style_cut))
 
     for i in range(10):
-        t.add(circle(r=(2.7 + i*0.1)*mm_scale/2,
+        t.add(circle(r=(2.7 + i*0.1)*mm/2,
                      center=svg_pt((55.0, 10.0+i*18)),
                      style=style_cut))
 
     t.save()
+# }}} dimtst
+
