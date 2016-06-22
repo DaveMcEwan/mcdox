@@ -170,12 +170,12 @@ for (x, y, r) in pcb_sw_epts:
 # Board outline
 for i in range(1, len(pcb_outline)):
     prev = pcb_outline[i-1]
-    this = pcb_outline[i]
+    curr = pcb_outline[i]
     subs = {
             'x_p': prev[0]+80,
             'y_p': -prev[1]+110,
-            'x_n': this[0]+80,
-            'y_n': -this[1]+110,
+            'x_n': curr[0]+80,
+            'y_n': -curr[1]+110,
            }
     pcb.append('  (gr_line (start %(x_p)s %(y_p)s) (end %(x_n)s %(y_n)s) (angle 90) (layer Edge.Cuts) (width 0.1))\n' % subs)
 
