@@ -12,5 +12,7 @@
 *.bak
 *-bak
 *.dcm
+case/svg/*.svg
+case/svg/*/*.*
 *generated*
 *cache*
