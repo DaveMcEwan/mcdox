@@ -733,7 +733,10 @@ def cap_size(n): # {{{
         return 'cap_10'
 # }}} End of cap_size()
 
-# {{{ Labels
+# {{{ keycap labels
+
+# These labels are only used for etching if you choose to cut the TOP2 layer
+
 labelsL_dvorak = [
  (-90, [('Shift',   -7.0, +8.0)                                                     ]),
  (-90, [('Ctrl',    -7.0, +8.0)                                                     ]),
@@ -817,8 +820,8 @@ labelsR_dvorak = [
 ]
 
 labelsL_qwerty = [
- (-90, [('Shift',   -7.0, +12.0)                                                    ]),
- (-90, [('Ctrl',    -7.0, +12.0)                                                    ]),
+ (-90, [('Shift',   -7.0, +8.0)                                                     ]),
+ (-90, [('Ctrl',    -7.0, +8.0)                                                     ]),
  (0,   [('Flip',    -7.0, +4.0)                                                     ]),
  (0,   [('Del',     -7.0, +4.0),                            ('Ins',    +1.0, -8.0)  ]),
  (0,   [('Alt',     -7.0, +4.0)                                                     ]),
@@ -858,8 +861,8 @@ labelsL_qwerty = [
 ]
 
 labelsR_qwerty = [
- (90,  [('Space',   -7.0, +12.0)                                                    ]),
- (90,  [('Enter',   -7.0, +12.0)                                                    ]),
+ (90,  [('Space',   -7.0, +8.0)                                                     ]),
+ (90,  [('Enter',   -7.0, +8.0)                                                     ]),
  (0,   [('Flip',    -7.0, +4.0)                                                     ]),
  (0,   [('Shift',   -7.0, +4.0),                                                    ]),
  (0,   [('Mute',    -7.0, +4.0)                                                     ]),
@@ -898,8 +901,12 @@ labelsR_qwerty = [
  (0,   [('\\',      -7.0, +1.0),    ('|',  -7.0, +5.0)                              ]),
 ]
 
-labels = labelsL_dvorak + labelsR_dvorak
-# }}}
+keycap_labels_qwerty = labelsL_qwerty + labelsR_qwerty
+keycap_labels_dvorak = labelsL_dvorak + labelsR_dvorak
+
+keycap_labels = keycap_labels_dvorak
+
+# }}} keycap labels
 
 if __name__ == '__main__':
     out = []
