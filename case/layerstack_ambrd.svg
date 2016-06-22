@@ -734,7 +734,7 @@
            y="312.56329"
            x="109.25461"
            id="tspan4231-1-6"
-           sodipodi:role="line">base2</tspan></text>
+           sodipodi:role="line">base1</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4237-7-8"
@@ -745,7 +745,7 @@
            y="140.01268"
            x="110.16098"
            id="tspan4239-1-9"
-           sodipodi:role="line">top2</tspan></text>
+           sodipodi:role="line">top1</tspan></text>
       <g
          transform="matrix(1.0036157,0,0,1.0000436,-0.18647586,21.451744)"
          id="g3353">
@@ -1754,7 +1754,7 @@
            y="312.56329"
            x="109.25461"
            id="tspan4231-1-6-5"
-           sodipodi:role="line">base2</tspan></text>
+           sodipodi:role="line">base1</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4237-7-8-0"
@@ -1765,7 +1765,7 @@
            y="140.01268"
            x="110.16098"
            id="tspan4239-1-9-9"
-           sodipodi:role="line">top2</tspan></text>
+           sodipodi:role="line">top1</tspan></text>
       <g
          transform="matrix(1.0036157,0,0,1.0000436,-0.18647586,21.451744)"
          id="g3353-0">
