@@ -108,14 +108,14 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, top_co)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, top_cutout_paths)
-
-    svg_path_add(d_single, mnt_outline_path)
 
     # Cut caps from same sheet as a 2 or 3mm top layer.
     # This is also useful to confirm the profiling gap is enough.
@@ -146,14 +146,14 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, top_co)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, top_cutout_paths)
-
-    svg_path_add(d_single, mnt_outline_path)
 
     d_single.save()
 # }}} top1
@@ -163,19 +163,21 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, top_co)
+
+    svg_path_add(d_single, wsco_paths)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
 
-    for (x, y) in lollybrd_holes:
+    for (x, y) in ctrlbrd_ho:
         d_single.add(circle(r=6.0*mm/2,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, top_cutout_paths)
-
-    svg_path_add(d_single, mnt_outline_path)
 
     d_single.save()
 # }}} top0
@@ -187,22 +189,22 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, ctrlmnt)
+
+    svg_path_add(d_single, wsco_paths)
+
     for i, (x, y, r) in enumerate(sw_epts):
         d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
                                          center=(x, y),
                                          rotation=r),
                                          style=style_cut))
 
-    for (x, y) in fix_holes + lollybrd_holes:
+    for (x, y) in case_ho + ctrlbrd_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, mnt_outline_path)
-
-    svg_path_add(d_single, ctrlmnt_path)
-
-    svg_path_add(d_single, wsco_paths)
 
     d_single.save()
 # }}} mnt cherrymx
@@ -214,22 +216,22 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, ctrlmnt)
+
+    svg_path_add(d_single, wsco_paths)
+
     for i, (x, y, r) in enumerate(sw_epts):
         d_single.add(polyline(svg_sw_pts(swtype='alps',
                                          center=(x, y),
                                          rotation=r),
                                          style=style_cut))
 
-    for (x, y) in fix_holes + lollybrd_holes:
+    for (x, y) in case_ho + ctrlbrd_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, mnt_outline_path)
-
-    svg_path_add(d_single, ctrlmnt_path)
-
-    svg_path_add(d_single, wsco_paths)
 
     d_single.save()
 # }}} mnt_alps
@@ -239,16 +241,16 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, case_outline)
+
+    svg_path_add(d_single, base2_outline)
+
+    svg_path_add(d_single, wsco_paths)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, base2_cutout_path)
-
-    svg_path_add(d_single, mnt_outline_path)
-
-    svg_path_add(d_single, wsco_paths)
 
     d_single.save()
 # }}} base2
@@ -258,14 +260,14 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, base1_outline)
+
+    svg_path_add(d_single, wsco_paths)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, base1_outline_path)
-
-    svg_path_add(d_single, wsco_paths)
 
     d_single.save()
 # }}} base1
@@ -275,12 +277,12 @@ if layername in case_layers:
     d_single = svg.Drawing(filename=imgpath_fmt % layername,
                            size=('%dmm'%page_w, '%dmm'%page_h))
 
-    for (x, y) in fix_holes:
+    svg_path_add(d_single, case_outline)
+
+    for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
-
-    svg_path_add(d_single, base0_outline_path)
 
     d_single.save()
 # }}} base0

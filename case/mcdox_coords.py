@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from math import *
 import sys
+from math import *
 from ndim import *
 
 # TODO: refactoring
@@ -25,6 +25,8 @@ from ndim import *
 #   wrest - Wrist rest.
 # M3 module
 
+# {{{ constants
+
 # M3 bolt hole radius.
 M3_r = 3.3/2
 
@@ -40,7 +42,7 @@ thumb_a = radians(-25)
 # Separation of hand circles.
 hand_sep = 29.0
 
-# Outline border width.
+# Case outline border width.
 border = 5.0
 
 # Radius of wrist rests.
@@ -49,6 +51,7 @@ wrest_r = 93.0
 # Center of entire keyboard.
 center = (2*wrest_r + hand_sep/2, wrest_r)
 
+# }}} constants
 
 # {{{ PCB switch coords
 
@@ -310,183 +313,194 @@ assert len(sw_pos) == n_sw
 
 # }}} PCB outline
 
+# {{{ case outline coords and arcs
 
-# {{{ Outline paths
-toparc_center_ptL = pt_relative(sw_pts[33], [-0.75*u, +0.5*u], [sw_a[33]])
-toparc_center_ptR = pt_reflect(toparc_center_ptL, [center[0], None])
-toparc_pathL = {
+# Top edge has arcs at corners.
+topedge_arc_ptL = pt_relative(sw_pts[33], [-0.75*u, +0.5*u], [sw_a[33]])
+topedge_arc_ptR = pt_reflect(topedge_arc_ptL, [center[0], None])
+topedge_arcL = {
     'type':         'arc',
-    'center':       toparc_center_ptL,
+    'center':       topedge_arc_ptL,
     'radius':       border,
     'startangle':   90,
     'endangle':     180 + degrees(hand_a)
 }
-toparc_pathR = {
+topedge_arcR = {
     'type':         'arc',
-    'center':       toparc_center_ptR,
+    'center':       topedge_arc_ptR,
     'radius':       border,
     'startangle':   -degrees(hand_a),
     'endangle':     90
 }
-top_edge = toparc_center_ptL[1] + border
-topedge_upper_ptL = (toparc_center_ptL[0], top_edge)
-topedge_upper_ptR = (toparc_center_ptR[0], top_edge)
-topedge_lower_ptL = pt_relative(toparc_center_ptL, [+border, 0.0], [radians(180) + hand_a])
-topedge_lower_ptR = pt_relative(toparc_center_ptR, [+border, 0.0], [-hand_a])
 
-leftmost_pt = pt_relative(sw_pts[36], [-0.75*u-border, -0.5*u-border], [sw_a[36]])
-rightmost_pt = pt_reflect(leftmost_pt, [center[0], None])
-leftmost_m = tan(hand_a)
-leftmost_c = leftmost_pt[1] - leftmost_m*leftmost_pt[0] # c = y - mx
+topedge_T = topedge_arc_ptL[1] + border
 
-thumbarc_pt = pt_relative(sw_pts[2], [+0.5*u+border, 0.0], [sw_a[2]])
+topedge_arc_ptTL = (topedge_arc_ptL[0], topedge_T)
+topedge_arc_ptTR = (topedge_arc_ptR[0], topedge_T)
+topedge_arc_ptBL = pt_relative(topedge_arc_ptL, [+border, 0.0], [radians(180) + hand_a])
+topedge_arc_ptBR = pt_relative(topedge_arc_ptR, [+border, 0.0], [-hand_a])
 
-wrest_center_x = leftmost_pt[0] + cos(hand_a)*wrest_r
-wrest_center_y = leftmost_pt[1] + sin(hand_a)*wrest_r
-wrest_center_ptL = (wrest_center_x, wrest_center_y)
-wrest_center_ptR = pt_reflect(wrest_center_ptL, [center[0], None])
-wrest_angle_eR = -hand_a
-wrest_angle_sL = radians(180) + hand_a
-wrest_angle_eL = dir_between_pts(wrest_center_ptL, thumbarc_pt)[0]
-wrest_angle_sR = radians(180) - wrest_angle_eL
-wrest_pathL = {
+# Points at the boundaries across the case.
+far_ptL = pt_relative(sw_pts[36], [-0.75*u-border, -0.5*u-border], [sw_a[36]])
+far_ptR = pt_reflect(far_ptL, [center[0], None])
+
+# Wrist rests are large arcs.
+wrest_inner_pt = pt_relative(sw_pts[2], [+0.5*u+border, 0.0], [sw_a[2]])
+wrest_ptL = (far_ptL[0] + cos(hand_a)*wrest_r, far_ptL[1] + sin(hand_a)*wrest_r)
+wrest_ptR = pt_reflect(wrest_ptL, [center[0], None])
+wrest_aLs = pi + hand_a
+wrest_aLe = dir_between_pts(wrest_ptL, wrest_inner_pt)[0]
+wrest_aRs = pi - wrest_aLe
+wrest_aRe = -hand_a
+wrest_L = {
     'type':         'arc',
-    'center':       wrest_center_ptL,
+    'center':       wrest_ptL,
     'radius':       wrest_r,
-    'startangle':   degrees(wrest_angle_sL),
-    'endangle':     degrees(wrest_angle_eL),
+    'startangle':   degrees(wrest_aLs),
+    'endangle':     degrees(wrest_aLe),
 }
-wrest_pathR = {
+wrest_R = {
     'type':         'arc',
-    'center':       wrest_center_ptR,
+    'center':       wrest_ptR,
     'radius':       wrest_r,
-    'startangle':   degrees(wrest_angle_sR),
-    'endangle':     degrees(wrest_angle_eR),
+    'startangle':   degrees(wrest_aRs),
+    'endangle':     degrees(wrest_aRe),
 }
 
-botarc_m = tan(wrest_angle_eL)
-botarc_c = wrest_center_ptL[1] - botarc_m*wrest_center_ptL[0] # c = y - mx
-botarc_center_x = center[0]
-botarc_center_y = botarc_m*botarc_center_x + botarc_c
-botarc_center_pt = (botarc_center_x, botarc_center_y)
-botarc_r = distance_between_pts(wrest_center_ptL, botarc_center_pt) - wrest_r
-botarc_path = {
+# Bottom arc in the middle between the two wrist rests.
+botarc_m = tan(wrest_aLe)
+botarc_c = wrest_ptL[1] - botarc_m*wrest_ptL[0] # c = y - mx
+botarc_pt = (center[0], botarc_m*center[0] + botarc_c)
+botarc_r = distance_between_pts(wrest_ptL, botarc_pt) - wrest_r
+botarc = {
     'type':         'arc',
-    'center':       botarc_center_pt,
+    'center':       botarc_pt,
     'radius':       botarc_r,
-    'startangle':   degrees(wrest_angle_sR) - 180,
-    'endangle':     degrees(wrest_angle_eL) - 180,
+    'startangle':   degrees(wrest_aRs) - 180,
+    'endangle':     degrees(wrest_aLe) - 180,
 }
-# }}}
 
-# {{{ Hand PCB mount in base layers
-handbrdL_cutout = [
-  pt_relative(sw_pts[4], [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[4]]),
-  pt_relative(sw_pts[2], [+(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[2]]),
-  pt_relative(sw_pts[0], [-(1.0*u+0.5), +(0.5*u+0.5)], [sw_a[0]]),
-  #
-  #pt_relative(sw_pts[17], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[17]]),
-  #pt_relative(sw_pts[17], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[17]]),
-  #pt_relative(sw_pts[22], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[22]]),
-  #pt_relative(sw_pts[22], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[22]]),
-  #pt_relative(sw_pts[27], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[27]]),
-  #pt_relative(sw_pts[27], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[27]]),
-  #pt_relative(sw_pts[32], [+(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[32]]),
-  pt_relative(sw_pts[37], [-(0.5*u+0.5),  -(0.5*u+0.5)], [sw_a[37]]),
-  #pt_relative(sw_pts[37], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[37]]),
-  pt_relative(sw_pts[36], [-(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[36]]),
-  pt_relative(sw_pts[33], [-(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[33]]),
-  #
-  pt_relative(sw_pts[28], [+(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[28]]),
-  pt_relative(sw_pts[23], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[23]]),
-  pt_relative(sw_pts[23], [+(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[23]]),
-  pt_relative(sw_pts[18], [-(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[18]]),
-  pt_relative(sw_pts[18], [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[18]]),
-  pt_relative(sw_pts[13], [-(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[13]]),
-  pt_relative(sw_pts[13], [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[13]]),
-  pt_relative(sw_pts[9],  [-(0.5*u-0.5),  +(0.5*u+0.5)], [sw_a[9]]),
-  pt_relative(sw_pts[6],  [+(0.5*u+0.5),  +(0.5*u+0.5)], [sw_a[6]]),
-]
-handbrdR_cutout = pts_reflect(handbrdL_cutout, [center[0], None])
-handbrdR_cutout.reverse()
-# }}}
+# }}} case outline coords and arcs
 
-# {{{ Controller PCB (lollybrd) mount
-lollybrd_width = 50.0
-lollybrd_height = 50.0
-lollybrd_spacer = 7.0 # Diameter of 2mm spacer between pcb and mount plate.
-lollybrd_hole_offset = (lollybrd_spacer/2)
+# {{{ handbrd cutout coords for base layers
 
-lollybrd_cutout_spc = 1.0 # Space between lollybrd and inner base layers.
-lollybrd_cutout_width = lollybrd_width + lollybrd_cutout_spc*2
-lollybrd_cutout_height = lollybrd_height + lollybrd_cutout_spc*2
-lollybrd_cutout_left = center[0] - (lollybrd_cutout_width/2)
-lollybrd_cutout_right = center[0] + (lollybrd_cutout_width/2)
-#lollybrd_cutout_bot = top_edge - lollybrd_cutout_height
-lollybrd_cutout_bot = handbrdL_cutout[-1][1] # Doesn't go all the way to the bottom.
-lollybrd_cutout_top = top_edge - border
-
-lollybrd_holes_top = lollybrd_cutout_top - lollybrd_cutout_spc - lollybrd_hole_offset
-lollybrd_holes_left = center[0] - (lollybrd_width/2) + lollybrd_hole_offset
-lollybrd_holes_right = center[0] + (lollybrd_width/2) - lollybrd_hole_offset
-lollybrd_holes_bot = lollybrd_cutout_top - lollybrd_height - lollybrd_cutout_spc + lollybrd_hole_offset
-lollybrd_holes = [
-    (lollybrd_holes_left, lollybrd_holes_bot),
-    (lollybrd_holes_right, lollybrd_holes_bot),
-    (lollybrd_holes_left, lollybrd_holes_top),
-    (lollybrd_holes_right, lollybrd_holes_top),
+handbrd_co = [
+    pt_relative(sw_pts[4],  [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[4] ] ),
+    pt_relative(sw_pts[2],  [+(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[2] ] ),
+    pt_relative(sw_pts[0],  [-(1.0*u+0.5), +(0.5*u+0.5)], [sw_a[0] ] ),
+    pt_relative(sw_pts[37], [-(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[37]] ),
+    pt_relative(sw_pts[36], [-(0.5*u+0.5), -(0.5*u+0.5)], [sw_a[36]] ),
+    pt_relative(sw_pts[33], [-(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[33]] ),
+    pt_relative(sw_pts[28], [+(0.5*u-0.5), +(0.5*u+0.5)], [sw_a[28]] ),
+    pt_relative(sw_pts[23], [-(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[23]] ),
+    pt_relative(sw_pts[23], [+(0.5*u-0.5), +(0.5*u+0.5)], [sw_a[23]] ),
+    pt_relative(sw_pts[18], [-(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[18]] ),
+    pt_relative(sw_pts[18], [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[18]] ),
+    pt_relative(sw_pts[13], [-(0.5*u-0.5), +(0.5*u+0.5)], [sw_a[13]] ),
+    pt_relative(sw_pts[13], [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[13]] ),
+    pt_relative(sw_pts[9],  [-(0.5*u-0.5), +(0.5*u+0.5)], [sw_a[9] ] ),
+    pt_relative(sw_pts[6],  [+(0.5*u+0.5), +(0.5*u+0.5)], [sw_a[6] ] ),
 ]
 
-teensy_cutout_width = 24.0 # Just enough to expose the teensy.
-teensy_cutout_height = 50.0
-teensy_cutout_left = center[0] - (teensy_cutout_width/2)
-teensy_cutout_right = center[0] + (teensy_cutout_width/2)
-teensy_cutout_bot = top_edge - teensy_cutout_height - border
-teensy_cutout_top = top_edge
-teensy_cutout = [
-    (teensy_cutout_left,  teensy_cutout_top),
-    (teensy_cutout_left,  teensy_cutout_bot),
-    (teensy_cutout_right, teensy_cutout_bot),
-    (teensy_cutout_right,  teensy_cutout_top),
+# }}} handbrd cutout coords for base layers
+
+# {{{ ctrlbrd cutout coords for base layers
+
+ctrlbrd_w = 50.0
+ctrlbrd_h = 50.0
+
+ctrlmnt_r = 3.5 # Radius of mounting holes on controller board.
+
+ctrlbrd_co_c = 1.0 # Space/offset between ctrlbrd and inner base layers.
+
+ctrlbrd_coL = center[0] - ctrlbrd_w/2 - ctrlbrd_co_c
+ctrlbrd_coR = center[0] + ctrlbrd_w/2 + ctrlbrd_co_c
+ctrlbrd_coB = handbrd_co[-1][1]
+ctrlbrd_coT = topedge_T - border
+
+ctrlbrd_hoT = ctrlbrd_coT - ctrlbrd_co_c - ctrlmnt_r
+ctrlbrd_hoL = center[0] - (ctrlbrd_w/2) + ctrlmnt_r
+ctrlbrd_hoR = center[0] + (ctrlbrd_w/2) - ctrlmnt_r
+ctrlbrd_hoB = ctrlbrd_coT - ctrlbrd_h - ctrlbrd_co_c + ctrlmnt_r
+ctrlbrd_ho = [
+    (ctrlbrd_hoL, ctrlbrd_hoB),
+    (ctrlbrd_hoR, ctrlbrd_hoB),
+    (ctrlbrd_hoL, ctrlbrd_hoT),
+    (ctrlbrd_hoR, ctrlbrd_hoT),
 ]
 
-ctrlmnt_top = lollybrd_cutout_top - lollybrd_cutout_spc
-ctrlmnt_left = center[0] - (lollybrd_width/2)
-ctrlmnt_right = center[0] + (lollybrd_width/2)
-ctrlmnt_bot = ctrlmnt_top - lollybrd_height
-ctrlmnt_arc_r = lollybrd_spacer/2
+ctrlbrd_co_arc_r = ctrlmnt_r + ctrlbrd_co_c
+ctrlbrd_co_arcL = {
+    'type':         'arc',
+    'center':       (ctrlbrd_hoL, ctrlbrd_hoT),
+    'radius':       ctrlbrd_co_arc_r,
+    'startangle':   90,
+    'endangle':     180
+}
+ctrlbrd_co_arcR = {
+    'type':         'arc',
+    'center':       (ctrlbrd_hoR, ctrlbrd_hoT),
+    'radius':       ctrlbrd_co_arc_r,
+    'startangle':   0,
+    'endangle':     90
+}
+
+# }}} ctrlbrd cutout coords for base layers
+
+# {{{ devbrd cutout coords for base0 (deprecated)
+
+devbrd_co_w = 24.0 # Just enough to expose the teensy.
+devbrd_co_h = 50.0
+devbrd_coL = center[0] - devbrd_co_w/2
+devbrd_coR = center[0] + devbrd_co_w/2
+devbrd_coB = topedge_T - devbrd_co_h - border
+devbrd_co = [
+    (devbrd_coL, topedge_T),
+    (devbrd_coL, devbrd_coB),
+    (devbrd_coR, devbrd_coB),
+    (devbrd_coR, topedge_T),
+]
+
+# }}} devbrd cutout coords for base0 (deprecated)
+
+# {{{ ctrlmnt cutout coords for mnt layer
+
+ctrlmnt_T = ctrlbrd_coT - ctrlbrd_co_c
+ctrlmnt_L = center[0] - ctrlbrd_w/2
+ctrlmnt_R = center[0] + ctrlbrd_w/2
 
 ctrlmnt_arcTL = {
     'type':         'arc',
-    'center':       (lollybrd_holes_left, lollybrd_holes_top),
-    'radius':       ctrlmnt_arc_r,
+    'center':       (ctrlbrd_hoL, ctrlbrd_hoT),
+    'radius':       ctrlmnt_r,
     'startangle':   -90,
     'endangle':     0
 }
 ctrlmnt_arcTR = {
     'type':         'arc',
-    'center':       (lollybrd_holes_right, lollybrd_holes_top),
-    'radius':       ctrlmnt_arc_r,
+    'center':       (ctrlbrd_hoR, ctrlbrd_hoT),
+    'radius':       ctrlmnt_r,
     'startangle':   180,
     'endangle':     -90
 }
 ctrlmnt_arcBL = {
     'type':         'arc',
-    'center':       (lollybrd_holes_left, lollybrd_holes_bot),
-    'radius':       ctrlmnt_arc_r,
+    'center':       (ctrlbrd_hoL, ctrlbrd_hoB),
+    'radius':       ctrlmnt_r,
     'startangle':   -90,
     'endangle':     90
 }
 ctrlmnt_arcBR = {
     'type':         'arc',
-    'center':       (lollybrd_holes_right, lollybrd_holes_bot),
-    'radius':       ctrlmnt_arc_r,
+    'center':       (ctrlbrd_hoR, ctrlbrd_hoB),
+    'radius':       ctrlmnt_r,
     'startangle':   90,
     'endangle':     270
 }
 
-midmnt_cutoutL = [
-  (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
+# Intermediate cutout coords for middle space in mnt.
+midmnt_coL = [
+  (ctrlmnt_L-ctrlbrd_co_c,ctrlbrd_hoB-ctrlmnt_r),
   pt_relative(sw_pts[7], [+0.55*u, -0.55*u], [sw_a[7]]),
   pt_relative(sw_pts[8], [+0.55*u, -0.55*u], [sw_a[8]]),
   pt_relative(sw_pts[5], [-0.55*u, +0.55*u], [sw_a[5]]),
@@ -494,47 +508,66 @@ midmnt_cutoutL = [
   pt_relative(sw_pts[4], [-0.55*u, +0.55*u], [sw_a[4]]),
   pt_relative(sw_pts[4], [+0.55*u, +0.55*u], [sw_a[4]]),
 ]
-midmnt_cutoutR = pts_reflect(midmnt_cutoutL, [center[0], None])
-midmnt_cutoutR.reverse()
-midmnt_cutout = midmnt_cutoutL + midmnt_cutoutR
+midmnt_coR = pts_reflect(midmnt_coL, [center[0], None])
+midmnt_coR.reverse()
+midmnt_co = midmnt_coL + midmnt_coR
 
-ctrlmnt_path = [
+ctrlmnt = [
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_top-ctrlmnt_arc_r),
+                                 (ctrlmnt_L+ctrlmnt_r,ctrlbrd_hoB+ctrlmnt_r),
+                                 (ctrlmnt_L-ctrlbrd_co_c,ctrlbrd_hoB+ctrlmnt_r),
+                                 (ctrlmnt_L-ctrlbrd_co_c,ctrlbrd_hoT-ctrlmnt_r),
+                                 (ctrlmnt_L+ctrlmnt_r,ctrlbrd_hoT-ctrlmnt_r),
                                 ]},
     ctrlmnt_arcTL,
     {'type': 'polyline', 'pts': [
-                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_top-ctrlmnt_arc_r),
-                                 (lollybrd_holes_left+ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
-                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_top+lollybrd_cutout_spc),
-                                 (lollybrd_holes_right-ctrlmnt_arc_r,ctrlmnt_top-ctrlmnt_arc_r),
+                                 (ctrlbrd_hoL+ctrlmnt_r,ctrlmnt_T-ctrlmnt_r),
+                                 (ctrlbrd_hoL+ctrlmnt_r,ctrlmnt_T+ctrlbrd_co_c),
+                                 (ctrlbrd_hoR-ctrlmnt_r,ctrlmnt_T+ctrlbrd_co_c),
+                                 (ctrlbrd_hoR-ctrlmnt_r,ctrlmnt_T-ctrlmnt_r),
                                 ]},
     ctrlmnt_arcTR,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_top-ctrlmnt_arc_r),
-                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_bot+ctrlmnt_arc_r),
-                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_bot+ctrlmnt_arc_r),
+                                 (ctrlmnt_R-ctrlmnt_r,ctrlbrd_hoT-ctrlmnt_r),
+                                 (ctrlmnt_R+ctrlbrd_co_c,ctrlbrd_hoT-ctrlmnt_r),
+                                 (ctrlmnt_R+ctrlbrd_co_c,ctrlbrd_hoB+ctrlmnt_r),
+                                 (ctrlmnt_R-ctrlmnt_r,ctrlbrd_hoB+ctrlmnt_r),
                                 ]},
     ctrlmnt_arcBR,
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_right+lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
-                                 (ctrlmnt_right-ctrlmnt_arc_r,lollybrd_holes_bot-ctrlmnt_arc_r),
+                                 (ctrlmnt_R+ctrlbrd_co_c,ctrlbrd_hoB-ctrlmnt_r),
+                                 (ctrlmnt_R-ctrlmnt_r,ctrlbrd_hoB-ctrlmnt_r),
                                 ]},
-    {'type': 'polyline', 'pts': midmnt_cutout},
+    {'type': 'polyline', 'pts': midmnt_co},
     {'type': 'polyline', 'pts': [
-                                 (ctrlmnt_left+ctrlmnt_arc_r,lollybrd_holes_bot-ctrlmnt_arc_r),
-                                 (ctrlmnt_left-lollybrd_cutout_spc,lollybrd_holes_bot-ctrlmnt_arc_r),
+                                 (ctrlmnt_L+ctrlmnt_r,ctrlbrd_hoB-ctrlmnt_r),
+                                 (ctrlmnt_L-ctrlbrd_co_c,ctrlbrd_hoB-ctrlmnt_r),
                                 ]},
     ctrlmnt_arcBL,
 ]
-# }}}
+# }}} ctrlmnt cutout coords for mnt layer
 
-# {{{ Top layers cutouts.
-fingersL_outline = [
+# {{{ case fixing holes
+
+case_hoL = [
+#    pt_relative(sw_pts[4], [+1.0*u, -7.0], [sw_a[4]]),
+    (sw_pts[6][0], topedge_T - border - 2.0),
+    (sw_pts[28][0], topedge_T - border - 2.0),
+    pt_relative(far_ptL, [border + 2.0, -border], [hand_a]),
+    pt_relative(wrest_ptL, [5.0, -wrest_r + border + 1.0], [-hand_a]),
+    pt_relative(wrest_ptL, [9.0, -wrest_r + border + 2.0], [5*hand_a]),
+]
+
+case_hoR = pts_reflect(case_hoL, [center[0], None])
+case_hoR.reverse()
+
+case_ho = case_hoL + case_hoR
+
+# }}} case fixing holes
+
+# {{{ switch/keycap cutouts in top layers
+
+fingers_coL = [
   pt_relative(sw_pts[33], [-0.75*u, +0.5*u], [sw_a[33]]),
   pt_relative(sw_pts[36], [-0.75*u, -0.5*u], [sw_a[36]]),
   pt_relative(sw_pts[37], [-0.5*u,  +0.5*u], [sw_a[37]]),
@@ -548,10 +581,10 @@ fingersL_outline = [
   pt_relative(sw_pts[17], [+0.5*u,  -0.5*u], [sw_a[17]]),
   pt_relative(sw_pts[12], [-0.5*u,  -0.5*u], [sw_a[12]]),
   pt_relative(sw_pts[12], [+0.5*u,  -0.5*u], [sw_a[12]]),
-  pt_relative(sw_pts[8],  [-0.75*u, -0.5*u], [sw_a[8]]),
-  pt_relative(sw_pts[8],  [+0.75*u, -0.5*u], [sw_a[8]]),
-  pt_relative(sw_pts[6],  [+0.5*u,  +0.5*u], [sw_a[6]]),
-  pt_relative(sw_pts[9],  [-0.5*u,  +0.5*u], [sw_a[9]]),
+  pt_relative(sw_pts[8],  [-0.75*u, -0.5*u], [sw_a[8]] ),
+  pt_relative(sw_pts[8],  [+0.75*u, -0.5*u], [sw_a[8]] ),
+  pt_relative(sw_pts[6],  [+0.5*u,  +0.5*u], [sw_a[6]] ),
+  pt_relative(sw_pts[9],  [-0.5*u,  +0.5*u], [sw_a[9]] ),
   pt_relative(sw_pts[13], [+0.5*u,  +0.5*u], [sw_a[13]]),
   pt_relative(sw_pts[13], [-0.5*u,  +0.5*u], [sw_a[13]]),
   pt_relative(sw_pts[18], [+0.5*u,  +0.5*u], [sw_a[18]]),
@@ -560,37 +593,39 @@ fingersL_outline = [
   pt_relative(sw_pts[23], [-0.5*u,  +0.5*u], [sw_a[23]]),
   pt_relative(sw_pts[28], [+0.5*u,  +0.5*u], [sw_a[28]]),
 ]
-fingersL_outline.append(fingersL_outline[0])
-fingersR_outline = pts_reflect(fingersL_outline, [center[0], None])
+fingers_coL.append(fingers_coL[0])
+fingers_coR = pts_reflect(fingers_coL, [center[0], None])
 
-thumbsL_outline = [
+thumbs_coL = [
   pt_relative(sw_pts[0], [-0.75*u, +0.5*u], [sw_a[0]]),
   pt_relative(sw_pts[1], [-0.75*u, -0.5*u], [sw_a[1]]),
-  pt_relative(sw_pts[2], [-0.5*u, -0.5*u], [sw_a[2]]),
-  pt_relative(sw_pts[2], [+0.5*u, -0.5*u], [sw_a[2]]),
-  pt_relative(sw_pts[4], [+0.5*u, +0.5*u], [sw_a[4]]),
-  pt_relative(sw_pts[4], [-0.5*u, +0.5*u], [sw_a[4]]),
-  pt_relative(sw_pts[5], [+0.5*u, +0.5*u], [sw_a[5]]),
-  pt_relative(sw_pts[5], [-0.5*u, +0.5*u], [sw_a[5]]),
+  pt_relative(sw_pts[2], [-0.5*u,  -0.5*u], [sw_a[2]]),
+  pt_relative(sw_pts[2], [+0.5*u,  -0.5*u], [sw_a[2]]),
+  pt_relative(sw_pts[4], [+0.5*u,  +0.5*u], [sw_a[4]]),
+  pt_relative(sw_pts[4], [-0.5*u,  +0.5*u], [sw_a[4]]),
+  pt_relative(sw_pts[5], [+0.5*u,  +0.5*u], [sw_a[5]]),
+  pt_relative(sw_pts[5], [-0.5*u,  +0.5*u], [sw_a[5]]),
   pt_relative(sw_pts[1], [+0.75*u, +0.5*u], [sw_a[1]]),
   pt_relative(sw_pts[0], [+0.75*u, +0.5*u], [sw_a[0]]),
 ]
-thumbsL_outline.append(thumbsL_outline[0])
-thumbsR_outline = pts_reflect(thumbsL_outline, [center[0], None])
+thumbs_coL.append(thumbs_coL[0])
+thumbs_coR = pts_reflect(thumbs_coL, [center[0], None])
 
-top_cutout_paths = [
-    {'type': 'polyline', 'pts': fingersL_outline},
-    {'type': 'polyline', 'pts': fingersR_outline},
-    {'type': 'polyline', 'pts': thumbsL_outline},
-    {'type': 'polyline', 'pts': thumbsR_outline},
+top_co = [
+    {'type': 'polyline', 'pts': fingers_coL},
+    {'type': 'polyline', 'pts': fingers_coR},
+    {'type': 'polyline', 'pts': thumbs_coL},
+    {'type': 'polyline', 'pts': thumbs_coR},
 ]
-# }}}
 
-# {{{ Weight saving cutouts
+# }}} switch/keycap cutouts in top layers
+
+# {{{ weight saving cutouts
+
 # TODO
 wsco_above_ptsL = [
-    (ctrlmnt_left - border, pt_relative(sw_pts[6], [+0.5*u,  +0.5*u + border], [0.0])[1]),
-    (ctrlmnt_left - border, top_edge - 2*border),
+    (ctrlmnt_L - border, pt_relative(sw_pts[6], [+0.5*u,  +0.5*u + border], [0.0])[1]),
+    (ctrlmnt_L - border, topedge_T - 2*border),
 ]
 wsco_above_ptsR = pts_reflect(wsco_above_ptsL, [center[0], None])
 wsco_above_ptsR.reverse()
@@ -604,113 +639,86 @@ wsco_paths = [
     {'type': 'polyline', 'pts': wsco_above_ptsL},
     {'type': 'polyline', 'pts': wsco_above_ptsR},
 ]
-# }}}
 
-# {{{ Fixing holes
-fix_hole_top = top_edge - border - 2.0
-fix_holesL = [
-    #pt_relative(sw_pts[4], [+1.0*u, -7.0], [sw_a[4]]),
-    (sw_pts[6][0], fix_hole_top),
-    (sw_pts[28][0], fix_hole_top),
-    pt_relative(leftmost_pt, [border + 2.0, -border], [hand_a]),
-    pt_relative(wrest_center_ptL, [5.0, -wrest_r + border + 1.0], [-hand_a]),
-    pt_relative(wrest_center_ptL, [9.0, -wrest_r + border + 2.0], [5*hand_a]),
-]
-fix_holesR = pts_reflect(fix_holesL, [center[0], None])
-fix_holesR.reverse()
-fix_holes = fix_holesL + fix_holesR
-# }}}
+# }}} weight saving cutouts
 
-# {{{ Layer outline paths
-mnt_outline_path = [
-    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
-    toparc_pathL,
-    {'type': 'polyline', 'pts': [topedge_upper_ptL, topedge_upper_ptR]},
-    toparc_pathR,
-    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
-    wrest_pathR,
-    botarc_path,
-    wrest_pathL,
+
+# {{{ case layer outlines
+
+case_outline = [
+    {'type': 'polyline', 'pts': [far_ptL, topedge_arc_ptBL]},
+    topedge_arcL,
+    {'type': 'polyline', 'pts': [topedge_arc_ptTL, topedge_arc_ptTR]},
+    topedge_arcR,
+    {'type': 'polyline', 'pts': [topedge_arc_ptBR, far_ptR]},
+    wrest_R,
+    botarc,
+    wrest_L,
 ]
 
-base0_outline_path = [
-    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
-    toparc_pathL,
-#    {'type': 'polyline', 'pts': [topedge_upper_ptL] + teensy_cutout + [topedge_upper_ptR]},
-    {'type': 'polyline', 'pts': [topedge_upper_ptL, topedge_upper_ptR]},
-    toparc_pathR,
-    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
-    wrest_pathR,
-    botarc_path,
-    wrest_pathL,
+# Alternative base0 outline with cutout for devbrd.
+base0_outline = [
+    {'type': 'polyline', 'pts': [far_ptL, topedge_arc_ptBL]},
+    topedge_arcL,
+    {'type': 'polyline', 'pts': [topedge_arc_ptTL] + devbrd_co + [topedge_arc_ptTR]},
+    topedge_arcR,
+    {'type': 'polyline', 'pts': [topedge_arc_ptBR, far_ptR]},
+    wrest_R,
+    botarc,
+    wrest_L,
 ]
 
 
-lollybrd_toparc_r = lollybrd_spacer/2 + lollybrd_cutout_spc
-lollybrd_toparc_pathL = {
-    'type':         'arc',
-    'center':       lollybrd_holes[2],
-    'radius':       lollybrd_toparc_r,
-    'startangle':   90,
-    'endangle':     180
-}
-lollybrd_toparc_pathR = {
-    'type':         'arc',
-    'center':       lollybrd_holes[3],
-    'radius':       lollybrd_toparc_r,
-    'startangle':   0,
-    'endangle':     90
-}
-base1_top_cutoutL = [
-    (teensy_cutout_left, top_edge),
-    (teensy_cutout_left, lollybrd_cutout_top),
-    (lollybrd_cutout_left + lollybrd_toparc_r, lollybrd_cutout_top),
+base1_co_topL = [
+    (devbrd_coL, topedge_T),
+    (devbrd_coL, ctrlbrd_coT),
+    (ctrlbrd_coL + ctrlbrd_co_arc_r, ctrlbrd_coT),
 ]
-base1_top_cutoutR = pts_reflect(base1_top_cutoutL, [center[0], None])
-base1_top_cutoutR.reverse()
+base1_co_topR = pts_reflect(base1_co_topL, [center[0], None])
+base1_co_topR.reverse()
 
-base1_main_cutoutL = [
-    (lollybrd_cutout_left, lollybrd_cutout_top - lollybrd_toparc_r),
-    (lollybrd_cutout_left, lollybrd_cutout_bot),
-] + handbrdL_cutout[::-1]
-base1_main_cutoutR = pts_reflect(base1_main_cutoutL, [center[0], None])
-base1_main_cutoutR.reverse()
-base1_main_cutout = base1_main_cutoutL + base1_main_cutoutR
+base1_co_mainL = [
+    (ctrlbrd_coL, ctrlbrd_coT - ctrlbrd_co_arc_r),
+    (ctrlbrd_coL, ctrlbrd_coB),
+] + handbrd_co[::-1]
+base1_co_mainR = pts_reflect(base1_co_mainL, [center[0], None])
+base1_co_mainR.reverse()
+base1_co_main = base1_co_mainL + base1_co_mainR
 
-base1_outline_path = [
-    {'type': 'polyline', 'pts': [leftmost_pt, topedge_lower_ptL]},
-    toparc_pathL,
-    {'type': 'polyline', 'pts': [topedge_upper_ptL] + base1_top_cutoutL},
-    lollybrd_toparc_pathL,
-    {'type': 'polyline', 'pts': base1_main_cutout},
-    lollybrd_toparc_pathR,
-    {'type': 'polyline', 'pts': base1_top_cutoutR + [topedge_upper_ptR]},
-    toparc_pathR,
-    {'type': 'polyline', 'pts': [topedge_lower_ptR, rightmost_pt]},
-    wrest_pathR,
-    botarc_path,
-    wrest_pathL,
+base1_outline = [
+    {'type': 'polyline', 'pts': [far_ptL, topedge_arc_ptBL]},
+    topedge_arcL,
+    {'type': 'polyline', 'pts': [topedge_arc_ptTL] + base1_co_topL},
+    ctrlbrd_co_arcL,
+    {'type': 'polyline', 'pts': base1_co_main},
+    ctrlbrd_co_arcR,
+    {'type': 'polyline', 'pts': base1_co_topR + [topedge_arc_ptTR]},
+    topedge_arcR,
+    {'type': 'polyline', 'pts': [topedge_arc_ptBR, far_ptR]},
+    wrest_R,
+    botarc,
+    wrest_L,
 ]
 
 
-base2_top_cutout = [
-    (lollybrd_cutout_right - lollybrd_toparc_r, lollybrd_cutout_top),
-    (lollybrd_cutout_left + lollybrd_toparc_r, lollybrd_cutout_top),
+base2_coL = [
+    (ctrlbrd_coL, ctrlbrd_coT - ctrlbrd_co_arc_r),
+    (ctrlbrd_coL, ctrlbrd_coB),
+] + handbrd_co[::-1]
+base2_coR = pts_reflect(base2_coL, [center[0], None])
+base2_coR.reverse()
+base2_co = base2_coL + base2_coR
+base2_outline = [
+    {'type': 'polyline', 'pts': [
+                                 (ctrlbrd_coR - ctrlbrd_co_arc_r, ctrlbrd_coT),
+                                 (ctrlbrd_coL + ctrlbrd_co_arc_r, ctrlbrd_coT),
+                                ]},
+    ctrlbrd_co_arcL,
+    {'type': 'polyline', 'pts': base2_co},
+    ctrlbrd_co_arcR,
 ]
-base2_main_cutoutL = [
-    (lollybrd_cutout_left, lollybrd_cutout_top - lollybrd_toparc_r),
-    (lollybrd_cutout_left, lollybrd_cutout_bot),
-] + handbrdL_cutout[::-1]
-base2_main_cutoutR = pts_reflect(base2_main_cutoutL, [center[0], None])
-base2_main_cutoutR.reverse()
-base2_main_cutout = base2_main_cutoutL + base2_main_cutoutR
-base2_cutout_path = [
-    {'type': 'polyline', 'pts': base2_top_cutout},
-    lollybrd_toparc_pathL,
-    {'type': 'polyline', 'pts': base2_main_cutout},
-    lollybrd_toparc_pathR,
-]
-# }}}
+
+# }}} case layer outlines
 
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.
@@ -967,9 +975,9 @@ if __name__ == '__main__':
     for h in fix_holes:
         out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
     out += ['PCB holes:']
-    for h in lollybrd_holes:
+    for h in ctrlbrd_ho:
         out += ['\t(%0.2f, %0.2f)' % (h[0], h[1])]
     out += ['Outer:']
-    out += ['\theight=%0.2f' % top_edge]
-    out += ['\twidth=%0.2f' % (wrest_center_ptR[0] + wrest_r)]
+    out += ['\theight=%0.2f' % topedge_T]
+    out += ['\twidth=%0.2f' % (wrest_ptR[0] + wrest_r)]
     print('\n'.join(out))
