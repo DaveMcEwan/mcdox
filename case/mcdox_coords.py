@@ -50,6 +50,9 @@ wrest_r = 93.0
 # Center of entire keyboard.
 center = (2*wrest_r + hand_sep/2, wrest_r)
 
+# Width of a CherryMX switch.
+cherrymx_w = 13.7
+
 # }}} constants
 
 # {{{ PCB switch coords
@@ -505,12 +508,12 @@ ctrlmnt_arcBR = {
 # Intermediate cutout coords for middle space in mnt.
 midmnt_coL = [
   (ctrlmnt_L-ctrlbrd_co_c,ctrlbrd_hoB-ctrlmnt_r),
-  pt_relative(sw_pts[7], [+0.55*u, -0.55*u], [sw_a[7]]),
-  pt_relative(sw_pts[8], [+0.55*u, -0.55*u], [sw_a[8]]),
-  pt_relative(sw_pts[5], [-0.55*u, +0.55*u], [sw_a[5]]),
-  pt_relative(sw_pts[5], [+0.45*u, +0.55*u], [sw_a[5]]),
-  pt_relative(sw_pts[4], [-0.55*u, +0.55*u], [sw_a[4]]),
-  pt_relative(sw_pts[4], [+0.55*u, +0.55*u], [sw_a[4]]),
+  pt_relative(sw_pts[7], [+0.5*cherrymx_w +border, +0.5*cherrymx_w +border], [hand_a]),
+  pt_relative(sw_pts[8], [+0.5*cherrymx_w +border, +0.5*cherrymx_w +border], [hand_a]),
+  pt_relative(sw_pts[5], [-0.5*cherrymx_w -border, +0.5*cherrymx_w +border], [hand_a + thumb_a]),
+  pt_relative(sw_pts[5], [+0.5*cherrymx_w,         +0.5*cherrymx_w +border], [hand_a + thumb_a]),
+  pt_relative(sw_pts[4], [-0.5*cherrymx_w -border, +0.5*cherrymx_w +border], [hand_a + thumb_a]),
+  pt_relative(sw_pts[4], [+0.5*cherrymx_w +border, +0.5*cherrymx_w +border], [hand_a + thumb_a]),
 ]
 midmnt_coR = pts_reflect(midmnt_coL, [center[0], None])
 midmnt_coR.reverse()
@@ -745,7 +748,7 @@ def sw_outline_pts(sw_type='', args={}): # {{{
             (-width/2, +height/2),
         ]
     elif sw_type in ['cherrymx']:
-        width = 13.7 if 'width' not in args else args['width']
+        width = cherrymx_w if 'width' not in args else args['width']
         notch_depth = 1.0 if 'notch_depth' not in args else args['notch_depth']
         notch_height = 3.7 if 'notch_height' not in args else args['notch_height']
 
