@@ -205,9 +205,14 @@ sw_ptTL = c0[0][:2]
 sw_ptBR = pcb_sw_thumb_pts[2]
 hand_pt = pt_between_pts(sw_ptTL, sw_ptBR)
 
+# Shift everything onto 400x200 page manually.
+page_cR = -0.5
+page_cT = -2.0
+
 # Real coordinates of switches.
 sw_ptsL = pts_shift(pcb_sw_pts, [-hand_pt[0] + wrest_r, wrest_r])
 sw_ptsL = pts_rotate(sw_ptsL, angle=[hand_a], center=(wrest_r, wrest_r))
+sw_ptsL = pts_shift(sw_ptsL, [page_cR, page_cT])
 sw_ptsR = pts_reflect(sw_ptsL, [center[0], None])
 sw_pts = sw_ptsL + sw_ptsR
 
@@ -621,7 +626,6 @@ top_co = [
 
 # {{{ weight saving cutouts
 
-# TODO
 wsabove_coL = [
     pt_relative(handbrd_co[-1], [0.0, border], [0.0]),
     pt_relative(handbrd_co[-2], [border, border], [hand_a]),

@@ -30,8 +30,8 @@ style_score = 'fill:none;stroke:#0000ff;stroke-opacity:1;stroke-width:%f' % (0.3
 
 # Define page size which is required for the coordinate calculations since SVG
 # specifies that top left is the origin.
-page_h = 200 +10 # TODO: rm the +10 which is just for easier debug viewing.
-page_w = 400 +10 # TODO: rm the +10 which is just for easier debug viewing.
+page_h = 200
+page_w = 400
 
 # Inkscape 0.48 does not support symbols (the SVG equivilant to DXF blocks) so
 # they are all converted to individual paths.
