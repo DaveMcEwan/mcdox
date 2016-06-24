@@ -767,6 +767,33 @@ base2_outline = [
 
 # }}} case layer outlines
 
+# {{{ battery cutout and holes
+
+# TODO: Correct these parameters.
+batt_ho_y = sw_pts[8][1] + 7.0
+batt_ho_w = 15.0
+batt_co_w = 38.0
+batt_co_h = 52.0
+
+batt_ho = [
+    (center[0] - batt_ho_w/2, batt_ho_y),
+    (center[0] + batt_ho_w/2, batt_ho_y),
+]
+
+batt_co_pts = [
+    (center[0] - batt_co_w/2, batt_ho_y + batt_co_h/2),
+    (center[0] + batt_co_w/2, batt_ho_y + batt_co_h/2),
+    (center[0] + batt_co_w/2, batt_ho_y - batt_co_h/2),
+    (center[0] - batt_co_w/2, batt_ho_y - batt_co_h/2),
+]
+batt_co_pts.append(batt_co_pts[0])
+
+batt_co = [
+    {'type': 'polyline', 'pts': batt_co_pts},
+]
+
+# }}} battery cutout and holes
+
 
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.

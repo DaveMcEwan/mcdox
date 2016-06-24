@@ -169,6 +169,8 @@ if layername in case_layers:
 
     svg_path_add(d_single, ws_co)
 
+    svg_path_add(d_single, batt_co)
+
     for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
@@ -279,7 +281,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, case_outline)
 
-    for (x, y) in case_ho:
+    for (x, y) in case_ho + batt_ho:
         d_single.add(circle(r=M3_r*mm,
                             center=svg_pt((x, y)),
                             style=style_cut))
