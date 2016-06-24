@@ -643,14 +643,49 @@ wsabove_coL.append(wsabove_coL[0])
 wsabove_coR = pts_reflect(wsabove_coL, [center[0], None])
 wsabove_coR.reverse()
 
-#wsco_below_ptsL = [
-#]
-#wsco_below_ptsR = pts_reflect(wsco_below_ptsL, [center[0], None])
-#wsco_below_ptsR.reverse()
+wsbelow_arc_r = wrest_r - 3*border
+
+tmp0_pt = pt_relative(handbrd_co[2], [-border, -border], [-hand_a])
+tmp1_pt = pt_relative(handbrd_co[3], [-border, -1.5*border], [-hand_a])
+tmp2_pt = pt_relative(handbrd_co[1], [-2*border, -border], [hand_a])
+tmp1_a = dir_between_pts(wrest_ptL, tmp1_pt)[0]
+tmp2_a = dir_between_pts(wrest_ptL, tmp2_pt)[0]
+
+ai = arcinfo_center_angles(center=wrest_ptL,
+                          radius=wsbelow_arc_r,
+                          start_a=[tmp1_a],
+                          end_a=[tmp2_a],
+                          direction=True)
+wsbelow_arcL = {
+    'type':         'arc',
+    'center':       wrest_ptL,
+    'radius':       wsbelow_arc_r,
+    'startangle':   degrees(tmp1_a),
+    'endangle':     degrees(tmp2_a),
+}
+wsbelow_arcR = {
+    'type':         'arc',
+    'center':       wrest_ptR,
+    'radius':       wsbelow_arc_r,
+    'startangle':   180 - degrees(tmp2_a),
+    'endangle':     180 - degrees(tmp1_a),
+}
+
+wsbelow_coL = [
+    ai['start_pt'],
+    tmp0_pt,
+    ai['end_pt'],
+]
+wsbelow_coR = pts_reflect(wsbelow_coL, [center[0], None])
+wsbelow_coR.reverse()
 
 ws_co = [
     {'type': 'polyline', 'pts': wsabove_coL},
     {'type': 'polyline', 'pts': wsabove_coR},
+    {'type': 'polyline', 'pts': wsbelow_coL},
+    wsbelow_arcL,
+    {'type': 'polyline', 'pts': wsbelow_coR},
+    wsbelow_arcR,
 ]
 
 # }}} weight saving cutouts
