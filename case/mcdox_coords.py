@@ -4,8 +4,7 @@ import sys
 from math import *
 from ndim import *
 
-# TODO: refactoring
-# Regular naming scheme:
+# Naming convention:
 #   angle       - _a
 #   radius      - _r
 #   width       - _w
@@ -623,25 +622,31 @@ top_co = [
 # {{{ weight saving cutouts
 
 # TODO
-wsco_above_ptsL = [
-    (ctrlmnt_L - border, pt_relative(sw_pts[6], [+0.5*u,  +0.5*u + border], [0.0])[1]),
-    (ctrlmnt_L - border, topedge_T - 2*border),
+wsabove_coL = [
+    pt_relative(handbrd_co[-1], [0.0, border], [0.0]),
+    pt_relative(handbrd_co[-2], [border, border], [hand_a]),
+    pt_relative(handbrd_co[-3], [border, border], [hand_a]),
+    pt_relative(handbrd_co[-4], [border, border], [hand_a]),
+    pt_relative(handbrd_co[-5], [border, border], [hand_a]),
+    pt_relative(handbrd_co[-6], [0.0, border], [hand_a]),
+    pt_shift(case_hoL[0], [0.0, -border - M3_r]),
 ]
-wsco_above_ptsR = pts_reflect(wsco_above_ptsL, [center[0], None])
-wsco_above_ptsR.reverse()
+wsabove_coL.append((wsabove_coL[0][0], wsabove_coL[-1][1]))
+wsabove_coL.append(wsabove_coL[0])
+wsabove_coR = pts_reflect(wsabove_coL, [center[0], None])
+wsabove_coR.reverse()
 
 #wsco_below_ptsL = [
 #]
 #wsco_below_ptsR = pts_reflect(wsco_below_ptsL, [center[0], None])
 #wsco_below_ptsR.reverse()
 
-wsco_paths = [
-    {'type': 'polyline', 'pts': wsco_above_ptsL},
-    {'type': 'polyline', 'pts': wsco_above_ptsR},
+ws_co = [
+    {'type': 'polyline', 'pts': wsabove_coL},
+    {'type': 'polyline', 'pts': wsabove_coR},
 ]
 
 # }}} weight saving cutouts
-
 
 # {{{ case layer outlines
 
@@ -719,6 +724,7 @@ base2_outline = [
 ]
 
 # }}} case layer outlines
+
 
 def sw_outline_pts(sw_type='', args={}): # {{{
     '''Define a switch hole.

@@ -167,7 +167,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, top_co)
 
-    svg_path_add(d_single, wsco_paths)
+    svg_path_add(d_single, ws_co)
 
     for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
@@ -193,7 +193,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, ctrlmnt)
 
-    svg_path_add(d_single, wsco_paths)
+    svg_path_add(d_single, ws_co)
 
     for i, (x, y, r) in enumerate(sw_epts):
         d_single.add(polyline(svg_sw_pts(swtype='cherrymx',
@@ -220,7 +220,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, ctrlmnt)
 
-    svg_path_add(d_single, wsco_paths)
+    svg_path_add(d_single, ws_co)
 
     for i, (x, y, r) in enumerate(sw_epts):
         d_single.add(polyline(svg_sw_pts(swtype='alps',
@@ -245,7 +245,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, base2_outline)
 
-    svg_path_add(d_single, wsco_paths)
+    svg_path_add(d_single, ws_co)
 
     for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
@@ -262,7 +262,7 @@ if layername in case_layers:
 
     svg_path_add(d_single, base1_outline)
 
-    svg_path_add(d_single, wsco_paths)
+    svg_path_add(d_single, ws_co)
 
     for (x, y) in case_ho:
         d_single.add(circle(r=M3_r*mm,
