@@ -37,9 +37,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.87476927"
-     inkscape:cx="604.48765"
-     inkscape:cy="681.45229"
+     inkscape:zoom="1.8168353"
+     inkscape:cx="1119.0433"
+     inkscape:cy="641.99377"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -49,9 +49,9 @@
      showguides="false"
      inkscape:guide-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-height="1031"
+     inkscape:window-x="1920"
+     inkscape:window-y="26"
      inkscape:window-maximized="1"
      inkscape:snap-grids="true"
      inkscape:bbox-paths="false"
@@ -61,7 +61,9 @@
      inkscape:snap-bbox-midpoints="true"
      inkscape:object-paths="false"
      inkscape:object-nodes="true"
-     inkscape:document-rotation="0">
+     inkscape:document-rotation="0"
+     inkscape:measure-start="0,0"
+     inkscape:measure-end="0,0">
     <inkscape:grid
        type="xygrid"
        id="grid2985"
@@ -97,8 +99,8 @@
     <rect
        style="display:inline;fill:#96c896;fill-opacity:1;stroke:#000000;stroke-width:0.37795424;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2995-0-7-0-9-28-0"
-       width="661.23041"
-       height="30.047329"
+       width="548.03149"
+       height="30.236225"
        x="755.90552"
        y="372.04721"
        rx="8.7147591e-06"
@@ -640,7 +642,7 @@
            sodipodi:role="line"
            id="tspan4231-1-6-0-8-1-0-1"
            x="2553.8708"
-           y="802.74341">base1</tspan></text>
+           y="802.74341">base2</tspan></text>
       <rect
          style="display:inline;fill:#ffc5c8;fill-opacity:1;stroke:#000000;stroke-width:0.4225432;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect4012-4-3-8-4-5-3-3-9"
@@ -793,52 +795,49 @@
            id="tspan1023-9"
            sodipodi:role="line">Standard 3mm acrylic</tspan></text>
     </g>
+    <rect
+       style="display:inline;fill:#ffc896;fill-opacity:1;stroke:#000000;stroke-width:0.37795424;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2995-0-7-0-9-2-62"
+       width="283.4646"
+       height="30.236219"
+       x="1020.4724"
+       y="341.811"
+       rx="8.7147591e-06"
+       ry="8.7147582e-06" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.2222662px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666994"
+       x="1124.8727"
+       y="356.01819"
+       id="text1932-1"><tspan
+         sodipodi:role="line"
+         id="tspan1930-2"
+         x="1124.8727"
+         y="356.01819"
+         style="stroke-width:1.06666994">ArduinoProMicro / Teensy3.2</tspan></text>
     <g
-       id="g4361"
-       transform="matrix(1.06667,0,0,1.06667,18.89535,-1533.0295)">
+       id="g3537-2-3-3-8"
+       transform="matrix(1.06667,0,0,1.06667,113.57291,-497.62456)">
       <rect
+         rx="8.17006e-06"
          ry="8.17006e-06"
-         rx="8.1700609e-06"
-         y="1757.4803"
-         x="939.15356"
-         height="28.169275"
-         width="301.18112"
-         id="rect2995-0-7-0-9-2-62"
-         style="display:inline;fill:#96c896;fill-opacity:1;stroke:#000000;stroke-width:0.35433099;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         y="815.31476"
+         x="938.79803"
+         height="53.149422"
+         width="141.73187"
+         id="rect2993-2-8-3-25"
+         style="fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.35433099;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <text
-         id="text1932-1"
-         y="1770.9767"
-         x="1036.8505"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         id="text3777-7-5-3-3"
+         y="827.41742"
+         x="941.39917"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           y="1770.9767"
-           x="1036.8505"
-           id="tspan1930-2"
-           sodipodi:role="line">ArduinoProMicro / Teensy3.2</tspan></text>
-      <g
-         transform="translate(88.759939,970.6891)"
-         id="g3537-2-3-3-8">
-        <rect
-           style="fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.35433099;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect2993-2-8-3-25"
-           width="141.7323"
-           height="53.149597"
-           x="938.97632"
-           y="814.96063"
-           ry="8.17006e-06"
-           rx="8.17006e-06" />
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-           x="941.39917"
+           style="font-size:12px;line-height:1.25;font-family:sans-serif"
            y="827.41742"
-           id="text3777-7-5-3-3"><tspan
-             sodipodi:role="line"
-             id="tspan3779-4-6-8-4"
-             x="941.39917"
-             y="827.41742"
-             style="font-size:12px;line-height:1.25;font-family:sans-serif">USB micro</tspan></text>
-      </g>
+           x="941.39917"
+           id="tspan3779-4-6-8-4"
+           sodipodi:role="line">USB micro</tspan></text>
     </g>
     <g
        id="g379"
@@ -921,6 +920,204 @@
            id="path3683-4-1-4-4-9-7"
            inkscape:connector-curvature="0" />
       </g>
+    </g>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1375"
+       width="113.38582"
+       height="37.795269"
+       x="1322.8347"
+       y="315.35428" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1377"
+       cx="1353.0709"
+       cy="322.91333"
+       r="1.8897638" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1379"
+       cx="1405.9844"
+       cy="322.91333"
+       r="1.8897638" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1381"
+       width="37.795258"
+       height="18.897629"
+       x="1360.63"
+       y="315.35428" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1383"
+       cx="1379.5276"
+       cy="341.81097"
+       r="1.8897638" />
+    <rect
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1375-6"
+       width="113.38582"
+       height="37.795269"
+       x="1322.8347"
+       y="258.66138" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1377-7"
+       cx="1353.0709"
+       cy="266.2204"
+       rx="3.7795336"
+       ry="3.7795315" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1379-5"
+       cx="1405.9844"
+       cy="266.2204"
+       rx="3.7795725"
+       ry="3.7795315" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1383-5"
+       cx="1379.5276"
+       cy="285.11807"
+       rx="3.7794919"
+       ry="3.779551" />
+    <rect
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1375-62"
+       width="113.38582"
+       height="37.795269"
+       x="1322.8347"
+       y="372.04718" />
+    <rect
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1381-2"
+       width="75.590599"
+       height="30.236225"
+       x="1341.7323"
+       y="372.04718" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       x="1375.8846"
+       y="332.58786"
+       id="text1441"><tspan
+         sodipodi:role="line"
+         id="tspan1439"
+         x="1375.8846"
+         y="332.58786"
+         style="font-size:8px">cutout for devbrd</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       x="1379.3323"
+       y="352.35245"
+       id="text1445"><tspan
+         sodipodi:role="line"
+         id="tspan1443"
+         x="1379.3323"
+         y="352.35245">M3 holes</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       x="1379.5081"
+       y="276.7619"
+       id="text1449"><tspan
+         sodipodi:role="line"
+         id="tspan1447"
+         x="1379.5081"
+         y="276.7619">sockethead holes</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       x="1379.4045"
+       y="386.36819"
+       id="text1453"><tspan
+         sodipodi:role="line"
+         id="tspan1451"
+         x="1379.4045"
+         y="386.36819">cutout for breakout</tspan></text>
+    <rect
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1375-6-9"
+       width="113.38582"
+       height="37.795269"
+       x="1322.8347"
+       y="428.74011" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1377-7-3"
+       cx="1353.0709"
+       cy="436.29913"
+       rx="3.7795336"
+       ry="3.7795315" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1379-5-6"
+       cx="1405.9844"
+       cy="436.29913"
+       rx="3.7795725"
+       ry="3.7795315" />
+    <ellipse
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1383-5-0"
+       cx="1379.5276"
+       cy="455.19681"
+       rx="3.7794919"
+       ry="3.779551" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       x="1379.3616"
+       y="446.84064"
+       id="text1449-6"><tspan
+         sodipodi:role="line"
+         id="tspan1447-2"
+         x="1379.3616"
+         y="446.84064">nut holes</tspan></text>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1500"
+       width="26.456659"
+       height="11.338596"
+       x="1330.3938"
+       y="455.19678" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0009;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1502"
+       width="26.456648"
+       height="11.338596"
+       x="1402.2048"
+       y="455.19678" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       x="1379.3323"
+       y="461.95874"
+       id="text1506"><tspan
+         sodipodi:role="line"
+         id="tspan1504"
+         x="1379.3323"
+         y="461.95874">FPC cutout to handbrds</tspan></text>
+    <g
+       id="g1517">
+      <rect
+         y="341.81097"
+         x="1277.4803"
+         height="60.472443"
+         width="7.5590553"
+         id="rect1508"
+         style="opacity:1;fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.13385832;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         transform="rotate(-90)"
+         id="text1512"
+         y="1284.1512"
+         x="-373.16418"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="1284.1512"
+           x="-373.16418"
+           id="tspan1510"
+           sodipodi:role="line">3.2mm wire</tspan></text>
     </g>
   </g>
 </svg>
