@@ -335,12 +335,12 @@ $EndComp
 $Comp
 L hand:switchDiode c5r4
 U 1 1 5FB853E2
-P 7700 5350
-F 0 "c5r4" H 7700 5450 50  0000 C CNN
-F 1 "switchDiode" H 7700 5300 50  0000 C CNN
-F 2 "hand:reversibleMX_15u" H 7700 5350 50  0001 C CNN
-F 3 "" H 7700 5350 50  0001 C CNN
-	1    7700 5350
+P 7700 5150
+F 0 "c5r4" H 7700 5250 50  0000 C CNN
+F 1 "switchDiode" H 7700 5100 50  0000 C CNN
+F 2 "hand:reversibleMX_15u" H 7700 5150 50  0001 C CNN
+F 3 "" H 7700 5150 50  0001 C CNN
+	1    7700 5150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -377,10 +377,10 @@ F 3 "" H 8700 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L hand:switchDiode c7r0
+L hand:switchDiode c6r3
 U 1 1 5FB85406
 P 8700 4600
-F 0 "c7r0" H 8700 4700 50  0000 C CNN
+F 0 "c6r3" H 8700 4700 50  0000 C CNN
 F 1 "switchDiode" H 8700 4550 50  0000 C CNN
 F 2 "hand:reversibleMX_10u" H 8700 4600 50  0001 C CNN
 F 3 "" H 8700 4600 50  0001 C CNN
@@ -388,47 +388,25 @@ F 3 "" H 8700 4600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L hand:switchDiode c7r1
+L hand:switchDiode c6r4
 U 1 1 5FB8540C
-P 8700 5350
-F 0 "c7r1" H 8700 5450 50  0000 C CNN
-F 1 "switchDiode" H 8700 5300 50  0000 C CNN
-F 2 "hand:reversibleMX_15u" H 8700 5350 50  0001 C CNN
-F 3 "" H 8700 5350 50  0001 C CNN
-	1    8700 5350
-	1    0    0    -1  
-$EndComp
-$Comp
-L hand:switchDiode c7r2
-U 1 1 5FB85412
-P 9700 4600
-F 0 "c7r2" H 9700 4700 50  0000 C CNN
-F 1 "switchDiode" H 9700 4550 50  0000 C CNN
-F 2 "hand:reversibleMX_10u" H 9700 4600 50  0001 C CNN
-F 3 "" H 9700 4600 50  0001 C CNN
-	1    9700 4600
+P 8700 5150
+F 0 "c6r4" H 8700 5250 50  0000 C CNN
+F 1 "switchDiode" H 8700 5100 50  0000 C CNN
+F 2 "hand:reversibleMX_15u" H 8700 5150 50  0001 C CNN
+F 3 "" H 8700 5150 50  0001 C CNN
+	1    8700 5150
 	1    0    0    -1  
 $EndComp
 $Comp
 L hand:switchDiode c7r3
-U 1 1 5FB85418
-P 9700 5100
-F 0 "c7r3" H 9700 5200 50  0000 C CNN
-F 1 "switchDiode" H 9700 5050 50  0000 C CNN
-F 2 "hand:reversibleMX_10u" H 9700 5100 50  0001 C CNN
-F 3 "" H 9700 5100 50  0001 C CNN
-	1    9700 5100
-	1    0    0    -1  
-$EndComp
-$Comp
-L hand:switchDiode c7r4
-U 1 1 5FB8541E
-P 9700 5600
-F 0 "c7r4" H 9700 5700 50  0000 C CNN
-F 1 "switchDiode" H 9700 5550 50  0000 C CNN
-F 2 "hand:reversibleMX_10u" H 9700 5600 50  0001 C CNN
-F 3 "" H 9700 5600 50  0001 C CNN
-	1    9700 5600
+U 1 1 5FB85412
+P 9700 4600
+F 0 "c7r3" H 9700 4700 50  0000 C CNN
+F 1 "switchDiode" H 9700 4550 50  0000 C CNN
+F 2 "hand:reversibleMX_10u" H 9700 4600 50  0001 C CNN
+F 3 "" H 9700 4600 50  0001 C CNN
+	1    9700 4600
 	1    0    0    -1  
 $EndComp
 Text GLabel 2250 2350 0    50   Input ~ 0
@@ -455,7 +433,7 @@ Text GLabel 8050 1900 1    50   Input ~ 0
 col5
 Text GLabel 9050 1900 1    50   Input ~ 0
 col6
-Text GLabel 9050 4350 1    50   Input ~ 0
+Text GLabel 10050 4400 1    50   Input ~ 0
 col7
 Wire Wire Line
 	2250 2350 2350 2350
@@ -464,8 +442,6 @@ Wire Wire Line
 Wire Wire Line
 	7350 2350 7350 2150
 Connection ~ 7350 2350
-Wire Wire Line
-	7350 2350 8250 2350
 Wire Wire Line
 	6350 2350 6350 2150
 Connection ~ 6350 2350
@@ -498,8 +474,6 @@ Wire Wire Line
 Wire Wire Line
 	7350 2850 7350 2650
 Connection ~ 7350 2850
-Wire Wire Line
-	7350 2850 8150 2850
 Wire Wire Line
 	6350 2850 6350 2650
 Connection ~ 6350 2850
@@ -664,8 +638,6 @@ Wire Wire Line
 	8050 2650 8050 3150
 Connection ~ 8050 3150
 Wire Wire Line
-	8050 3150 8050 3650
-Wire Wire Line
 	9050 1900 9050 2150
 Connection ~ 9050 2150
 Wire Wire Line
@@ -701,61 +673,9 @@ Wire Wire Line
 Connection ~ 3050 3650
 Wire Wire Line
 	3050 3650 3050 4150
-Wire Wire Line
-	8050 3650 8050 5350
 Connection ~ 8050 3650
 Wire Wire Line
-	6350 4350 6350 5350
-Wire Wire Line
-	6350 5350 7350 5350
-Connection ~ 6350 4350
-Wire Wire Line
-	9050 4350 9050 4400
-Connection ~ 9050 4600
-Wire Wire Line
-	9050 4600 9050 5350
-Wire Wire Line
-	10050 5600 10050 5100
-Wire Wire Line
-	10050 4400 9050 4400
-Connection ~ 10050 4600
-Wire Wire Line
 	10050 4600 10050 4400
-Connection ~ 10050 5100
-Wire Wire Line
-	10050 5100 10050 4600
-Connection ~ 9050 4400
-Wire Wire Line
-	9050 4400 9050 4600
-Wire Wire Line
-	8250 2350 8250 4600
-Wire Wire Line
-	8250 4600 8350 4600
-Connection ~ 8250 2350
-Wire Wire Line
-	8250 2350 8350 2350
-Wire Wire Line
-	8150 2850 8150 5350
-Wire Wire Line
-	8150 5350 8350 5350
-Connection ~ 8150 2850
-Wire Wire Line
-	8150 2850 8350 2850
-Wire Wire Line
-	8350 3350 9350 3350
-Wire Wire Line
-	9350 3350 9350 4600
-Connection ~ 8350 3350
-Wire Wire Line
-	7350 3850 7350 5100
-Wire Wire Line
-	7350 5100 9350 5100
-Connection ~ 7350 3850
-Wire Wire Line
-	6350 5350 6350 5600
-Wire Wire Line
-	6350 5600 9350 5600
-Connection ~ 6350 5350
 Text Notes 7800 7500 2    50   ~ 0
 mcdoxHand
 Text Notes 7000 7100 0    50   ~ 0
@@ -846,35 +766,13 @@ F 3 "~" H 1350 6750 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L power:+3.3V #PWR0103
-U 1 1 5FD1551B
-P 1350 6300
-F 0 "#PWR0103" H 1350 6150 50  0001 C CNN
-F 1 "+3.3V" H 1365 6473 50  0000 C CNN
-F 2 "" H 1350 6300 50  0001 C CNN
-F 3 "" H 1350 6300 50  0001 C CNN
-	1    1350 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0104
-U 1 1 5FD15C63
-P 1350 6900
-F 0 "#PWR0104" H 1350 6650 50  0001 C CNN
-F 1 "GND" H 1355 6727 50  0000 C CNN
-F 2 "" H 1350 6900 50  0001 C CNN
-F 3 "" H 1350 6900 50  0001 C CNN
-	1    1350 6900
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector_Generic:Conn_01x15 J1
 U 1 1 5FBD26A4
 P 3800 6200
 F 0 "J1" H 3880 6242 50  0000 L CNN
 F 1 "Conn_01x15" H 3880 6151 50  0000 L CNN
 F 2 "Connector_FFC-FPC:TE_1-84953-5_1x15-1MP_P1.0mm_Horizontal" H 3800 6200 50  0001 C CNN
-F 3 "~" H 3800 6200 50  0001 C CNN
+F 3 "https://www.te.com/usa-en/product-1-84953-5.html" H 3800 6200 50  0001 C CNN
 	1    3800 6200
 	1    0    0    1   
 $EndComp
@@ -904,28 +802,6 @@ Text GLabel 3600 6600 0    50   Input ~ 0
 col6
 Text GLabel 3600 6700 0    50   Input ~ 0
 col7
-$Comp
-L power:+3.3V #PWR0105
-U 1 1 5FBD26B7
-P 3100 6800
-F 0 "#PWR0105" H 3100 6650 50  0001 C CNN
-F 1 "+3.3V" H 3115 6973 50  0000 C CNN
-F 2 "" H 3100 6800 50  0001 C CNN
-F 3 "" H 3100 6800 50  0001 C CNN
-	1    3100 6800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0106
-U 1 1 5FBD26BD
-P 3100 6900
-F 0 "#PWR0106" H 3100 6650 50  0001 C CNN
-F 1 "GND" H 3105 6727 50  0000 C CNN
-F 2 "" H 3100 6900 50  0001 C CNN
-F 3 "" H 3100 6900 50  0001 C CNN
-	1    3100 6900
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3100 6800 3600 6800
 Wire Wire Line
@@ -952,11 +828,78 @@ F 3 "~" H 1850 6750 50  0001 C CNN
 	1    1850 6750
 	0    -1   -1   0   
 $EndComp
+Connection ~ 9050 3150
 $Comp
-L power:+3.3V #PWR?
+L hand:switchDiode c7r4
+U 1 1 5FB85418
+P 9700 5150
+F 0 "c7r4" H 9700 5250 50  0000 C CNN
+F 1 "switchDiode" H 9700 5100 50  0000 C CNN
+F 2 "hand:reversibleMX_15u" H 9700 5150 50  0001 C CNN
+F 3 "" H 9700 5150 50  0001 C CNN
+	1    9700 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 2850 8350 2850
+Wire Wire Line
+	6350 5400 7350 5400
+Wire Wire Line
+	8350 5400 8350 5150
+Wire Wire Line
+	7350 5400 7350 5150
+Connection ~ 7350 5400
+Wire Wire Line
+	7350 5400 8350 5400
+Wire Wire Line
+	8050 3650 8050 5150
+Wire Wire Line
+	6350 5400 6350 4350
+Wire Wire Line
+	8050 3450 8050 3650
+Wire Wire Line
+	8050 3150 8050 3650
+Wire Wire Line
+	9050 3150 9050 4600
+Connection ~ 6350 4350
+Wire Wire Line
+	8350 5400 9350 5400
+Wire Wire Line
+	9350 5400 9350 5150
+Connection ~ 8350 5400
+Wire Wire Line
+	10050 5150 10050 4600
+Connection ~ 10050 4600
+Wire Wire Line
+	7350 3850 7350 4800
+Wire Wire Line
+	9350 4800 9350 4600
+Connection ~ 7350 3850
+Wire Wire Line
+	7350 2350 8350 2350
+Wire Wire Line
+	7350 4800 8350 4800
+Wire Wire Line
+	8350 4800 8350 4600
+Connection ~ 8350 4800
+Wire Wire Line
+	8350 4800 9350 4800
+$Comp
+L power:+3.3V #PWR0103
+U 1 1 5FD1551B
+P 1350 6300
+F 0 "#PWR0103" H 1350 6150 50  0001 C CNN
+F 1 "+3.3V" H 1365 6473 50  0000 C CNN
+F 2 "" H 1350 6300 50  0001 C CNN
+F 3 "" H 1350 6300 50  0001 C CNN
+	1    1350 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR0107
 U 1 1 5FB1D775
 P 1850 6300
-F 0 "#PWR?" H 1850 6150 50  0001 C CNN
+F 0 "#PWR0107" H 1850 6150 50  0001 C CNN
 F 1 "+3.3V" H 1865 6473 50  0000 C CNN
 F 2 "" H 1850 6300 50  0001 C CNN
 F 3 "" H 1850 6300 50  0001 C CNN
@@ -964,14 +907,50 @@ F 3 "" H 1850 6300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0106
+U 1 1 5FBD26BD
+P 3100 6900
+F 0 "#PWR0106" H 3100 6650 50  0001 C CNN
+F 1 "GND" H 3105 6727 50  0000 C CNN
+F 2 "" H 3100 6900 50  0001 C CNN
+F 3 "" H 3100 6900 50  0001 C CNN
+	1    3100 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR0105
+U 1 1 5FBD26B7
+P 3100 6800
+F 0 "#PWR0105" H 3100 6650 50  0001 C CNN
+F 1 "+3.3V" H 3115 6973 50  0000 C CNN
+F 2 "" H 3100 6800 50  0001 C CNN
+F 3 "" H 3100 6800 50  0001 C CNN
+	1    3100 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9050 5150 9050 4600
+Connection ~ 9050 4600
+$Comp
+L power:GND #PWR0108
 U 1 1 5FB1D77B
 P 1850 6900
-F 0 "#PWR?" H 1850 6650 50  0001 C CNN
+F 0 "#PWR0108" H 1850 6650 50  0001 C CNN
 F 1 "GND" H 1855 6727 50  0000 C CNN
 F 2 "" H 1850 6900 50  0001 C CNN
 F 3 "" H 1850 6900 50  0001 C CNN
 	1    1850 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0104
+U 1 1 5FD15C63
+P 1350 6900
+F 0 "#PWR0104" H 1350 6650 50  0001 C CNN
+F 1 "GND" H 1355 6727 50  0000 C CNN
+F 2 "" H 1350 6900 50  0001 C CNN
+F 3 "" H 1350 6900 50  0001 C CNN
+	1    1350 6900
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
