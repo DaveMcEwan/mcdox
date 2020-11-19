@@ -4,7 +4,6 @@
 *-bak
 *-rescue.lib
 *-rescue.dcm
-sym-lib-table
 
 # Current working state
 _autosave-*.kicad_pcb
