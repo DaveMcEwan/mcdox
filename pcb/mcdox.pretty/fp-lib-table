@@ -1,4 +1,0 @@
-(fp_lib_table
-  (lib (name mcdox)(type KiCad)(uri /home/dm16886/mcdox/pcb/mcdox.pretty)(options "")(descr ""))
-  (lib (name hand)(type KiCad)(uri /home/dm16886/mcdox/pcb/hand/hand/hand.pretty)(options "")(descr ""))
-)

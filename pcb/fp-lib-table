@@ -1,3 +1,0 @@
-(fp_lib_table
-  (lib (name mcdox)(type KiCad)(uri ${KIPRJMOD}/mcdox.pretty)(options "")(descr ""))
-)
