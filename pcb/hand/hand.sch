@@ -953,4 +953,6 @@ F 3 "" H 1350 6900 50  0001 C CNN
 	1    1350 6900
 	1    0    0    -1  
 $EndComp
+Text Notes 3500 7450 0    50   ~ 0
+J1 on F.Cu connects right hand.\nJ2 on B.Cu connects left hand.
 $EndSCHEMATC
