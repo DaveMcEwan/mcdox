@@ -11,7 +11,7 @@
    height="594mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="1.0.1 (1.0.1+r75)"
    sodipodi:docname="layerstackPalette.svg"
    inkscape:export-filename="layerstack_ambrd.png"
    inkscape:export-xdpi="90"
@@ -37,9 +37,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.89129962"
-     inkscape:cx="800.69999"
-     inkscape:cy="513.99614"
+     inkscape:zoom="0.92069469"
+     inkscape:cx="365.56305"
+     inkscape:cy="544.35587"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -49,9 +49,9 @@
      showguides="false"
      inkscape:guide-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1031"
+     inkscape:window-height="1052"
      inkscape:window-x="1920"
-     inkscape:window-y="26"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-grids="true"
      inkscape:bbox-paths="false"
@@ -101,13 +101,13 @@
          transform="translate(1201.3583,460.62989)"
          id="g3496-7-5">
         <rect
-           style="display:inline;fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.35433099;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="display:inline;fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.354331;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect2993-0-9-8-6"
-           width="105.94492"
-           height="38.444904"
-           x="567.10626"
-           y="818.68103"
-           ry="8.17006e-06"
+           width="106.29887"
+           height="49.606113"
+           x="566.9281"
+           y="807.87421"
+           ry="0"
            rx="8.17006e-06" />
         <text
            xml:space="preserve"
@@ -2082,10 +2082,10 @@
          transform="translate(1186.8308,1030.9252)"
          id="g3496-7-5-3">
         <rect
-           style="display:inline;fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.35433099;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="display:inline;fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0.354331;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect2993-0-9-8-6-4"
-           width="105.94492"
-           height="38.444904"
+           width="106.29772"
+           height="46.062908"
            x="567.10626"
            y="818.68103"
            ry="8.17006e-06"
@@ -2685,7 +2685,8 @@
            height="321.25986"
            x="1833.0709"
            y="1772.5984" /></flowRegion><flowPara
-         id="flowPara10181" /></flowRoot>    <g
+         id="flowPara10181" /></flowRoot>
+    <g
        id="g1067"
        transform="translate(245.66927,9.4078741e-5)">
       <rect
@@ -3516,7 +3517,8 @@
            height="26.456694"
            x="1662.9922"
            y="1492.9133" /></flowRegion><flowPara
-         id="flowPara725" /></flowRoot>    <g
+         id="flowPara725" /></flowRoot>
+    <g
        style="display:inline"
        id="g10267-3"
        transform="translate(170.07878,9.4078741e-5)">
