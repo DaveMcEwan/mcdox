@@ -8,10 +8,12 @@ Layout is similar to than of the Ergodox project, but in a unibody case.
 Subdirectories
 --------------
 
+- case - Lasercut design produced by exporting SVGs from KiCAD.
+- doc - Documents like datasheets stored for handy reference.
 - keycap - STL model generator written in OpenSCAD suitable for FDM printing.
   Generated models are tracked in `keycap/stl` because it takes a while (~10
   minutes) to generate them.
-- release - Stuff that's actually been manufactured.
+- pcb/ctrl - TODO Breakout PCB for connecting controller to switch grids.
 - pcb/hand - Reversible PCB which connects the switches in a grid.
   - 38 buttons distributed over 5 rows, 8 columns.
   - Lengths beside mounting holes (6mm, 15mm, 25mm) are for standoffs to
@@ -25,4 +27,4 @@ Subdirectories
   - Low level lighting with LED on top and/or bottom, depending how the case
     looks.
   - All diodes (1N4148 compatible), LEDs, and resistors are 0603 (imperial).
-- pcb/ctrl - TODO Breakout PCB for connecting controller to switch grids.
+- release - Stuff that's actually been manufactured.
