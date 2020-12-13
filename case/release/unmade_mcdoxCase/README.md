@@ -12,6 +12,7 @@ Adjustments after session at MVB hackspace today.
   order.
   It was still the correct cut-points but wasted time flying the lens rather
   than cutting.
+4. Pinhole for programming pushbutton through bottom cover.
 
 DXFs derived from case.svg
 --------------------------
