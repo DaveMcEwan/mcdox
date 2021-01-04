@@ -13,8 +13,8 @@ stems = {
 }
 
 profiles = {
-    "dcs": 1,
-    "dsa": 2,
+    "dsa": 1,
+    "dcs": 2,
 }
 
 lengths = (
