@@ -1,22 +1,5 @@
 $fn = 64; // Increase to render more faces per curve.
-
-// Overrideable parameters.
-stemNum     = 1;    // Stem shape (CherryMX:1, Matias/ALPS:2)
-profileNum  = 2;    // Profile (DCS:1, DSA:2)
-lengthMul   = 1.0;  // Length multiple. Ergodox has (1, 1.5, 2)
-doBump      = 0;    // Enable homing bump.
-doBrim      = 0;    // Enable FDM brim for stem.
-
-// Common parameters.
-//                                DSA   : DCS
-keycap_z    = (profileNum == 2) ? 7.8   : 8.5;
-top_tilt    = (profileNum == 2) ? 0     : -1;
-top_skew    = (profileNum == 2) ? 0     : 1.75;
-dish_depth  = (profileNum == 2) ? 1.2   : 1;
-
-// Standard for mechanical computer keyboards.
-baseUnit = 18;
-
+include <keycapParameters.scad>
 
 /** FDM brim
  * Enabling this makes it easier to print and the brim should just snap off
@@ -83,13 +66,22 @@ module outerShape (profileNum) {
   top_x_diff  = (profileNum == 2) ? 5.3 : 6;
   top_y_diff  = (profileNum == 2) ? 5.3 : 4;
   base_corner_radius = 1.8;
-  straight_wall_side = 3.0;
+
+  // Walls are almost straight, but edge at keycap midheight is slightly smaller
+  // to make walls slant (draft) inwards for easier mold release.
+  wall_draft = 0.2; // NOTE: Distance not angle. TODO: draft parameter
+  wall_z = 3.0;
 
   difference() {
     hull() {
       rounded_rect([baseUnit*lengthMul,
                     baseUnit,
-                    straight_wall_side], base_corner_radius);
+                    .001], base_corner_radius);
+
+      translate([0, 0, wall_z])
+      rounded_rect([baseUnit*lengthMul-wall_draft,
+                    baseUnit-wall_draft,
+                    .001], base_corner_radius);
 
       translate([0, top_skew, keycap_z])
       rotate([-top_tilt, 0, 0])
@@ -129,6 +121,9 @@ module stem_cherrymx () {
   stem_y = 1.1;
   stem_z = 4.0;
 
+  // Massively over-deep stem which is cut down later.
+  stem_overDepth = 10;
+
   // Inner cross of the stem.
   cross_x = 1.3;
   cross_y = 1.4;
@@ -137,13 +132,15 @@ module stem_cherrymx () {
 
   difference() {
     union() {
-      // Massively over-deep stem which is cut down later.
+      cylinder(h=stem_overDepth, r=(cross_arm + stem_y)/2, $fn=64);
+      /* Rectangular instead of cylindrical.
       translate([-(cross_arm + stem_x)/2,
                  -(cross_arm + stem_y)/2,
                  0])
       cube([cross_arm + stem_x,
             cross_arm + stem_y,
-            baseUnit]);
+            stem_overDepth]);
+      */
 
       // Support structure to reduce stress on joining corners.
       translate([0, 0, stem_z])
@@ -157,6 +154,7 @@ module stem_cherrymx () {
     }
 
     // Inner cross
+    // TODO: draft, round corners in stem.
     translate([0, 0, cross_z/2])
     union() {
       cube([cross_x, cross_arm, cross_z + .001], center=true);
@@ -195,6 +193,7 @@ module stem_alps () {
 module keycap () {
   union() {
     // Basic shell shape.
+    color("lightgreen")
     difference() {
       outerShape(profileNum);
       innerShape(profileNum);
@@ -204,6 +203,7 @@ module keycap () {
       homing_bump();
 
     // Correct-length stem formed by subtracting large cube from overdeep stem.
+    color("lightblue")
     difference() {
       if (stemNum == 1)
         stem_cherrymx();
