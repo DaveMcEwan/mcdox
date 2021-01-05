@@ -1,0 +1,10 @@
+shellNum    stemNum           uMul                doBump
+# 1 -> DSA    1 -> CherryMX     1    -> A,S,D,...   0 -> no
+# 2 -> DCS    2 -> MatiasALPS   1.25 -> Ctrl        1 -> yes
+#                               1.5  -> Tab
+#                               1.75 -> RShift
+#                               2    -> Enter
+
+1,          1,                1.0,                0
+1,          1,                1.5,                0
+1,          1,                1.0,                1
