@@ -17,7 +17,7 @@ profiles = {
     "dcs": 2,
 }
 
-lengths = (
+uMuls = (
     "1.0",
     "1.5",
     "2.0",
@@ -30,17 +30,17 @@ try:
 except:
     pass
 
-for stem,profile,length,bump in product(stems, profiles, lengths, bumps):
+for stem,profile,u,bump in product(stems, profiles, uMuls, bumps):
     fnameo = "stl" + sep + \
-        '_'.join((stem, profile, length, "bump" if bump else "nobump")) + \
+        '_'.join((stem, profile, u, "bump" if bump else "nobump")) + \
         ".stl"
 
     cmd = ' '.join((
         "./OpenSCAD-2019.05-x86_64.AppImage",
         "-o %s" % fnameo,
         "-D stemNum=%d" % stems[stem],
-        "-D profileNum=%d" % profiles[profile],
-        "-D lengthMul=%s" % length,
+        "-D shellNum=%d" % profiles[profile],
+        "-D uMul=%s" % u,
         "-D doBump=%d" % int(bump),
         "keycap.scad"
     ))

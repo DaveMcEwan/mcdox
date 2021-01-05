@@ -12,10 +12,10 @@ module roundedRect (width, height, radius) {
   x = width/2-radius;
   y = height/2-radius;
   hull() {
-    translate([-x, -y, 0]) circle(r=radius);
-    translate([-x,  y, 0]) circle(r=radius);
-    translate([ x, -y, 0]) circle(r=radius);
-    translate([ x,  y, 0]) circle(r=radius);
+    translate([-x, -y, 0]) circle(r=radius, $fn=64);
+    translate([-x,  y, 0]) circle(r=radius, $fn=64);
+    translate([ x, -y, 0]) circle(r=radius, $fn=64);
+    translate([ x,  y, 0]) circle(r=radius, $fn=64);
   }
 }
 
@@ -180,6 +180,70 @@ crossVoid();
 translate([10, 0, 0])
 color("blue")
 solidPillar();
+
+/** Cuboid Stem for Matias/ALPS, Pre-positioned with Z-recess.
+*/
+module stemMatiasALPS () {
+
+  // Enlarge XY dimensions to allow easy but reliable pressfit onto stem.
+  pressfitXY = 0.05; // Includes 0.5% shrinkage tolerance.
+
+  // Void above stem for air, mold detritus, dirt, etc.
+  pressfitZ = 0.6;
+
+  /** stem cross-section
+  Measured on Matias ALPS tactile.
+
+   o----------------------o   ^
+   |                      |   |
+   |                      |   |
+   |                      |   |
+   o----------------------o   v
+                              holeVl
+
+   <----------------------> holeHl
+
+  */
+  holeVl = 2.15 + pressfitXY;
+  holeHl = 4.35 + pressfitXY;
+  holeZ = 5.00 + pressfitZ;
+
+
+  height = holeZ - stemRecess;
+  d = height * tan(draft_deg); // Expansion at top for draft angle.
+
+  xBot = holeHl/2 - outerCorners_r;
+  yBot = holeVl/2 - outerCorners_r;
+  zBot = outerCorners_r;
+  xTop = holeHl+d;
+  yTop = holeVl+d;
+  zTop = height;
+
+
+  translate([0, 0, stemRecess])
+  union() {
+    hull() {
+      translate([0, 0, zTop])
+      linear_extrude(minDim)
+      roundedRect(xTop, yTop, outerCorners_r);
+
+      translate([-xBot, -yBot, zBot]) sphere(r=outerCorners_r, $fn=64);
+      translate([-xBot,  yBot, zBot]) sphere(r=outerCorners_r, $fn=64);
+      translate([ xBot, -yBot, zBot]) sphere(r=outerCorners_r, $fn=64);
+      translate([ xBot,  yBot, zBot]) sphere(r=outerCorners_r, $fn=64);
+    }
+
+    // Support structure to reduce stress on joining corners.
+    // 45deg collar intended to be mostly removed in final keycap.
+    collarZ = 1.0;
+    collarR1 = 0.5 * sqrt(pow(xTop, 2) + pow(yTop, 2));
+    collarR2 = 0.5 * holeHl + collarZ;
+    translate([0, 0, height-minDim])
+    cylinder(h=collarZ, r1=collarR1, r2=collarR2, center=true, $fn=256);
+  }
+}
+translate([0, 10, 0])
+stemMatiasALPS();
 
 /** fdmStemBrim Assist FDM printing with brim which should snap off easily.
 TODO
