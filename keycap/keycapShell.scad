@@ -3,7 +3,7 @@ minDim = 0.001;
 
 baseUnit = 18.0;
 draft_deg = 20; // Large taper for easier mold removal, Set for anything.
-registration_z = 0.3;
+registration_z = 0.4;
 
 /** Rounded rectangle
 */
@@ -59,7 +59,7 @@ module outerDSA (u=1.0, doBump=0) {
         roundedRect(baseUnit*u-xDiff, baseUnit-yDiff, corner_r);
 
         // Registration cutout in bottom mold half.
-        translate([0, 0, -registration_z])
+        translate([0, 0, -registration_z/2])
         linear_extrude(registration_z+minDim)
         roundedRect(baseUnit*u, baseUnit, corner_r);
       }
@@ -113,11 +113,11 @@ module innerDSA (u=1.0) {
   }
 }
 
-module shellDSA (u=1.0, doBump=0, solidInner=0) {
+module shellDSA (u=1.0, doBump=0) {
   difference() {
     outerDSA(u, doBump);
 
-    if (0 == solidInner) innerDSA(u);
+    innerDSA(u);
   }
 }
 

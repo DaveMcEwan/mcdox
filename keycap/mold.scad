@@ -1,7 +1,5 @@
 
-use <isogrid.scad>
-use <keycapShell.scad>
-use <keycapStem.scad>
+use <moldIsogrid.scad>
 use <keycap.scad>
 
 // Overrideable parameters.
@@ -10,15 +8,22 @@ shellNum    = 1;    // Profile (DSA:1, DCS:2)
 uMul        = 1.0;  // Length multiple. Ergodox has (1, 1.5, 2)
 doBump      = 0;    // Enable homing bump.
 
-moldXY = 50;
+moldXY = 60;
+
+singleImpression = 0; // Faster to render, useful for debug.
 
 module moldUpper (z=15, shellNum=1, uMul=1.0, doBump=0) {
   difference() {
     translate([0, 0, z/2])
     cube([moldXY, moldXY, z], center=true);
 
-    if (2 == shellNum) outerDCS(u=uMul, doBump=doBump);
-    else               outerDSA(u=uMul, doBump=doBump);
+    if (0 == singleImpression) {
+      moldIsogrid4(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=3);
+    } else {
+      keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=3);
+    }
+
+    // TODO: registration hole
   }
 }
 
@@ -28,17 +33,24 @@ module moldLower (z=10, shellNum=1, uMul=1.0) {
       translate([0, 0, -z/2])
       cube([moldXY, moldXY, z], center=true);
 
-      if (2 == shellNum) outerDCS(u=uMul);
-      else               outerDSA(u=uMul);
+      // Flow registration trough.
+      if (0 == singleImpression) {
+        moldIsogrid4(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=2);
+      } else {
+        keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=2);
+      }
+
+      // TODO: Vents?
+      // TODO: Ejector pin holes?
     }
 
-    difference() {
-      if (2 == shellNum) innerDCS(u=uMul);
-      else               innerDSA(u=uMul);
-
-      if (2 == stemNum) stemMatiasALPS();
-      else              stemCherryMX();
+    if (0 == singleImpression) {
+      moldIsogrid4(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=1);
+    } else {
+      keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=1);
     }
+
+    // TODO: registration pin
   }
 }
 
