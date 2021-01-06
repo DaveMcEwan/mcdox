@@ -16,6 +16,38 @@ minSpace = 2.0;
 
 function halfVolRadius(r) = sqrt(pow(r, 2) / 2.0);
 
+module gatePair(r, l, margin=0.3) {
+  a = atan(r/l);
+
+  color("green")
+  union() {
+    rotate([90, 0, 0])
+    cylinder(h=2*r+2*minDim, r=r, center=true);
+
+    translate([0, r+l+minDim, 0])
+    rotate([0, 90, -90])
+    difference() {
+      translate([0, 0, -margin])
+      cylinder(h=l+margin, r=r, center=false);
+
+      rotate([0, a, 0])
+      translate([0, -r, -r])
+      cube([r*2, r*2, 2*l+minDim], center=false);
+    }
+
+    translate([0, -(r+l+minDim), 0])
+    rotate([0, 90, 90])
+    difference() {
+      translate([0, 0, -margin])
+      cylinder(h=l+margin, r=r, center=false);
+
+      rotate([0, a, 0])
+      translate([0, -r, -r])
+      cube([r*2, r*2, 2*l+minDim], center=false);
+    }
+  }
+}
+
 module runner(r, l, x=0, y=0, alongYnotX=0) {
   color("blue")
   translate([x, y, 0])
@@ -49,14 +81,15 @@ r2 is parent runner radius
 r1 is self runner radius
 r0 is child runner radius
 */
+
 module partPair(r1=1, r2=2) {
   v = r2 + minSpace + baseUnit/2;
   l = r2 + minSpace; // Length of runner. TODO modify for gate.
 
   union() {
     translate([0,  v, 0]) keycap(stemNum, shellNum, uMul, doBump);
-    runner(r1, l*2, 0, 0, 1);
     translate([0, -v, 0]) keycap(stemNum, shellNum, uMul, doBump);
+    gatePair(r2, minSpace);
   }
 }
 
@@ -65,11 +98,9 @@ module part4(r1=1, r2=2) {
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([ l, 0, 0]) partPair(r1=r0, r2=r1);
-    translate([-l, 0, 0]) partPair(r1=r0, r2=r1);
+    translate([ l, 0, 0]) partPair(r2=r1);
+    translate([-l, 0, 0]) partPair(r2=r1);
     runner(r1, l*2, 0, 0, 0);
-    reducingChamfer(r1, r0,  l, 0, 1);
-    reducingChamfer(r1, r0, -l, 0, 1);
   }
 }
 
@@ -125,6 +156,24 @@ module part64(r1=1, r2=2) {
   }
 }
 
+module isogrid4(r2=2, margin=5) {
+  r1 = halfVolRadius(r2); // 1/2 cross-section area
+  l = 2 * (r2 + minSpace + baseUnit/2) + margin;
+
+  r3 = r2 * sqrt(2); // Input hole radius.
+
+  union() {
+    part4(r1=r1, r2=r2);
+    runner(r2, l, 0, l/2, 1);
+    reducingChamfer(r2, r1, 0,  0, 0);
+
+    // Input hole
+    translate([0, l-minDim, 0])
+    rotate([-90, 0, 0])
+    cylinder(h=r3, r1=r2, r2=r3, center=false);
+  }
+}
+
 module isogrid16(r2=2, margin=6) {
   r1 = halfVolRadius(r2); // 1/2 cross-section area
   l = 2 * (r2 + r1 + 2*minSpace + baseUnit) + margin;
@@ -165,5 +214,6 @@ module isogrid64(r2=2, margin=10) {
 // TODO: Mold halves.
 // TODO: Gate/tabs.
 // TODO: Vents?
-isogrid16(r2=2);
+isogrid4(r2=2);
+//isogrid16(r2=4);
 //isogrid64(r2=5);
