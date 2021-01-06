@@ -245,10 +245,3 @@ module stemMatiasALPS () {
 translate([0, 10, 0])
 stemMatiasALPS();
 
-/** fdmStemBrim Assist FDM printing with brim which should snap off easily.
-TODO
-*/
-module fdmStemBrim () {
-  cylinder(r=5.0, h=0.3);
-}
-
