@@ -6,3 +6,4 @@ OpenSCAD*.AppImage
 # Keep human-name STLs
 */*.stl
 !*/keycap,*.stl
+!*/isogrid,*.stl
