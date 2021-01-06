@@ -12,6 +12,14 @@ doBump      = 0;    // Enable homing bump.
 /** Full keycap
  */
 module keycap (stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
+  /*
+  echo("keycap.scad keycap()");
+  echo("\t stemNum=", stemNum);
+  echo("\t shellNum=", shellNum);
+  echo("\t uMul=", uMul);
+  echo("\t doBump=", doBump);
+  */
+
   union() {
     color("lightgreen")
     if (2 == shellNum) shellDCS(uMul, doBump);

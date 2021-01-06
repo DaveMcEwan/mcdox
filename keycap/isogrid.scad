@@ -17,6 +17,13 @@ minSpace = 2.0;
 function halfVolRadius(r) = sqrt(pow(r, 2) / 2.0);
 
 module gatePair(r, l, overshoot=0.3) {
+  /*
+  echo("isogrid.scad gatePair()");
+  echo("\t r=", r);
+  echo("\t l=", l);
+  echo("\t overshoot=", overshoot);
+  */
+
   a = atan(r/l);
 
   color("green")
@@ -48,12 +55,17 @@ module gatePair(r, l, overshoot=0.3) {
   }
 }
 
-module runner(r, l, x=0, y=0, alongYnotX=0) {
+module runner(r, l, alongYnotX=0) {
+  /*
+  echo("isogrid.scad runner()");
+  echo("\t r=", r);
+  echo("\t l=", l);
+  echo("\t alongYnotX=", alongYnotX);
+  */
+
   color("blue")
-  translate([x, y, 0])
   rotate([90*alongYnotX, 90-90*alongYnotX, 0])
   cylinder(h=l, r=r, center=true);
-  echo("runner r=", r," l=", l);
 }
 
 module reducingChamfer(r1, r2, x=0, y=0, alongYnotX=0) {
@@ -82,9 +94,18 @@ r1 is self runner radius
 r0 is child runner radius
 */
 
-module partPair(r1=1, r2=2) {
+module partPair(r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
+  /*
+  echo("isogrid.scad partPair()");
+  echo("\t r2=", r2);
+  echo("\t stemNum=", stemNum);
+  echo("\t shellNum=", shellNum);
+  echo("\t uMul=", uMul);
+  echo("\t doBump=", doBump);
+  */
+
   v = r2 + minSpace + baseUnit/2;
-  l = r2 + minSpace; // Length of runner. TODO modify for gate.
+  l = r2 + minSpace; // Length of runner.
 
   union() {
     translate([0,  v, 0]) keycap(stemNum, shellNum, uMul, doBump);
@@ -93,78 +114,109 @@ module partPair(r1=1, r2=2) {
   }
 }
 
-module part4(r1=1, r2=2) {
+module part4(r1=1, r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
+  /*
+  echo("isogrid.scad part4()");
+  echo("\t r1=", r1);
+  echo("\t r2=", r2);
+  echo("\t stemNum=", stemNum);
+  echo("\t shellNum=", shellNum);
+  echo("\t uMul=", uMul);
+  echo("\t doBump=", doBump);
+  */
+
   l = r2 + minSpace + baseUnit/2;
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([ l, 0, 0]) partPair(r2=r1);
-    translate([-l, 0, 0]) partPair(r2=r1);
-    runner(r1, l*2, 0, 0, 0);
+    translate([ l, 0, 0])
+    partPair(r2=r1,
+             stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+
+    translate([-l, 0, 0])
+    partPair(r2=r1,
+             stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+
+    runner(r1, l*2, 0);
   }
 }
 
-module part8(r1=1, r2=2) {
+module part8(r1=1, r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   l = r2 + r1 + 2*minSpace + baseUnit;
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([0,  l, 0]) part4(r1=r0, r2=r1);
-    translate([0, -l, 0]) part4(r1=r0, r2=r1);
-    runner(r1, l*2, 0, 0, 1);
+    translate([0,  l, 0])
+    part4(r1=r0, r2=r1,
+          stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+    translate([0, -l, 0])
+    part4(r1=r0, r2=r1,
+          stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+    runner(r1, l*2, 1);
     reducingChamfer(r1, r0, 0,  l, 0);
     reducingChamfer(r1, r0, 0, -l, 0);
   }
 }
 
-module part16(r1=1, r2=2) {
+module part16(r1=1, r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   l = r2 + r1 + 2*minSpace + baseUnit;
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([ l, 0, 0]) part8(r1=r0, r2=r1);
-    translate([-l, 0, 0]) part8(r1=r0, r2=r1);
-    runner(r1, l*2, 0, 0, 0);
+    translate([ l, 0, 0]) part8(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    translate([-l, 0, 0]) part8(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    runner(r1, l*2, 0);
     reducingChamfer(r1, r0,  l, 0, 1);
     reducingChamfer(r1, r0, -l, 0, 1);
   }
 }
 
-module part32(r1=1, r2=2) {
+module part32(r1=1, r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   l = r2 + 2*r1 + 4*minSpace + 2*baseUnit;
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([0,  l, 0]) part16(r1=r0, r2=r1);
-    translate([0, -l, 0]) part16(r1=r0, r2=r1);
-    runner(r1, l*2, 0, 0, 1);
+    translate([0,  l, 0]) part16(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    translate([0, -l, 0]) part16(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    runner(r1, l*2, 1);
     reducingChamfer(r1, r0, 0,  l, 0);
     reducingChamfer(r1, r0, 0, -l, 0);
   }
 }
 
-module part64(r1=1, r2=2) {
+module part64(r1=1, r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   l = r2 + 2*r1 + 4*minSpace + 2*baseUnit;
   r0 = halfVolRadius(r1); // 1/2 cross-section area
 
   union() {
-    translate([ l, 0, 0]) part32(r1=r0, r2=r1);
-    translate([-l, 0, 0]) part32(r1=r0, r2=r1);
-    runner(r1, l*2, 0, 0, 0);
+    translate([ l, 0, 0]) part32(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    translate([-l, 0, 0]) part32(r1=r0, r2=r1, stemNum, shellNum, uMul, doBump);
+    runner(r1, l*2, 0);
     reducingChamfer(r1, r0,  l, 0, 1);
     reducingChamfer(r1, r0, -l, 0, 1);
   }
 }
 
-module isogrid4(r2=2, margin=5) {
+module isogrid4(r2=2, margin=5, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
+  /*
+  echo("isogrid.scad isogrid4()");
+  echo("\t r2=", r2);
+  echo("\t margin=", margin);
+  echo("\t stemNum=", stemNum);
+  echo("\t shellNum=", shellNum);
+  echo("\t uMul=", uMul);
+  echo("\t doBump=", doBump);
+  */
+
   r1 = halfVolRadius(r2); // 1/2 cross-section area
   l = 2 * (r2 + minSpace + baseUnit/2) + margin;
 
   r3 = r2 * sqrt(2); // Input hole radius.
 
   union() {
-    part4(r1=r1, r2=r2);
-    runner(r2, l, 0, l/2, 1);
+    part4(r1=r1, r2=r2,
+          stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+    translate([0, l/2, 0]) runner(r2, l, 1);
     reducingChamfer(r2, r1, 0,  0, 0);
 
     // Input hole
@@ -174,15 +226,15 @@ module isogrid4(r2=2, margin=5) {
   }
 }
 
-module isogrid16(r2=2, margin=6) {
+module isogrid16(r2=2, margin=6, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   r1 = halfVolRadius(r2); // 1/2 cross-section area
   l = 2 * (r2 + r1 + 2*minSpace + baseUnit) + margin;
 
   r3 = r2 * sqrt(2); // Input hole radius.
 
   union() {
-    part16(r1=r1, r2=r2);
-    runner(r2, l, 0, l/2, 1);
+    part16(r1=r1, r2=r2, stemNum, shellNum, uMul, doBump);
+    translate([0, l/2, 0]) runner(r2, l, 1);
     reducingChamfer(r2, r1, 0,  0, 0);
 
     // Input hole
@@ -192,15 +244,15 @@ module isogrid16(r2=2, margin=6) {
   }
 }
 
-module isogrid64(r2=2, margin=10) {
+module isogrid64(r2=2, margin=10, stemNum=1, shellNum=1, uMul=1.0, doBump=0) {
   r1 = halfVolRadius(r2); // 1/2 cross-section area
   l = 2 * (r2 + r1 + 4*minSpace + 2*baseUnit) + margin;
 
   r3 = r2 * sqrt(2); // Input hole radius.
 
   union() {
-    part64(r1=r1, r2=r2);
-    runner(r2, l, 0, l/2, 1);
+    part64(r1=r1, r2=r2, stemNum, shellNum, uMul, doBump);
+    translate([0, l/2, 0]) runner(r2, l, 1);
     reducingChamfer(r2, r1, 0,  0, 0);
 
     // Input hole
@@ -211,9 +263,9 @@ module isogrid64(r2=2, margin=10) {
 }
 
 // TODO: Sprue radius r2 from viscosity, pressure, injection time,and volume.
-// TODO: Mold halves.
-// TODO: Gate/tabs.
+// TODO: Mold halves, registration pins.
+// TODO: Registration trough.
 // TODO: Vents?
-isogrid4(r2=2);
-//isogrid16(r2=4);
-//isogrid64(r2=5);
+isogrid4(r2=1, stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+//isogrid16(r2=4, stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
+//isogrid64(r2=5, stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump);
