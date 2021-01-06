@@ -16,7 +16,7 @@ minSpace = 2.0;
 
 function halfVolRadius(r) = sqrt(pow(r, 2) / 2.0);
 
-module gatePair(r, l, margin=0.3) {
+module gatePair(r, l, overshoot=0.3) {
   a = atan(r/l);
 
   color("green")
@@ -27,8 +27,8 @@ module gatePair(r, l, margin=0.3) {
     translate([0, r+l+minDim, 0])
     rotate([0, 90, -90])
     difference() {
-      translate([0, 0, -margin])
-      cylinder(h=l+margin, r=r, center=false);
+      translate([0, 0, -overshoot])
+      cylinder(h=l+overshoot, r=r, center=false);
 
       rotate([0, a, 0])
       translate([0, -r, -r])
@@ -38,8 +38,8 @@ module gatePair(r, l, margin=0.3) {
     translate([0, -(r+l+minDim), 0])
     rotate([0, 90, 90])
     difference() {
-      translate([0, 0, -margin])
-      cylinder(h=l+margin, r=r, center=false);
+      translate([0, 0, -overshoot])
+      cylinder(h=l+overshoot, r=r, center=false);
 
       rotate([0, a, 0])
       translate([0, -r, -r])
