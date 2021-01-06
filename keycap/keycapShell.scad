@@ -113,10 +113,11 @@ module innerDSA (u=1.0) {
   }
 }
 
-module shellDSA (u=1.0, doBump=0) {
+module shellDSA (u=1.0, doBump=0, solidInner=0) {
   difference() {
     outerDSA(u, doBump);
-    innerDSA(u);
+
+    if (0 == solidInner) innerDSA(u);
   }
 }
 
