@@ -117,6 +117,7 @@ module partPair(r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0,
            mold=mold);
 
     translate([0, -v, 0])
+    rotate([0, 0, 180])
     keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump,
            mold=mold);
 
