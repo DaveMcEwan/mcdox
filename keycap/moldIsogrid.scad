@@ -76,7 +76,7 @@ module reducingChamfer(r1, r2, x=0, y=0, alongYnotX=0) {
   union() {
     // Cones stacked on Z-axis.
 
-    cylinder(h=r1*2, r=r1, center=true);
+    cylinder(h=r1*2+minDim, r=r1, center=true);
 
     translate([0, 0,  r1])
     cylinder(h=chamfer_l, r1=r1, r2=r2, center=false);
