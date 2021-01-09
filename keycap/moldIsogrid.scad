@@ -87,6 +87,25 @@ module reducingChamfer(r1, r2, x=0, y=0, alongYnotX=0) {
   }
 }
 
+module vents() {
+  vent_w = 1.0;
+  pri_d = 0.02; // ABS
+  pri_l = 0.5;
+  sec_d = 0.5;
+  sec_l = 20; // oversize
+
+  x = baseUnit/3; // Place 1/3 along edge from center.
+  pri_y = baseUnit/2 - minDim;
+  sec_y = baseUnit/2 + pri_l;
+
+  union () {
+    translate([ x, pri_y+pri_l/2, pri_d/2-minDim]) cube([vent_w, pri_l+2*minDim, pri_d], center=true);
+    translate([-x, pri_y+pri_l/2, pri_d/2-minDim]) cube([vent_w, pri_l+2*minDim, pri_d], center=true);
+    translate([ x, sec_y+sec_l/2, pri_d/2-minDim]) cube([vent_w, sec_l, sec_d], center=true);
+    translate([-x, sec_y+sec_l/2, sec_d/2-minDim]) cube([vent_w, sec_l, sec_d], center=true);
+  }
+}
+
 /*
 l is child offset from origin, i.e. runner length
 r2 is parent runner radius
@@ -112,16 +131,23 @@ module partPair(r2=2, stemNum=1, shellNum=1, uMul=1.0, doBump=0,
   l = r2 + minSpace; // Length of runner.
 
   union() {
-    translate([0,  v, 0])
-    keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump,
-           mold=mold);
+    translate([0,  v, 0]) {
+      keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump,
+             mold=mold);
+
+      if (3 == mold) vents();
+    }
 
     translate([0, -v, 0])
-    rotate([0, 0, 180])
-    keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump,
-           mold=mold);
+    rotate([0, 0, 180]) {
+      keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump,
+             mold=mold);
+
+      if (3 == mold) vents();
+    }
 
     if (1 != mold) gatePair(r2, minSpace);
+
   }
 }
 

@@ -51,16 +51,6 @@ module keycap (stemNum=1, shellNum=1, uMul=1.0, doBump=0, mold=0) {
       if (2 == shellNum) outerDCS(uMul, doBump);
       else               outerDSA(uMul, doBump);
 
-      // Vents
-      ventPri_l = 0.8;
-      ventSec_r = 1.0;
-      translate([baseUnit/3, baseUnit/2+ventPri_l, 0])
-      rotate([-90, 0, 0])
-      cylinder(h=2*baseUnit, r=ventSec_r, center=false);
-      translate([-baseUnit/3, baseUnit/2+ventPri_l, 0])
-      rotate([-90, 0, 0])
-      cylinder(h=2*baseUnit, r=ventSec_r, center=false);
-
   } else {
 
     union() {
