@@ -71,6 +71,14 @@ CSV_MAP_FNAME = \
   done; \
 	echo "$$fname.stl"
 
+$(BUILD)/%.stl: $(PARTMODEL_SRC)
+	mkdir -p $(BUILD)/
+	./OpenSCAD-2019.05-x86_64.AppImage \
+		-o $@ \
+		$(shell $(CSV_MAP_DEFINES)) \
+		keycap.scad
+	ln $@ $(BUILD)/$(shell $(CSV_MAP_FNAME))
+
 .PHONY: keycapModels
 keycapModels: $(foreach ROW,$(CSV_ROWS),$(BUILD)/$(ROW).stl)
 	@echo keycapModels DONE
