@@ -8,6 +8,14 @@ shellNum    = 1;    // Profile (DSA:1, DCS:2)
 uMul        = 1.0;  // Length multiple. Ergodox has (1, 1.5, 2)
 doBump      = 0;    // Enable homing bump.
 
+singleImpression = 0; // Faster to render, useful for debug.
+
+/* moldPart 0 -> Both upper and lower halves.
+            1 -> Lower only.
+            2 -> Upper only.
+*/
+moldPart = 0;
+
 moldXY = 60;
 regpin_l = 8;
 regpin_a = 2; // Similar to draft angle
@@ -17,8 +25,6 @@ regvent_r = 1; // Vent to let air escape from registration holes.
 
 baseUnit = 18.0;
 minDim = 0.001;
-
-singleImpression = 0; // Faster to render, useful for debug.
 
 module moldUpper (z=15, shellNum=1, uMul=1.0, doBump=0) {
   x = moldXY + 2*(uMul-1)*baseUnit;
@@ -67,9 +73,6 @@ module moldLower (z=10, shellNum=1, uMul=1.0) {
       } else {
         keycap(stemNum=stemNum, shellNum=shellNum, uMul=uMul, doBump=doBump, mold=2);
       }
-
-      // TODO: Vents?
-      // TODO: Ejector pin holes?
     }
 
     if (0 == singleImpression) {
@@ -87,5 +90,12 @@ module moldLower (z=10, shellNum=1, uMul=1.0) {
   }
 }
 
-translate([0, 0, -20]) moldUpper(shellNum=shellNum, uMul=uMul, doBump=doBump);
-translate([0, 0,  20]) moldLower(shellNum=shellNum, uMul=uMul);
+if (2 == moldPart) {
+  moldUpper(shellNum=shellNum, uMul=uMul, doBump=doBump);
+} else if (1 == moldPart) {
+  moldLower(shellNum=shellNum, uMul=uMul);
+}
+else {
+  translate([0, 0,  20]) moldLower(shellNum=shellNum, uMul=uMul);
+  translate([0, 0, -20]) moldUpper(shellNum=shellNum, uMul=uMul, doBump=doBump);
+}

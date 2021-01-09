@@ -1,10 +1,10 @@
 
 minDim = 0.001;
 
-innerCorners_r = 0.02;
-outerCorners_r = 0.02;
+innerCorners_r = 0.05;
+outerCorners_r = 0.05;
 draft_deg = 0.6; // Slight taper for easier mold removal, Set for ABS.
-stemRecess = 1.2;
+stemRecess = 0.8;
 
 /** Rounded rectangle
 */
@@ -25,7 +25,7 @@ module crossVoid () {
   $fn = 64;
 
   // Enlarge XY dimensions to allow easy but reliable pressfit onto stem.
-  pressfitXY = 0.05; // Includes 0.5% shrinkage tolerance.
+  pressfitXY = 0.1; // Includes 0.5% shrinkage tolerance.
 
   // Void above stem for air, mold detritus, dirt, etc.
   pressfitZ = 0.6;

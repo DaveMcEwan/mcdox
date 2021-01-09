@@ -7,3 +7,5 @@ OpenSCAD*.AppImage
 */*.stl
 !*/keycap,*.stl
 !*/isogrid,*.stl
+!*/moldUpper,keycap,*.stl
+!*/moldLower,keycap,*.stl

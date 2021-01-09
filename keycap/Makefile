@@ -20,12 +20,19 @@
 
 .PHONY: default
 default: keycapModels
+default: moldModels
 
 BUILD ?= ./stl
 
 PARTMODEL_SRC := keycap.scad
+PARTMODEL_SRC += keycapShell.scad
+PARTMODEL_SRC += keycapStem.scad
 
-CSV ?= partmodels_all.csv
+MOLDMODEL_SRC := mold.scad
+MOLDMODEL_SRC += moldIsogrid.scad
+MOLDMODEL_SRC += $(PARTMODEL_SRC)
+
+CSV ?= partmodels_mcdox.csv
 CSV_KEYS := $(shell grep -v "^\w*$$\|^\\\#" $(CSV) | head -n1)
 CSV_ROWS := $(shell grep -v "^\w*$$\|^\\\#" $(CSV) | tail -n+2 | sed 's/\s*//g')
 N_CSV_KEYS := $(shell echo $(CSV_KEYS) | wc -w)
@@ -66,12 +73,35 @@ CSV_MAP_FNAME = \
 
 .PHONY: keycapModels
 keycapModels: $(foreach ROW,$(CSV_ROWS),$(BUILD)/$(ROW).stl)
-	@echo DONE
+	@echo keycapModels DONE
 
-$(BUILD)/%.stl: $(PARTMODEL_SRC)
+
+$(BUILD)/moldUpper,%.stl: $(MOLDMODEL_SRC)
 	mkdir -p $(BUILD)/
 	./OpenSCAD-2019.05-x86_64.AppImage \
 		-o $@ \
+		-D moldPart=2 \
 		$(shell $(CSV_MAP_DEFINES)) \
-		keycap.scad
-	ln $@ $(BUILD)/$(shell $(CSV_MAP_FNAME))
+		mold.scad
+	ln $@ $(BUILD)/moldUpper,$(shell $(CSV_MAP_FNAME))
+
+$(BUILD)/moldLower,%.stl: $(MOLDMODEL_SRC)
+	mkdir -p $(BUILD)/
+	./OpenSCAD-2019.05-x86_64.AppImage \
+		-o $@ \
+		-D moldPart=1 \
+		$(shell $(CSV_MAP_DEFINES)) \
+		mold.scad
+	ln $@ $(BUILD)/moldLower,$(shell $(CSV_MAP_FNAME))
+
+.PHONY: moldUpperModels
+moldUpperModels: $(foreach ROW,$(CSV_ROWS),$(BUILD)/moldUpper,$(ROW).stl)
+	@echo moldUpperModels DONE
+
+.PHONY: moldLowerModels
+moldLowerModels: $(foreach ROW,$(CSV_ROWS),$(BUILD)/moldLower,$(ROW).stl)
+	@echo moldLowerModels DONE
+
+.PHONY: moldModels
+moldModels: moldUpperModels
+moldModels: moldLowerModels
