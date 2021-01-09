@@ -28,3 +28,28 @@ Subdirectories
     looks.
   - All diodes (1N4148 compatible), LEDs, and resistors are 0603 (imperial).
 - release - Stuff that's actually been manufactured.
+
+
+BOM
+---
+
+- Keycaps - The functionally simplest parts which are also the most difficult to
+  source.
+  18x 1.5u, 56x 1u
+- Case - Standard 3mm acrylic from laser cutter.
+- PCBs - 1.2mm FR4, 2-layer, 0.15mm width/clearance
+  2x mcdoxHand, 1x mcdoxCtrl
+- Switches - CherryMX, or compatible like Gateron, Kailh.
+  74x
+- Diodes - 1 per switch.
+  74x
+- Microcontroller - Arduino Pro Micro from Sparkfun, or clone.
+- FPC connectors
+  4x
+- FPC cables - Connect hand PCBs to central controller.
+- LEDs - 0603 footprint
+  2x
+- Resistors - For LEDs and switch matrix.
+  10x 220R 0603
+- Pushbutton - For putting Arduino Pro Micro into programming mode.
+  1x
