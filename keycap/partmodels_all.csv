@@ -1,0 +1,43 @@
+shellNum    stemNum           uMul                doBump
+# 1 -> DSA    1 -> CherryMX     1    -> A,S,D,...   0 -> no
+# 2 -> DCS    2 -> MatiasALPS   1.25 -> Ctrl        1 -> yes
+#                               1.5  -> Tab
+#                               1.75 -> RShift
+#                               2    -> Enter
+
+# NOTE: OpenSCAD is missing from Ubuntu18.04 apt repository so AppImage can be
+# found from <https://files.openscad.org/OpenSCAD-2019.05-x86_64.AppImage>.
+
+# DSA CherryMX
+1,          1,                1.0,                0
+1,          1,                1.5,                0
+1,          1,                2.0,                0
+1,          1,                1.0,                1
+
+# DSA MatiasALPS
+1,          2,                1.0,                0
+1,          2,                1.5,                0
+1,          2,                1.0,                1
+1,          2,                1.5,                1
+
+# DCS CherryMX
+2,          1,                1.0,                0
+2,          1,                1.5,                0
+2,          1,                1.0,                1
+2,          1,                1.5,                1
+
+# DCS MatiasALPS
+2,          2,                1.0,                0
+2,          2,                1.5,                0
+2,          2,                1.0,                1
+2,          2,                1.5,                1
+
+# Large with bumps
+1,          1,                1.5,                1
+1,          1,                2.0,                1
+1,          2,                1.5,                1
+1,          2,                2.0,                1
+2,          1,                1.5,                1
+2,          1,                2.0,                1
+2,          2,                1.5,                1
+2,          2,                2.0,                1

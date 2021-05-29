@@ -1,3 +1,11 @@
 
 # OpenSCAD executable
 OpenSCAD*.AppImage
+
+# Machine-name STLs
+# Keep human-name STLs
+*/*.stl
+!*/keycap,*.stl
+!*/isogrid,*.stl
+!*/moldUpper,keycap,*.stl
+!*/moldLower,keycap,*.stl

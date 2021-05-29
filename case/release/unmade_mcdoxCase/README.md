@@ -8,11 +8,12 @@ Adjustments after session at MVB hackspace today.
   This also fixed the very slight asymmetry of the top outline which wasn't
   snapped to grid.
 3. Switch hole paths made with straight segments and simplified paths.
-  Hope to avoid the odd path planning seen with segments cut in seeminly random
+  Hope to avoid the odd path planning seen with segments cut in seemingly random
   order.
   It was still the correct cut-points but wasted time flying the lens rather
   than cutting.
 4. Pinhole for programming pushbutton through bottom cover.
+5. Slightly enlargened keycap cutouts in innerTop to stop caps getting jammed.
 
 DXFs derived from case.svg
 --------------------------
