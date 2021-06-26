@@ -1,7 +1,7 @@
 
 Currently unmade - Ready for any future remakes.
 
-Adjustments after session at MVB hackspace today.
+Adjustments after session at MVB hackspace on 2020-12-03.
 1. Asymmetric hole mistake stops layers being reversible.
   It was off by 5mm but still snapped to grid.
 2. Recess for ArduinoProMirco widened by 1mm as it was a very tight press fit.
